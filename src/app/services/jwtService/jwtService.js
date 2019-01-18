@@ -13,13 +13,14 @@ class jwtService extends FuseUtils.EventEmitter {
     }
 
     setInterceptors = () => {
+        console.log("setInterceptors");
         this.api.interceptors.response.use(response => {
             return response;
         }, err => {
             return new Promise((resolve, reject) => {
-                console.log(err)
                 if ( err.response.status === 401 && err.config && !err.config.__isRetryRequest )
                 {
+                    console.log("Error in setInterceptors");
                     // if you ever get an unauthorized response, logout the user
                     this.emit('onAutoLogout', 'Invalid access_token');
                     this.setSession(null);
@@ -32,7 +33,6 @@ class jwtService extends FuseUtils.EventEmitter {
     handleAuthentication = () => {
 
         let access_token = this.getAccessToken();
-
         if ( !access_token )
         {
             return;
@@ -51,8 +51,9 @@ class jwtService extends FuseUtils.EventEmitter {
     };
 
     createUser = (data) => {
+        console.log(data);
         return new Promise((resolve, reject) => {
-            this.api.post('/home/register', data)
+            this.api.post('/auth/register', data)
                 .then(response => {
                     if ( response.data.user )
                     {
@@ -69,7 +70,7 @@ class jwtService extends FuseUtils.EventEmitter {
 
     signInWithEmailAndPassword = (email, password) => {
         return new Promise((resolve, reject) => {
-            this.api.post('/home/login', {
+            this.api.post('/auth/login', {
                 data: {
                     email,
                     password
