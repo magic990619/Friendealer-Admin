@@ -4,6 +4,7 @@ import * as userActions from 'app/auth/store/actions';
 import {bindActionCreators} from 'redux';
 import * as Actions from 'app/store/actions';
 import jwtService from 'app/services/jwtService';
+import history from 'history.js';
 
 class Auth extends Component {
     /*eslint-disable-next-line no-useless-constructor*/
@@ -19,7 +20,6 @@ class Auth extends Component {
 
     jwtCheck = () => {
         jwtService.on('onAutoLogin', () => {
-
             this.props.showMessage({message: 'Logging in with JWT'});
 
             /**
@@ -27,11 +27,16 @@ class Auth extends Component {
              */
             jwtService.signInWithToken()
                 .then(user => {
+                    console.log("logged with JWT");
                     this.props.setUserData(user);
-
                     this.props.showMessage({message: 'Logged in with JWT'});
+                    
+                    history.push({
+                        pathname: '/'
+                    });
                 })
                 .catch(error => {
+                    console.log(error);
                     this.props.showMessage({message: error});
                 })
         });
@@ -39,6 +44,7 @@ class Auth extends Component {
         jwtService.on('onAutoLogout', (message) => {
             if ( message )
             {
+                console.log(message);
                 this.props.showMessage({message});
             }
             this.props.logout();

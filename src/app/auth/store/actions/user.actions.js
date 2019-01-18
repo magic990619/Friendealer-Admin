@@ -14,12 +14,13 @@ export const USER_LOGGED_OUT = '[USER] LOGGED OUT';
  */
 export function setUserData(user)
 {
+    console.log("user.action => setUserData");
     return (dispatch) => {
 
         /*
         Set User Settings
          */
-        dispatch(setDefaultSettings(user.data.settings));
+        //dispatch(setDefaultSettings(user.data.settings));
 
         /*
         Set User Data

@@ -13,12 +13,11 @@ class jwtService extends FuseUtils.EventEmitter {
     }
 
     setInterceptors = () => {
-        console.log("setInterceptors");
         this.api.interceptors.response.use(response => {
             return response;
         }, err => {
             return new Promise((resolve, reject) => {
-                if ( err.response.status === 401 && err.config && !err.config.__isRetryRequest )
+                if ( err.response !== undefined && err.response.status === 401 && err.config && !err.config.__isRetryRequest )
                 {
                     console.log("Error in setInterceptors");
                     // if you ever get an unauthorized response, logout the user
@@ -62,6 +61,7 @@ class jwtService extends FuseUtils.EventEmitter {
                     }
                     else
                     {
+                        console.log(response);
                         reject(response.data.error);
                     }
                 });
@@ -69,17 +69,17 @@ class jwtService extends FuseUtils.EventEmitter {
     };
 
     signInWithEmailAndPassword = (email, password) => {
+        
         return new Promise((resolve, reject) => {
             this.api.post('/auth/login', {
-                data: {
-                    email,
-                    password
-                }
+                    'email': email,
+                    'password' : password
             }).then(response => {
-                if ( response.data.user )
+                console.log(response);
+                if ( response.data.decodedToken )
                 {
                     this.setSession(response.data.access_token);
-                    resolve(response.data.user);
+                    resolve(response.data.decodedToken);
                 }
                 else
                 {
@@ -91,16 +91,13 @@ class jwtService extends FuseUtils.EventEmitter {
 
     signInWithToken = () => {
         return new Promise((resolve, reject) => {
-            this.api.get('/api/auth/access-token', {
-                data: {
-                    access_token: this.getAccessToken()
-                }
-            })
+            this.api.get('/auth/access-token/' + this.getAccessToken())
                 .then(response => {
-                    if ( response.data.user )
+                    console.log(response);
+                    if ( response.data.decodedToken )
                     {
                         this.setSession(response.data.access_token);
-                        resolve(response.data.user);
+                        resolve(response.data.decodedToken);
                     }
                     else
                     {
@@ -111,7 +108,7 @@ class jwtService extends FuseUtils.EventEmitter {
     };
 
     updateUserData = (user) => {
-        return this.api.post('/api/auth/user/update', {
+        return this.api.post('/auth/user/update', {
             user: user
         });
     };
