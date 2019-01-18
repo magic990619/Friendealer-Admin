@@ -1,4 +1,3 @@
-import firebaseService from 'app/services/firebaseService';
 import jwtService from 'app/services/jwtService';
 import {setUserData} from './user.actions';
 import * as Actions from 'app/store/actions';

@@ -7,8 +7,6 @@ import {bindActionCreators} from 'redux';
 import {Link, withRouter} from 'react-router-dom';
 import classNames from 'classnames';
 import * as Actions from 'app/auth/store/actions';
-// import FirebaseRegisterTab from './tabs/FirebaseRegisterTab';
-// import Auth0RegisterTab from './tabs/Auth0RegisterTab';
 import JWTRegisterTab from './tabs/JWTRegisterTab';
 
 const styles = theme => ({
@@ -38,7 +36,7 @@ class Register extends Component {
     };
 
     onSubmit = (model) => {
-        this.props.registerWithFirebase(model);
+        //this.props.registerWithFirebase(model);
     };
 
     componentDidUpdate(prevProps, prevState)
@@ -117,7 +115,7 @@ class Register extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        registerWithFirebase: Actions.registerWithFirebase
+        //registerWithFirebase: Actions.registerWithFirebase
     }, dispatch);
 }
 

@@ -15,7 +15,6 @@ class Auth extends Component {
          * Comment the line if you do not use JWt
          */
         this.jwtCheck();
-
     }
 
     jwtCheck = () => {
@@ -47,6 +46,7 @@ class Auth extends Component {
 
         jwtService.init();
     };
+
 
     render()
     {
