@@ -31,6 +31,7 @@ const styles = theme => ({
 });
 
 const UserNavbarHeader = ({user, classes}) => {
+    console.log(user);
     return (
         <AppBar
             position="static"
@@ -39,12 +40,12 @@ const UserNavbarHeader = ({user, classes}) => {
             classes={{root: classes.root}}
             className="user relative flex flex-col items-center justify-center pt-24 pb-64 mb-32 z-0"
         >
-            <Typography className="username text-16 whitespace-no-wrap" color="inherit">{user.data.displayName}</Typography>
-            <Typography className="email text-13 mt-8 opacity-50 whitespace-no-wrap" color="inherit">{user.data.email}</Typography>
+            <Typography className="username text-16 whitespace-no-wrap" color="inherit">{user.userName}</Typography>
+            <Typography className="email text-13 mt-8 opacity-50 whitespace-no-wrap" color="inherit">{user.email}</Typography>
             <Avatar
                 className={classNames(classes.avatar, "avatar")}
                 alt="user photo"
-                src={user.data.photoURL && user.data.photoURL !== '' ? user.data.photoURL : "assets/images/avatars/profile.jpg"}
+                src={user.avatar && user.avatar !== '' ? user.avatar : "assets/images/avatars/profile.jpg"}
             />
         </AppBar>
     );

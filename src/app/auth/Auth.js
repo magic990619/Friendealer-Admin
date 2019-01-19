@@ -27,7 +27,6 @@ class Auth extends Component {
              */
             jwtService.signInWithToken()
                 .then(user => {
-                    console.log("logged with JWT");
                     this.props.setUserData(user);
                     this.props.showMessage({message: 'Logged in with JWT'});
                     

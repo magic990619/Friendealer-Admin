@@ -93,7 +93,6 @@ class jwtService extends FuseUtils.EventEmitter {
         return new Promise((resolve, reject) => {
             this.api.get('/auth/access-token/' + this.getAccessToken())
                 .then(response => {
-                    console.log(response);
                     if ( response.data.decodedToken )
                     {
                         this.setSession(response.data.access_token);

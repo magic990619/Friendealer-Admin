@@ -1,7 +1,8 @@
 import * as Actions from '../actions';
 
 const initialState = {
-    role: 'guest',
+    role: 'admin',
+    userName: 'Administrator',
     data: {
         'displayName': 'John Doe',
         'photoURL'   : 'assets/images/avatars/Velazquez.jpg',

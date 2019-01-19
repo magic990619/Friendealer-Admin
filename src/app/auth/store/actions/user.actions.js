@@ -1,5 +1,5 @@
 import history from 'history.js';
-import {setDefaultSettings, setInitialSettings} from 'app/store/actions/fuse';
+import {setInitialSettings} from 'app/store/actions/fuse'; //setDefaultSettings, 
 import _ from '@lodash';
 import store from 'app/store';
 import * as Actions from 'app/store/actions';
@@ -14,7 +14,6 @@ export const USER_LOGGED_OUT = '[USER] LOGGED OUT';
  */
 export function setUserData(user)
 {
-    console.log("user.action => setUserData");
     return (dispatch) => {
 
         /*

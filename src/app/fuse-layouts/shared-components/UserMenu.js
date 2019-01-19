@@ -23,26 +23,25 @@ class UserMenu extends Component {
     {
         const {user, logout} = this.props;
         const {userMenu} = this.state;
-
         return (
             <React.Fragment>
 
                 <Button className="h-64" onClick={this.userMenuClick}>
-                    {user.data.photoURL ?
+                    {user.avatar ?
                         (
                             <Avatar className="" alt="user photo" src={user.data.photoURL}/>
                         )
                         :
                         (
                             <Avatar className="">
-                                {user.data.displayName[0]}
+                                {user.userName[0]}
                             </Avatar>
                         )
                     }
 
                     <div className="hidden md:flex flex-col ml-12 items-start">
                         <Typography component="span" className="normal-case font-600 flex">
-                            {user.data.displayName}
+                            {user.userName}
                         </Typography>
                         <Typography className="text-11 capitalize" color="textSecondary">
                             {user.role}
