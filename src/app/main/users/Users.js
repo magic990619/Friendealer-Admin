@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {FuseExample, FuseHighlight, FusePageSimple} from '@fuse';
-import {Button, Icon, Typography} from '@material-ui/core';
+import {FuseExample, FusePageSimple} from '@fuse';
+import {Typography} from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles/index';
 
 const styles = theme => ({
