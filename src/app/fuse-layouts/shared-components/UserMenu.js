@@ -29,7 +29,7 @@ class UserMenu extends Component {
                 <Button className="h-64" onClick={this.userMenuClick}>
                     {user.avatar ?
                         (
-                            <Avatar className="" alt="user photo" src={user.data.photoURL}/>
+                            <Avatar className="" alt="user photo" src={user.avatar}/>
                         )
                         :
                         (
