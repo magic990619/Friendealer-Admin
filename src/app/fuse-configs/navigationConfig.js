@@ -11,6 +11,13 @@ const navigationConfig = [
                 'type' : 'item',
                 'icon' : 'whatshot',
                 'url'  : '/example'
+            },
+            {
+                'id'   : 'users-component',
+                'title': 'User Management',
+                'type' : 'item',
+                'icon' : 'whatshot',
+                'url'  : '/users'
             }
         ]
     }
