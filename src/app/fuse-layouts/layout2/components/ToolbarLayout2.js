@@ -31,9 +31,9 @@ const ToolbarLayout2 = ({classes, settings, toolbarTheme}) => {
                     )}
 
                     <div className="flex flex-1">
-                        <Hidden mdDown>
-                            <FuseShortcuts/>
-                        </Hidden>
+                        {/* <Hidden mdDown> */}
+                            {/* <FuseShortcuts/> */}
+                        {/* </Hidden> */}
                     </div>
 
                     <div className="flex">

@@ -2,18 +2,18 @@ import * as Actions from '../actions';
 
 const initialState = {
     role: 'guest',
-    userName: 'Administrator',
-    data: {
-        'displayName': 'John Doe',
-        'photoURL'   : 'assets/images/avatars/Velazquez.jpg',
-        'email'      : 'johndoe@withinpixels.com',
-        shortcuts    : [
-            'calendar',
-            'mail',
-            'contacts',
-            'todo'
-        ]
-    }
+    userName: '',
+    // data: {
+    //     'displayName': 'John Doe',
+    //     'photoURL'   : 'assets/images/avatars/Velazquez.jpg',
+    //     'email'      : 'johndoe@withinpixels.com',
+    //     shortcuts    : [
+    //         'calendar',
+    //         'mail',
+    //         'contacts',
+    //         'todo'
+    //     ]
+    // }
 };
 // const initialState = null;
 
