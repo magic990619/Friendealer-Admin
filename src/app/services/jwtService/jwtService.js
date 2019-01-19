@@ -1,12 +1,10 @@
-import axios from 'axios'
+import api from 'app/ApiConfig.js'
 import jwtDecode from 'jwt-decode';
 import FuseUtils from '@fuse/FuseUtils';
 import history from 'history.js';
 // import browserLog from 'app/LogConfig.js';
 
 class jwtService extends FuseUtils.EventEmitter {
-
-    api = axios.create({baseURL: 'http://localhost:8888'})
 
     init()
     {
@@ -15,7 +13,7 @@ class jwtService extends FuseUtils.EventEmitter {
     }
 
     setInterceptors = () => {
-        this.api.interceptors.response.use(response => {
+        api.interceptors.response.use(response => {
             return response;
         }, err => {
             return new Promise((resolve, reject) => {
@@ -55,7 +53,7 @@ class jwtService extends FuseUtils.EventEmitter {
     createUser = (data) => {
         console.log(data);
         return new Promise((resolve, reject) => {
-            this.api.post('/auth/register', data)
+            api.post('/auth/register', data)
                 .then(response => {
                     if ( response.data.user )
                     {
@@ -74,7 +72,7 @@ class jwtService extends FuseUtils.EventEmitter {
     signInWithEmailAndPassword = (email, password) => {
         
         return new Promise((resolve, reject) => {
-            this.api.post('/auth/login', {
+            api.post('/auth/login', {
                     'email': email,
                     'password' : password
             }).then(response => {
@@ -94,7 +92,7 @@ class jwtService extends FuseUtils.EventEmitter {
 
     signInWithToken = () => {
         return new Promise((resolve, reject) => {
-            this.api.get('/auth/access-token/' + this.getAccessToken())
+            api.get('/auth/access-token/' + this.getAccessToken())
                 .then(response => {
                     if ( response.data.decodedToken )
                     {
@@ -110,7 +108,7 @@ class jwtService extends FuseUtils.EventEmitter {
     };
 
     updateUserData = (user) => {
-        return this.api.post('/auth/user/update', {
+        return api.post('/auth/user/update', {
             user: user
         });
     };
@@ -119,12 +117,12 @@ class jwtService extends FuseUtils.EventEmitter {
         if ( access_token )
         {
             localStorage.setItem('jwt_access_token', access_token);
-            this.api.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
+            api.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
         }
         else
         {
             localStorage.removeItem('jwt_access_token');
-            delete this.api.defaults.headers.common['Authorization'];
+            delete api.defaults.headers.common['Authorization'];
         }
     };
 

@@ -1,4 +1,3 @@
-import history from 'history.js';
 import {setInitialSettings} from 'app/store/actions/fuse'; //setDefaultSettings, 
 import _ from '@lodash';
 import store from 'app/store';
@@ -84,8 +83,6 @@ export function logoutUser()
 {
 
     return (dispatch, getState) => {
-
-        const user = getState().auth.user;
 
         // if ( user.role === 'guest' )
         // {

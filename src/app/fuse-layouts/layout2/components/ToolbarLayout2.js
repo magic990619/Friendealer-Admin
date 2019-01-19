@@ -1,6 +1,6 @@
 import React from 'react';
 import {AppBar, Hidden, MuiThemeProvider, Toolbar, withStyles} from '@material-ui/core';
-import {FuseSearch, FuseShortcuts} from '@fuse';
+import {FuseSearch} from '@fuse';
 import connect from 'react-redux/es/connect/connect';
 import {withRouter} from 'react-router-dom';
 import NavbarMobileToggleButton from 'app/fuse-layouts/shared-components/NavbarMobileToggleButton';

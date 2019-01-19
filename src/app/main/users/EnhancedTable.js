@@ -1,4 +1,5 @@
 import React from 'react';
+import api from 'app/ApiConfig.js'
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -18,11 +19,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import Fab from '@material-ui/core/Fab';
+import Icon from '@material-ui/core/Icon';
 
 let counter = 0;
-function createData(name, calories, fat, carbs, protein) {
+function createData(name, email, role, account_type, membership, account_status) {
   counter += 1;
-  return { id: counter, name, calories, fat, carbs, protein };
+  return { id: counter, name, email, role, account_type, membership, account_status };
 }
 
 function desc(a, b, orderBy) {
@@ -52,11 +55,11 @@ function getSorting(order, orderBy) {
 const rows = [
   { id: 'user-name', numeric: false, disablePadding: true, label: 'User Name' },
   { id: 'email-address', numeric: false, disablePadding: false, label: 'Email Address' },
-  { id: 'password', numeric: false, disablePadding: false, label: 'Password' },
   { id: 'role-id', numeric: false, disablePadding: false, label: 'Role' },
   { id: 'account-type', numeric: false, disablePadding: false, label: 'Account Type' },
   { id: 'membership', numeric: false, disablePadding: false, label: 'Membership' },
   { id: 'account-status', numeric: false, disablePadding: false, label: 'Account Status' },
+  { id: 'action', numeric: false, disablePadding: false, label: 'Action' },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -203,23 +206,9 @@ const styles = theme => ({
 class EnhancedTable extends React.Component {
   state = {
     order: 'asc',
-    orderBy: 'calories',
+    orderBy: 'name',
     selected: [],
-    data: [
-      createData('Cupcake', 305, 3.7, 67, 4.3),
-      createData('Donut', 452, 25.0, 51, 4.9),
-      createData('Eclair', 262, 16.0, 24, 6.0),
-      createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-      createData('Gingerbread', 356, 16.0, 49, 3.9),
-      createData('Honeycomb', 408, 3.2, 87, 6.5),
-      createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-      createData('Jelly Bean', 375, 0.0, 94, 0.0),
-      createData('KitKat', 518, 26.0, 65, 7.0),
-      createData('Lollipop', 392, 0.2, 98, 0.0),
-      createData('Marshmallow', 318, 0, 81, 2.0),
-      createData('Nougat', 360, 19.0, 9, 37.0),
-      createData('Oreo', 437, 18.0, 63, 4.0),
-    ],
+    data: [],
     page: 0,
     rowsPerPage: 10,
   };
@@ -229,9 +218,15 @@ class EnhancedTable extends React.Component {
   }
 
   getAllAccountData = () => {
-//    fetch("/auth/getAllAccountData")
-//      .then(data => data.json())
-//      .then(res => console.log(res.data));
+    api.get("/auth/getAllAccountData")
+      .then(res => {
+        var resultArray = [];
+        var cursor = res.data.doc;
+        cursor.forEach(function(doc, err) {
+          resultArray.push(createData(doc.user_name, doc.email, doc.role, doc.account_type, doc.membership, doc.account_status));
+        });
+        this.setState({ data: resultArray });
+      });
   }
 
   handleRequestSort = (event, property) => {
@@ -310,23 +305,28 @@ class EnhancedTable extends React.Component {
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.id)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.id}
                       selected={isSelected}
                     >
-                      <TableCell padding="checkbox">
+                      <TableCell padding="checkbox" onClick={event => this.handleClick(event, n.id)}>
                         <Checkbox checked={isSelected} />
                       </TableCell>
                       <TableCell component="th" scope="row" padding="none">
                         {n.name}
                       </TableCell>
-                      <TableCell align="right">{n.calories}</TableCell>
-                      <TableCell align="right">{n.fat}</TableCell>
-                      <TableCell align="right">{n.carbs}</TableCell>
-                      <TableCell align="right">{n.protein}</TableCell>
+                      <TableCell align="left">{n.email}</TableCell>
+                      <TableCell align="left">{n.role}</TableCell>
+                      <TableCell align="left">{n.account_type}</TableCell>
+                      <TableCell align="left">{n.membership}</TableCell>
+                      <TableCell align="left">{n.account_status}</TableCell>
+                      <TableCell align="center">
+                        <Fab color="secondary" aria-label="Edit" className={classes.fab} size="small">
+                          <Icon>edit_icon</Icon>
+                        </Fab>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
