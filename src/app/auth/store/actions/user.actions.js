@@ -87,14 +87,11 @@ export function logoutUser()
 
         const user = getState().auth.user;
 
-        if ( user.role === 'guest' )
-        {
-            return null;
-        }
-
-        history.push({
-            pathname: '/'
-        });
+        // if ( user.role === 'guest' )
+        // {
+        //     console.log("role is guest");
+        //     return null;
+        // }
 
         jwtService.logout();
 

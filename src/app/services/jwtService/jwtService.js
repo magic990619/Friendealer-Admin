@@ -1,6 +1,8 @@
 import axios from 'axios'
 import jwtDecode from 'jwt-decode';
 import FuseUtils from '@fuse/FuseUtils';
+import history from 'history.js';
+// import browserLog from 'app/LogConfig.js';
 
 class jwtService extends FuseUtils.EventEmitter {
 
@@ -30,22 +32,23 @@ class jwtService extends FuseUtils.EventEmitter {
     };
 
     handleAuthentication = () => {
-
+        //console.log('jwtService -> handleAuthentication');
+        // browserLog("jwtService", 'handelAuthentication', "call");
         let access_token = this.getAccessToken();
-        if ( !access_token )
-        {
-            return;
-        }
 
-        if ( this.isAuthTokenValid(access_token) )
+        if ( !access_token) {
+            this.setSession(null);
+            this.emit('onAutoLogout', 'You should login.');
+        } else if (this.isAuthTokenValid(access_token) )
         {
+            console.log("emit -> auto login");
             this.setSession(access_token);
             this.emit('onAutoLogin', true);
         }
         else
         {
             this.setSession(null);
-            this.emit('onAutoLogout', 'access_token expired');
+            this.emit('onAutoLogout', 'Access_token expired');
         }
     };
 
@@ -126,7 +129,12 @@ class jwtService extends FuseUtils.EventEmitter {
     };
 
     logout = () => {
+        console.log("jwtService -> logout");
         this.setSession(null);
+        
+        history.push({
+            pathname: '/login'
+        });
     };
 
     isAuthTokenValid = access_token => {

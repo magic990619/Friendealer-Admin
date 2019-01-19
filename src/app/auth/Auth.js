@@ -42,6 +42,7 @@ class Auth extends Component {
         });
 
         jwtService.on('onAutoLogout', (message) => {
+            console.log("Auth.js -> onAutoLogout");
             if ( message )
             {
                 console.log(message);
