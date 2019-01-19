@@ -1,7 +1,7 @@
 import * as Actions from '../actions';
 
 const initialState = {
-    role: 'admin',
+    role: 'guest',
     userName: 'Administrator',
     data: {
         'displayName': 'John Doe',
@@ -15,6 +15,7 @@ const initialState = {
         ]
     }
 };
+// const initialState = null;
 
 const user = function (state = initialState, action) {
     switch ( action.type )
