@@ -50,7 +50,7 @@ class AboutTab extends Component {
 
         api.post('/auth/getUserProfileById', {
             user_id
-        }).then(res => {res.data.doc &&
+        }).then(res => { res.data.doc &&
             this.setState({ profileData: res.data.doc });
         });
     }
@@ -105,8 +105,10 @@ class AboutTab extends Component {
     {
         // console.log(this.state.profileData);
 
-        var languages = this.state.profileData === null ? ['English'] : this.state.profileData.language_browse;
-        var friends = this.state.profileData === null ? null : this.state.profileData.friends;
+        var languages = this.state.profileData.user_id === '' ? null : this.state.profileData.language_browse;
+        var friends = this.state.profileData.user_id === '' ? null : this.state.profileData.friends;
+
+        console.log(friends);
 
         return (
             <div className="md:flex max-w-full">

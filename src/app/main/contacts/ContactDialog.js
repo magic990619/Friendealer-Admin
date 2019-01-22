@@ -139,7 +139,7 @@ class ContactDialog extends Component {
 
                     <div className="flex">
                         <div className="min-w-48 pt-20">
-                            <Icon color="action">Role</Icon>
+                            <Icon color="action">accessibility</Icon>
                         </div>
                         <Select
                             className="mb-24"
@@ -165,7 +165,7 @@ class ContactDialog extends Component {
 
                     <div className="flex">
                         <div className="min-w-48 pt-20">
-                            <Icon color="action">Account Type</Icon>
+                            <Icon color="action">accessible</Icon>
                         </div>
                         <Select
                             className="mb-24"
@@ -188,7 +188,7 @@ class ContactDialog extends Component {
 
                     <div className="flex">
                         <div className="min-w-48 pt-20">
-                            <Icon color="action">Membership</Icon>
+                            <Icon color="action">tag_faces</Icon>
                         </div>
                         <Select
                             className="mb-24"
@@ -213,7 +213,7 @@ class ContactDialog extends Component {
 
                     <div className="flex">
                         <div className="min-w-48 pt-20">
-                            <Icon color="action">Account Status</Icon>
+                            <Icon color="action">people_outline</Icon>
                         </div>
                         <Select
                             className="mb-24"

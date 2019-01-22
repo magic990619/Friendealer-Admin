@@ -35,10 +35,6 @@ class ContactsSidebarContent extends Component {
             <div className="p-16 lg:p-24 lg:pr-4">
                 <FuseAnimate animation="transition.slideLeftIn" delay={200}>
                     <Paper elevation={1} className="rounded-8">
-                        <div className="p-24 flex items-center">
-                            <Avatar className="mr-12" alt={user.name} src={user.avatar}/>
-                            <Typography>{user.name}</Typography>
-                        </div>
                         <Divider/>
                         <List>
                             <ListItem
