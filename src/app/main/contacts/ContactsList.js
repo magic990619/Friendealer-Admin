@@ -205,11 +205,7 @@ class ContactsList extends Component {
                                             this.props.history.push('/profile/' + row.original._id)
                                         }}
                                     >
-                                        {user.starred && user.starred.includes(row.original.id) ? (
-                                            <Icon>star</Icon>
-                                        ) : (
-                                            <Icon>star_border</Icon>
-                                        )}
+                                        <Icon>edit_attributes</Icon>
                                     </IconButton>
                                     <IconButton
                                         onClick={(ev) => {
