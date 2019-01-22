@@ -105,7 +105,7 @@ class AboutTab extends Component {
     {
         // console.log(this.state.profileData);
 
-        var languages = this.state.profileData.user_id === '' ? null : this.state.profileData.language_browse;
+        var languages = this.state.profileData.language_browse;
         var friends = this.state.profileData.user_id === '' ? null : this.state.profileData.friends;
 
         console.log(friends);

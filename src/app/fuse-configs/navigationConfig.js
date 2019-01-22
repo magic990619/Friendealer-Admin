@@ -1,7 +1,7 @@
 const navigationConfig = [
     {
         'id'      : 'applications',
-        'title'   : 'Applications',
+        'title'   : '',
         'type'    : 'group',
         'icon'    : 'apps',
         'children': [
