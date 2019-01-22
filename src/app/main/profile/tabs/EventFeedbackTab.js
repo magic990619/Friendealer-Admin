@@ -168,6 +168,13 @@ class EventFeedbackTab extends Component {
                                         </Typography>
                                     )}
                                 </CardContent>
+                                <CardContent className="py-0">
+                                    {post.feedback && (
+                                        <Typography component="p" className="mb-16">
+                                            {post.feedback}
+                                        </Typography>
+                                    )}
+                                </CardContent>
                             </Card>
                             ))
                         }

@@ -78,7 +78,7 @@ class ContactsSidebarContent extends Component {
                                 activeClassName="active"
                                 className={classes.listItem}
                             >
-                                <Icon className="list-item-icon text-16" color="action">star</Icon>
+                                <Icon className="list-item-icon text-16" color="action">close</Icon>
                                 <ListItemText className="truncate pr-0" primary="Closed accounts" disableTypography={true}/>
                             </ListItem>
                             <ListItem
@@ -88,7 +88,7 @@ class ContactsSidebarContent extends Component {
                                 activeClassName="active"
                                 className={classes.listItem}
                             >
-                                <Icon className="list-item-icon text-16" color="action">star</Icon>
+                                <Icon className="list-item-icon text-16" color="action">security</Icon>
                                 <ListItemText className="truncate pr-0" primary="Restricted accounts" disableTypography={true}/>
                             </ListItem>
                         </List>

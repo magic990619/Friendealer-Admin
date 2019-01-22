@@ -167,32 +167,48 @@ class ContactDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">Account Type</Icon>
                         </div>
-                        <TextField
+                        <Select
                             className="mb-24"
-                            label="Account Type"
-                            id="account_type"
-                            name="account_type"
+                            native
                             value={this.state.account_type}
                             onChange={this.handleChange}
-                            variant="outlined"
+                            input={
+                            <OutlinedInput
+                                name="account_type"
+                                labelWidth={0}
+                                id="account_type"
+                            />
+                            }
                             fullWidth
-                        />
+                        >
+                            <option value="Work">Work</option>
+                            <option value="Hire">Hire</option>
+                        </Select>
                     </div>
 
                     <div className="flex">
                         <div className="min-w-48 pt-20">
                             <Icon color="action">Membership</Icon>
                         </div>
-                        <TextField
+                        <Select
                             className="mb-24"
-                            label="Membership"
-                            id="membership"
-                            name="membership"
+                            native
                             value={this.state.membership}
                             onChange={this.handleChange}
-                            variant="outlined"
+                            input={
+                            <OutlinedInput
+                                name="membership"
+                                labelWidth={0}
+                                id="membership"
+                            />
+                            }
                             fullWidth
-                        />
+                        >
+                            <option value="Free">Free</option>
+                            <option value="Basic">Basic</option>
+                            <option value="Premium">Premium</option>
+                            <option value="Premium Pro">Premium Pro</option>
+                        </Select>
                     </div>
 
                     <div className="flex">
@@ -214,13 +230,14 @@ class ContactDialog extends Component {
                             fullWidth
                         >
                             <option value="" />
-                            <option value="active">active</option>
-                            <option value="inactive">inactive</option>
-                            <option value="closed">closed</option>
-                            <option value="restricted">restricted</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Closed">Closed</option>
+                            <option value="Restricted">Restricted</option>
                         </Select>
                     </div>
 
+{this.state.account_status == 'Restricted' &&
                     <div className="flex">
                         <div className="min-w-48 pt-20">
                             <Icon color="action">Start Time</Icon>
@@ -240,7 +257,9 @@ class ContactDialog extends Component {
                             fullWidth
                         />
                     </div>
+}
 
+{this.state.account_status == 'Restricted' &&
                     <div className="flex">
                         <div className="min-w-48 pt-20">
                             <Icon color="action">End Time</Icon>
@@ -260,6 +279,7 @@ class ContactDialog extends Component {
                             fullWidth
                         />
                     </div>
+}
 
                 </DialogContent>
 
