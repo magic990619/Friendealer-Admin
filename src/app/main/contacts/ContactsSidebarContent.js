@@ -54,7 +54,7 @@ class ContactsSidebarContent extends Component {
                                 activeClassName="active"
                                 className={classes.listItem}
                             >
-                                <Icon className="list-item-icon text-16" color="action">restore</Icon>
+                                <Icon className="list-item-icon text-16" color="action">check_circle</Icon>
                                 <ListItemText className="truncate pr-0" primary="Active accounts" disableTypography={true}/>
                             </ListItem>
                             <ListItem
@@ -64,7 +64,7 @@ class ContactsSidebarContent extends Component {
                                 activeClassName="active"
                                 className={classes.listItem}
                             >
-                                <Icon className="list-item-icon text-16" color="action">star</Icon>
+                                <Icon className="list-item-icon text-16" color="action">contact_support</Icon>
                                 <ListItemText className="truncate pr-0" primary="Inactive accounts" disableTypography={true}/>
                             </ListItem>
                             <ListItem
@@ -84,7 +84,7 @@ class ContactsSidebarContent extends Component {
                                 activeClassName="active"
                                 className={classes.listItem}
                             >
-                                <Icon className="list-item-icon text-16" color="action">security</Icon>
+                                <Icon className="list-item-icon text-16" color="action">access_time</Icon>
                                 <ListItemText className="truncate pr-0" primary="Restricted accounts" disableTypography={true}/>
                             </ListItem>
                         </List>
