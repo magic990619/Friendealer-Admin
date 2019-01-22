@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as Actions from './store/actions';
 
-class ContactsHeader extends Component {
+class UsersHeader extends Component {
 
     render()
     {
@@ -70,12 +70,12 @@ function mapDispatchToProps(dispatch)
     }, dispatch);
 }
 
-function mapStateToProps({contactsApp, fuse})
+function mapStateToProps({usersApp, fuse})
 {
     return {
-        searchText: contactsApp.contacts.searchText,
+        searchText: usersApp.users.searchText,
         mainTheme : fuse.settings.mainTheme
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactsHeader);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersHeader);

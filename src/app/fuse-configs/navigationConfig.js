@@ -6,7 +6,7 @@ const navigationConfig = [
         'icon'    : 'apps',
         'children': [
             {
-                'id'   : 'contacts-component',
+                'id'   : 'users-component',
                 'title': 'User Management',
                 'type' : 'item',
                 'icon' : 'whatshot',

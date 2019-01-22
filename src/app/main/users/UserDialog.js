@@ -7,7 +7,7 @@ import _ from '@lodash';
 import Select from '@material-ui/core/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 
-const newContactState = {
+const newUserState = {
     _id      : '',
     user_name: '',
     email   : '',
@@ -20,36 +20,36 @@ const newContactState = {
     avatar  : '',
 };
 
-class ContactDialog extends Component {
+class UserDialog extends Component {
 
-    state = {...newContactState};
+    state = {...newUserState};
 
     componentDidUpdate(prevProps, prevState, snapshot)
     {
         /**
          * After Dialog Open
          */
-        if ( !prevProps.contactDialog.props.open && this.props.contactDialog.props.open )
+        if ( !prevProps.userDialog.props.open && this.props.userDialog.props.open )
         {
             /**
              * Dialog type: 'edit'
              * Update State
              */
-            if ( this.props.contactDialog.type === 'edit' &&
-                this.props.contactDialog.data &&
-                !_.isEqual(this.props.contactDialog.data, prevState) )
+            if ( this.props.userDialog.type === 'edit' &&
+                this.props.userDialog.data &&
+                !_.isEqual(this.props.userDialog.data, prevState) )
             {
-                this.setState({...this.props.contactDialog.data});
+                this.setState({...this.props.userDialog.data});
             }
 
             /**
              * Dialog type: 'new'
              * Update State
              */
-            if ( this.props.contactDialog.type === 'new' &&
-                !_.isEqual(newContactState, prevState) )
+            if ( this.props.userDialog.type === 'new' &&
+                !_.isEqual(newUserState, prevState) )
             {
-                this.setState({...newContactState});
+                this.setState({...newUserState});
             }
         }
     }
@@ -59,7 +59,7 @@ class ContactDialog extends Component {
     };
 
     closeComposeDialog = () => {
-        this.props.contactDialog.type === 'edit' ? this.props.closeEditContactDialog() : this.props.closeNewContactDialog();
+        this.props.userDialog.type === 'edit' ? this.props.closeEditUserDialog() : this.props.closeNewUserDialog();
     };
 
     canBeSubmitted()
@@ -72,14 +72,14 @@ class ContactDialog extends Component {
 
     render()
     {
-        const {contactDialog, addContact, updateContact, removeContact} = this.props;
+        const {userDialog, addUser, updateUser, removeUser} = this.props;
 
         return (
             <Dialog
                 classes={{
                     paper: "m-24"
                 }}
-                {...contactDialog.props}
+                {...userDialog.props}
                 onClose={this.closeComposeDialog}
                 fullWidth
                 maxWidth="xs"
@@ -88,16 +88,16 @@ class ContactDialog extends Component {
                 <AppBar position="static" elevation={1}>
                     <Toolbar className="flex w-full">
                         <Typography variant="subtitle1" color="inherit">
-                            {contactDialog.type === 'new' ? 'New Contact' : 'Edit Contact'}
+                            {userDialog.type === 'new' ? 'New User' : 'Edit User'}
                         </Typography>
                     </Toolbar>
                     <div className="flex flex-col items-center justify-center pb-24">
                         <Avatar
                             className="w-96 h-96"
-                            alt="contact avatar"
+                            alt="user avatar"
                             src={this.state.avatar && this.state.avatar !== '' ? this.state.avatar : "assets/images/avatars/profile.jpg"}
                         />
-                        {contactDialog.type === 'edit' && (
+                        {userDialog.type === 'edit' && (
                             <Typography variant="h6" color="inherit" className="pt-8">
                                 {this.state.user_name}
                             </Typography>
@@ -287,13 +287,13 @@ class ContactDialog extends Component {
 
                 </DialogContent>
 
-                {contactDialog.type === 'new' ? (
+                {userDialog.type === 'new' ? (
                     <DialogActions className="justify-between pl-16">
                         <Button
                             variant="contained"
                             color="primary"
                             onClick={() => {
-                                addContact(this.state);
+                                addUser(this.state);
                                 this.closeComposeDialog();
                             }}
                             disabled={!this.canBeSubmitted()}
@@ -307,7 +307,7 @@ class ContactDialog extends Component {
                             variant="contained"
                             color="primary"
                             onClick={() => {
-                                updateContact(this.state);
+                                updateUser(this.state);
                                 this.closeComposeDialog();
                             }}
                             disabled={!this.canBeSubmitted()}
@@ -316,7 +316,7 @@ class ContactDialog extends Component {
                         </Button>
                         <IconButton
                             onClick={() => {
-                                removeContact(this.state._id);
+                                removeUser(this.state._id);
                                 this.closeComposeDialog();
                             }}
                         >
@@ -333,20 +333,20 @@ class ContactDialog extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        closeEditContactDialog: Actions.closeEditContactDialog,
-        closeNewContactDialog : Actions.closeNewContactDialog,
-        addContact            : Actions.addContact,
-        updateContact         : Actions.updateContact,
-        removeContact         : Actions.removeContact
+        closeEditUserDialog: Actions.closeEditUserDialog,
+        closeNewUserDialog : Actions.closeNewUserDialog,
+        addUser            : Actions.addUser,
+        updateUser         : Actions.updateUser,
+        removeUser         : Actions.removeUser
     }, dispatch);
 }
 
-function mapStateToProps({contactsApp})
+function mapStateToProps({usersApp})
 {
     return {
-        contactDialog: contactsApp.contacts.contactDialog
+        userDialog: usersApp.users.userDialog
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(UserDialog);

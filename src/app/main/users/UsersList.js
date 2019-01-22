@@ -7,10 +7,10 @@ import {bindActionCreators} from 'redux';
 import ReactTable from "react-table";
 import * as Actions from './store/actions';
 
-class ContactsList extends Component {
+class UsersList extends Component {
 
     state = {
-        selectedContactsMenu: null,
+        selectedUsersMenu: null,
         data: []
     };
 
@@ -23,20 +23,20 @@ class ContactsList extends Component {
         return FuseUtils.filterArrayByString(arr, searchText);
     };
 
-    openSelectedContactMenu = (event) => {
-        this.setState({selectedContactsMenu: event.currentTarget});
+    openSelectedUserMenu = (event) => {
+        this.setState({selectedUsersMenu: event.currentTarget});
     };
 
-    closeSelectedContactsMenu = () => {
-        this.setState({selectedContactsMenu: null});
+    closeSelectedUsersMenu = () => {
+        this.setState({selectedUsersMenu: null});
     };
 
     render()
     {
-        const { contacts, user, searchText, selectedContactIds, selectAllContacts, deSelectAllContacts, toggleInSelectedContacts, openEditContactDialog, removeContacts, removeContact, setContactsUnstarred, setContactsStarred} = this.props;
-        const data = this.getFilteredArray(contacts, searchText);
+        const { users, user, searchText, selectedUserIds, selectAllUsers, deSelectAllUsers, toggleInSelectedUsers, openEditUserDialog, removeUsers, removeUser} = this.props;
+        const data = this.getFilteredArray(users, searchText);
 
-        const {selectedContactsMenu} = this.state;
+        const {selectedUsersMenu} = this.state;
 
         if ( !data && data.length === 0 )
         {
@@ -59,7 +59,7 @@ class ContactsList extends Component {
                             onClick  : (e, handleOriginal) => {
                                 if ( rowInfo )
                                 {
-                                    openEditContactDialog(rowInfo.original);
+                                    openEditUserDialog(rowInfo.original);
                                 }
                             }
                         }
@@ -73,10 +73,10 @@ class ContactsList extends Component {
                                         event.stopPropagation();
                                     }}
                                     onChange={(event) => {
-                                        event.target.checked ? selectAllContacts() : deSelectAllContacts();
+                                        event.target.checked ? selectAllUsers() : deSelectAllUsers();
                                     }}
-                                    checked={selectedContactIds.length === Object.keys(contacts).length && selectedContactIds.length > 0}
-                                    indeterminate={selectedContactIds.length !== Object.keys(contacts).length && selectedContactIds.length > 0}
+                                    checked={selectedUserIds.length === Object.keys(users).length && selectedUserIds.length > 0}
+                                    indeterminate={selectedUserIds.length !== Object.keys(users).length && selectedUserIds.length > 0}
                                 />
                             ),
                             accessor : "",
@@ -85,8 +85,8 @@ class ContactsList extends Component {
                                         onClick={(event) => {
                                             event.stopPropagation();
                                         }}
-                                        checked={selectedContactIds.includes(row.value._id)}
-                                        onChange={() => toggleInSelectedContacts(row.value._id)}
+                                        checked={selectedUserIds.includes(row.value._id)}
+                                        onChange={() => toggleInSelectedUsers(row.value._id)}
                                     />
                                 )
                             },
@@ -96,54 +96,32 @@ class ContactsList extends Component {
                         },
                         {
                             Header   : () => (
-                                selectedContactIds.length > 0 && (
+                                selectedUserIds.length > 0 && (
                                     <React.Fragment>
                                         <IconButton
-                                            aria-owns={selectedContactsMenu ? 'selectedContactsMenu' : null}
+                                            aria-owns={selectedUsersMenu ? 'selectedUsersMenu' : null}
                                             aria-haspopup="true"
-                                            onClick={this.openSelectedContactMenu}
+                                            onClick={this.openSelectedUserMenu}
                                         >
                                             <Icon>more_horiz</Icon>
                                         </IconButton>
                                         <Menu
-                                            id="selectedContactsMenu"
-                                            anchorEl={selectedContactsMenu}
-                                            open={Boolean(selectedContactsMenu)}
-                                            onClose={this.closeSelectedContactsMenu}
+                                            id="selectedUsersMenu"
+                                            anchorEl={selectedUsersMenu}
+                                            open={Boolean(selectedUsersMenu)}
+                                            onClose={this.closeSelectedUsersMenu}
                                         >
                                             <MenuList>
                                                 <MenuItem
                                                     onClick={() => {
-                                                        removeContacts(selectedContactIds);
-                                                        this.closeSelectedContactsMenu();
+                                                        removeUsers(selectedUserIds);
+                                                        this.closeSelectedUsersMenu();
                                                     }}
                                                 >
                                                     <ListItemIcon>
                                                         <Icon>delete</Icon>
                                                     </ListItemIcon>
                                                     <ListItemText inset primary="Remove"/>
-                                                </MenuItem>
-                                                <MenuItem
-                                                    onClick={() => {
-                                                        setContactsStarred(selectedContactIds);
-                                                        this.closeSelectedContactsMenu();
-                                                    }}
-                                                >
-                                                    <ListItemIcon>
-                                                        <Icon>star</Icon>
-                                                    </ListItemIcon>
-                                                    <ListItemText inset primary="Starred"/>
-                                                </MenuItem>
-                                                <MenuItem
-                                                    onClick={() => {
-                                                        setContactsUnstarred(selectedContactIds);
-                                                        this.closeSelectedContactsMenu();
-                                                    }}
-                                                >
-                                                    <ListItemIcon>
-                                                        <Icon>star_border</Icon>
-                                                    </ListItemIcon>
-                                                    <ListItemText inset primary="Unstarred"/>
                                                 </MenuItem>
                                             </MenuList>
                                         </Menu>
@@ -211,7 +189,7 @@ class ContactsList extends Component {
                                         onClick={(ev) => {
                                             ev.stopPropagation();
                                             if (window.confirm('Are you sure to delete it?')) {
-                                                removeContact(row.original._id);
+                                                removeUser(row.original._id);
                                             }
                                         }}
                                     >
@@ -222,7 +200,7 @@ class ContactsList extends Component {
                         }
                     ]}
                     defaultPageSize={10}
-                    noDataText="No contacts found"
+                    noDataText="No users found"
                 />
             </FuseAnimate>
         );
@@ -233,29 +211,24 @@ class ContactsList extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        getContacts             : Actions.getContacts,
-//        getUserData             : Actions.getUserData,
-        toggleInSelectedContacts: Actions.toggleInSelectedContacts,
-        selectAllContacts       : Actions.selectAllContacts,
-        deSelectAllContacts     : Actions.deSelectAllContacts,
-        openEditContactDialog   : Actions.openEditContactDialog,
-        removeContacts          : Actions.removeContacts,
-        removeContact           : Actions.removeContact,
-        toggleStarredContact    : Actions.toggleStarredContact,
-        toggleStarredContacts   : Actions.toggleStarredContacts,
-        setContactsStarred      : Actions.setContactsStarred,
-        setContactsUnstarred    : Actions.setContactsUnstarred
+        getUsers             : Actions.getUsers,
+        toggleInSelectedUsers: Actions.toggleInSelectedUsers,
+        selectAllUsers       : Actions.selectAllUsers,
+        deSelectAllUsers     : Actions.deSelectAllUsers,
+        openEditUserDialog   : Actions.openEditUserDialog,
+        removeUsers          : Actions.removeUsers,
+        removeUser           : Actions.removeUser,
     }, dispatch);
 }
 
-function mapStateToProps({contactsApp})
+function mapStateToProps({usersApp})
 {
     return {
-        contacts          : contactsApp.contacts.entities,
-        selectedContactIds: contactsApp.contacts.selectedContactIds,
-        searchText        : contactsApp.contacts.searchText,
-        user              : contactsApp.user
+        users          : usersApp.users.entities,
+        selectedUserIds: usersApp.users.selectedUserIds,
+        searchText        : usersApp.users.searchText,
+        user              : usersApp.user
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ContactsList));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UsersList));

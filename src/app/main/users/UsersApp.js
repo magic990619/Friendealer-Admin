@@ -6,10 +6,10 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import withReducer from 'app/store/withReducer';
 import _ from '@lodash';
-import ContactsList from './ContactsList';
-import ContactsHeader from './ContactsHeader';
-import ContactsSidebarContent from './ContactsSidebarContent';
-import ContactDialog from './ContactDialog';
+import UsersList from './UsersList';
+import UsersHeader from './UsersHeader';
+import UsersSidebarContent from './UsersSidebarContent';
+import UserDialog from './UserDialog';
 import * as Actions from './store/actions';
 import reducer from './store/reducers';
 
@@ -22,11 +22,11 @@ const styles = theme => ({
     }
 });
 
-class ContactsApp extends Component {
+class UsersApp extends Component {
 
     componentDidMount()
     {
-        this.props.getContacts(this.props.match.params);
+        this.props.getUsers(this.props.match.params);
 //        this.props.getUserData();
     }
 
@@ -34,13 +34,13 @@ class ContactsApp extends Component {
     {
         if ( !_.isEqual(this.props.location, prevProps.location) )
         {
-            this.props.getContacts(this.props.match.params);
+            this.props.getUsers(this.props.match.params);
         }
     }
 
     render()
     {
-        const {classes, openNewContactDialog} = this.props;
+        const {classes, openNewUserDialog} = this.props;
 
         return (
             <React.Fragment>
@@ -51,13 +51,13 @@ class ContactsApp extends Component {
                         header            : "min-h-72 h-72 sm:h-136 sm:min-h-136"
                     }}
                     header={
-                        <ContactsHeader pageLayout={() => this.pageLayout}/>
+                        <UsersHeader pageLayout={() => this.pageLayout}/>
                     }
                     content={
-                        <ContactsList/>
+                        <UsersList/>
                     }
                     leftSidebarContent={
-                        <ContactsSidebarContent/>
+                        <UsersSidebarContent/>
                     }
                     sidebarInner
                     onRef={instance => {
@@ -70,12 +70,12 @@ class ContactsApp extends Component {
                         color="primary"
                         aria-label="add"
                         className={classes.addButton}
-                        onClick={openNewContactDialog}
+                        onClick={openNewUserDialog}
                     >
                         <Icon>person_add</Icon>
                     </Fab>
                 </FuseAnimate>
-                <ContactDialog/>
+                <UserDialog/>
             </React.Fragment>
         )
     };
@@ -84,20 +84,19 @@ class ContactsApp extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        getContacts         : Actions.getContacts,
-//        getUserData         : Actions.getUserData,
-        openNewContactDialog: Actions.openNewContactDialog
+        getUsers         : Actions.getUsers,
+        openNewUserDialog: Actions.openNewUserDialog
     }, dispatch);
 }
 
-function mapStateToProps({contactsApp})
+function mapStateToProps({usersApp})
 {
     return {
-        contacts          : contactsApp.contacts.entities,
-        selectedContactIds: contactsApp.contacts.selectedContactIds,
-        searchText        : contactsApp.contacts.searchText,
-        user              : contactsApp.user
+        users          : usersApp.users.entities,
+        selectedUserIds: usersApp.users.selectedUserIds,
+        searchText        : usersApp.users.searchText,
+        user              : usersApp.user
     }
 }
 
-export default withReducer('contactsApp', reducer)(withStyles(styles, {withTheme: true})(withRouter(connect(mapStateToProps, mapDispatchToProps)(ContactsApp))));
+export default withReducer('usersApp', reducer)(withStyles(styles, {withTheme: true})(withRouter(connect(mapStateToProps, mapDispatchToProps)(UsersApp))));

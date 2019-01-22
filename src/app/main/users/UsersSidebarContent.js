@@ -25,7 +25,7 @@ const styles = theme => ({
     }
 });
 
-class ContactsSidebarContent extends Component {
+class UsersSidebarContent extends Component {
 
     render()
     {
@@ -100,11 +100,11 @@ function mapDispatchToProps(dispatch)
     return bindActionCreators({}, dispatch);
 }
 
-function mapStateToProps({contactsApp})
+function mapStateToProps({usersApp})
 {
     return {
-        user: contactsApp.user
+        user: usersApp.user
     }
 }
 
-export default withStyles(styles, {withTheme: true})(withRouter(connect(mapStateToProps, mapDispatchToProps)(ContactsSidebarContent)));
+export default withStyles(styles, {withTheme: true})(withRouter(connect(mapStateToProps, mapDispatchToProps)(UsersSidebarContent)));

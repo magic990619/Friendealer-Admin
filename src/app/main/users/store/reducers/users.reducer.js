@@ -3,9 +3,9 @@ import * as Actions from '../actions';
 const initialState = {
     entities          : [],
     searchText        : '',
-    selectedContactIds: [],
+    selectedUserIds: [],
     routeParams       : {},
-    contactDialog     : {
+    userDialog     : {
         type : 'new',
         props: {
             open: false
@@ -14,10 +14,10 @@ const initialState = {
     }
 };
 
-const contactsReducer = function (state = initialState, action) {
+const usersReducer = function (state = initialState, action) {
     switch ( action.type )
     {
-        case Actions.GET_CONTACTS:
+        case Actions.GET_USERS:
         {
             return {
                 ...state,
@@ -32,50 +32,50 @@ const contactsReducer = function (state = initialState, action) {
                 searchText: action.searchText
             };
         }
-        case Actions.TOGGLE_IN_SELECTED_CONTACTS:
+        case Actions.TOGGLE_IN_SELECTED_USERS:
         {
 
-            const contactId = action.contactId;
+            const userId = action.userId;
 
-            let selectedContactIds = [...state.selectedContactIds];
+            let selectedUserIds = [...state.selectedUserIds];
 
-            if ( selectedContactIds.find(id => id === contactId) !== undefined )
+            if ( selectedUserIds.find(id => id === userId) !== undefined )
             {
-                selectedContactIds = selectedContactIds.filter(id => id !== contactId);
+                selectedUserIds = selectedUserIds.filter(id => id !== userId);
             }
             else
             {
-                selectedContactIds = [...selectedContactIds, contactId];
+                selectedUserIds = [...selectedUserIds, userId];
             }
 
             return {
                 ...state,
-                selectedContactIds: selectedContactIds
+                selectedUserIds: selectedUserIds
             };
         }
-        case Actions.SELECT_ALL_CONTACTS:
+        case Actions.SELECT_ALL_USERS:
         {
             const arr = Object.keys(state.entities).map(k => state.entities[k]);
 
-            const selectedContactIds = arr.map(contact => contact._id);
+            const selectedUserIds = arr.map(user => user._id);
 
             return {
                 ...state,
-                selectedContactIds: selectedContactIds
+                selectedUserIds: selectedUserIds
             };
         }
-        case Actions.DESELECT_ALL_CONTACTS:
+        case Actions.DESELECT_ALL_USERS:
         {
             return {
                 ...state,
-                selectedContactIds: []
+                selectedUserIds: []
             };
         }
-        case Actions.OPEN_NEW_CONTACT_DIALOG:
+        case Actions.OPEN_NEW_USER_DIALOG:
         {
             return {
                 ...state,
-                contactDialog: {
+                userDialog: {
                     type : 'new',
                     props: {
                         open: true
@@ -84,11 +84,11 @@ const contactsReducer = function (state = initialState, action) {
                 }
             };
         }
-        case Actions.CLOSE_NEW_CONTACT_DIALOG:
+        case Actions.CLOSE_NEW_USER_DIALOG:
         {
             return {
                 ...state,
-                contactDialog: {
+                userDialog: {
                     type : 'new',
                     props: {
                         open: false
@@ -97,11 +97,11 @@ const contactsReducer = function (state = initialState, action) {
                 }
             };
         }
-        case Actions.OPEN_EDIT_CONTACT_DIALOG:
+        case Actions.OPEN_EDIT_USER_DIALOG:
         {
             return {
                 ...state,
-                contactDialog: {
+                userDialog: {
                     type : 'edit',
                     props: {
                         open: true
@@ -110,11 +110,11 @@ const contactsReducer = function (state = initialState, action) {
                 }
             };
         }
-        case Actions.CLOSE_EDIT_CONTACT_DIALOG:
+        case Actions.CLOSE_EDIT_USER_DIALOG:
         {
             return {
                 ...state,
-                contactDialog: {
+                userDialog: {
                     type : 'edit',
                     props: {
                         open: false
@@ -130,4 +130,4 @@ const contactsReducer = function (state = initialState, action) {
     }
 };
 
-export default contactsReducer;
+export default usersReducer;

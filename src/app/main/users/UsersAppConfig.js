@@ -2,7 +2,7 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import {FuseLoadable} from '@fuse';
 
-export const ContactsAppConfig = {
+export const UsersAppConfig = {
     settings: {
         layout: {
             config: {}
@@ -12,7 +12,7 @@ export const ContactsAppConfig = {
         {
             path     : '/users/:id',
             component: FuseLoadable({
-                loader: () => import('./ContactsApp')
+                loader: () => import('./UsersApp')
             })
         },
         {
