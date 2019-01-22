@@ -23,9 +23,6 @@ export function getContacts(routeParams)
 {
     var apiPath = '';
     switch (routeParams.id) {
-    case "all":
-        apiPath = '/auth/getAllAccountData';
-        break;
     case "active":
         apiPath = '/auth/getActiveAccountData';
         break;
@@ -38,6 +35,8 @@ export function getContacts(routeParams)
     case "restricted":
         apiPath = '/auth/getRestrictedAccountData';
         break;
+    default:
+        apiPath = '/auth/getAllAccountData';
     }
     return (dispatch) => api.get(apiPath, {}).then((response) => {
         dispatch({

@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import api from 'app/ApiConfig.js'
 import {Avatar, Checkbox, Icon, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, Typography} from '@material-ui/core';
 import {FuseUtils, FuseAnimate} from '@fuse';
-import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
@@ -35,7 +33,7 @@ class ContactsList extends Component {
 
     render()
     {
-        const { contacts, user, searchText, selectedContactIds, selectAllContacts, deSelectAllContacts, toggleInSelectedContacts, openEditContactDialog, removeContacts, removeContact, toggleStarredContact, setContactsUnstarred, setContactsStarred} = this.props;
+        const { contacts, user, searchText, selectedContactIds, selectAllContacts, deSelectAllContacts, toggleInSelectedContacts, openEditContactDialog, removeContacts, removeContact, setContactsUnstarred, setContactsStarred} = this.props;
         const data = this.getFilteredArray(contacts, searchText);
 
         const {selectedContactsMenu} = this.state;
@@ -210,7 +208,7 @@ class ContactsList extends Component {
                                     <IconButton
                                         onClick={(ev) => {
                                             ev.stopPropagation();
-                                            this.props.history.push('/profile', row.original._id)
+                                            this.props.history.push('/profile/' + row.original._id)
                                         }}
                                     >
                                         {user.starred && user.starred.includes(row.original.id) ? (
@@ -222,7 +220,9 @@ class ContactsList extends Component {
                                     <IconButton
                                         onClick={(ev) => {
                                             ev.stopPropagation();
-                                            removeContact(row.original._id);
+                                            if (window.confirm('Are you sure to delete it?')) {
+                                                removeContact(row.original._id);
+                                            }
                                         }}
                                     >
                                         <Icon>delete</Icon>

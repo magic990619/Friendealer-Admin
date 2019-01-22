@@ -65,7 +65,7 @@ class ContactsApp extends Component {
                     }}
                     innerScroll
                 />
-                {/* <FuseAnimate animation="transition.expandIn" delay={300}>
+                <FuseAnimate animation="transition.expandIn" delay={300}>
                     <Fab
                         color="primary"
                         aria-label="add"
@@ -74,7 +74,7 @@ class ContactsApp extends Component {
                     >
                         <Icon>person_add</Icon>
                     </Fab>
-                </FuseAnimate> */}
+                </FuseAnimate>
                 <ContactDialog/>
             </React.Fragment>
         )

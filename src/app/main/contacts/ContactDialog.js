@@ -4,6 +4,8 @@ import {bindActionCreators} from 'redux';
 import * as Actions from './store/actions';
 import {connect} from 'react-redux';
 import _ from '@lodash';
+import Select from '@material-ui/core/Select';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 const newContactState = {
     _id      : '',
@@ -13,8 +15,8 @@ const newContactState = {
     account_type: '',
     membership: '',
     account_status: '',
-    start_time: '',
-    end_time: '',
+    start_time: Date(),
+    end_time: Date(),
     avatar  : '',
 };
 
@@ -139,16 +141,26 @@ class ContactDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">Role</Icon>
                         </div>
-                        <TextField
+                        <Select
                             className="mb-24"
-                            label="Role"
-                            id="role"
-                            name="role"
+                            native
                             value={this.state.role}
                             onChange={this.handleChange}
-                            variant="outlined"
+                            input={
+                            <OutlinedInput
+                                name="role"
+                                labelWidth={0}
+                                id="role"
+                            />
+                            }
                             fullWidth
-                        />
+                        >
+                            <option value="" />
+                            <option value="admin">admin</option>
+                            <option value="staff">staff</option>
+                            <option value="user">user</option>
+                            <option value="guest">guest</option>
+                        </Select>
                     </div>
 
                     <div className="flex">
@@ -187,16 +199,26 @@ class ContactDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">Account Status</Icon>
                         </div>
-                        <TextField
+                        <Select
                             className="mb-24"
-                            label="Account Status"
-                            id="account_status"
-                            name="account_status"
+                            native
                             value={this.state.account_status}
                             onChange={this.handleChange}
-                            variant="outlined"
+                            input={
+                            <OutlinedInput
+                                name="account_status"
+                                labelWidth={0}
+                                id="account_status"
+                            />
+                            }
                             fullWidth
-                        />
+                        >
+                            <option value="" />
+                            <option value="active">active</option>
+                            <option value="inactive">inactive</option>
+                            <option value="closed">closed</option>
+                            <option value="restricted">restricted</option>
+                        </Select>
                     </div>
 
                     <div className="flex">
@@ -206,6 +228,7 @@ class ContactDialog extends Component {
                         <TextField
                             className="mb-24"
                             id="start_time"
+                            name="start_time"
                             label="Start Time"
                             type="date"
                             value={this.state.start_time}
@@ -225,6 +248,7 @@ class ContactDialog extends Component {
                         <TextField
                             className="mb-24"
                             id="end_time"
+                            name="end_time"
                             label="End Time"
                             type="date"
                             value={this.state.end_time}

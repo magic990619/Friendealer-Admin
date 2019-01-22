@@ -6,6 +6,7 @@ import {ContactsAppConfig} from 'app/main/contacts/ContactsAppConfig';
 import {LoginConfig} from 'app/main/login/LoginConfig';
 import {RegisterConfig} from 'app/main/register/RegisterConfig';
 import {LogoutConfig} from 'app/main/logout/LogoutConfig';
+import {ProfilePageConfig} from 'app/main/profile/ProfilePageConfig'
 
 const routeConfigs = [
     // ExampleConfig,
@@ -13,6 +14,7 @@ const routeConfigs = [
     LoginConfig,
     RegisterConfig,
     LogoutConfig,
+    ProfilePageConfig,
 ];
 
  const routes = [
