@@ -152,7 +152,11 @@ class ContactsList extends Component {
                             ),
                             accessor : "avatar",
                             Cell     : row => (
-                                <Avatar className="mr-8" alt={row.original.name} src={row.value}/>
+                                <Avatar
+                                    className=""
+                                    alt="user photo"
+                                    src={row.value && row.value !== '' ? row.value : "assets/images/avatars/profile.jpg"}
+                                />
                             ),
                             className: "justify-center",
                             width    : 64,
