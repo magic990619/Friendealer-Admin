@@ -98,14 +98,14 @@ class ProfilePage extends Component {
                 }
                 content={
                     <div className="p-16 sm:p-24">
-                        {value === 0 &&
+                        {value === 0 && user_id !== undefined &&
                         (
                             <AboutTab user_id={user_id} />
                         )}
-                        {value === 1 && (
+                        {value === 1 && user_id !== undefined && (
                             <EventFeedbackTab user_id={user_id}/>
                         )}
-                        {value === 2 && (
+                        {value === 2 && user_id !== undefined && (
                             <PhotosVideosTab user_id={user_id}/>
                         )}
                     </div>

@@ -84,7 +84,7 @@ class UserMenu extends Component {
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
-                            <MenuItem component={Link} to="/pages/profile" onClick={this.userMenuClose}>
+                            <MenuItem component={Link} to={"/profile/"+user.userId} onClick={this.userMenuClose}>
                                 <ListItemIcon>
                                     <Icon>account_circle</Icon>
                                 </ListItemIcon>

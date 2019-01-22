@@ -1,20 +1,51 @@
 import React, {Component} from 'react';
 import {GridList, GridListTile, GridListTileBar, Icon, IconButton, Typography, ListSubheader} from '@material-ui/core';
 import {FuseAnimateGroup} from '@fuse';
-import axios from 'axios';
+import api from 'app/ApiConfig';
 
 class PhotosVideosTab extends Component {
 
     state = {
-        photosVideos: []
+        photosVideos: [],
+        profileData: {
+            user_id: '',
+            photos: {
+                photo_url: String,
+                comment: String,
+            },
+        },
     };
 
     componentDidMount()
     {
-        // axios.get('/api/profile/photos-videos').then(res => {
-        //     this.setState({photosVideos: res.data});
-        // });
+        this.getUserProfile();
     }
+
+    handleChange = name => event => {
+        var cursor = this.state.profileData;
+        cursor[name] = event.target.value;
+        this.setState({
+            profileData: cursor,
+        });
+    };
+
+    getUserProfile = () => {
+        const {user_id} = this.props;
+
+        api.post('/auth/getUserProfileById', {
+            user_id
+        }).then(res => {
+            this.setState({ profileData: res.data.doc });
+        });
+    }
+
+    handleSave = () => {
+        var profile = this.state.profileData;
+        api.post('/auth/saveUserProfileById', {
+            profile
+        });
+    }
+
 
     render()
     {

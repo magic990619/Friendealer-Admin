@@ -20,203 +20,190 @@ import {
 } from '@material-ui/core';
 import {FuseAnimateGroup} from '@fuse';
 import api from 'app/ApiConfig';
-import axios from 'axios';
 import {Link} from 'react-router-dom';
+import Switch from '@material-ui/core/Switch';
 
 class EventFeedbackTab extends Component {
 
     state = {
-        activities: null,
-        posts     : null
+        person    : false,
+        profileData: {
+            user_id: '',
+            provide_feedback: [{
+                joiner_id: '',
+                avatar: '',
+                event_id: '',
+                event_name: '',
+                rating_quality: '',
+                rating_communication: '',
+                rating_expertise: '',
+                rating_professionalism: '',
+                rating_hire_again: '',
+                feedback: '',
+                created_at: '',        
+            }],
+            receive_feedback: [{
+                employeer_id: '',
+                avatar: '',
+                event_id: '',
+                event_name: '',
+                rating_clarity: '',
+                rating_communication: '',
+                rating_payment: '',
+                rating_professionalism: '',
+                rating_work_again: '',
+                feedback: '',
+                created_at: '',      
+            }],
+            posted_event: [{
+                event_id: '',
+                event_name: '',
+                event_state: '',
+                created_at: '',
+            }],
+            offered_event: [{
+                event_id: '',
+                event_name: '',
+                event_state: '',
+                created_at: '',
+            }],
+        },
     };
 
     componentDidMount()
     {
-        // axios.get('/api/profile/timeline').then(res => {
-        //     this.setState(res.data);
-        // });
+        this.getUserProfile();
+    }
+
+    getUserProfile = () => {
+        const {user_id} = this.props;
+
+        api.post('/auth/getUserProfileById', {
+            user_id
+        }).then(res => {
+            this.setState({ profileData: res.data.doc });
+        });
+
+    }
+
+    handlePersonChange = () => {
+        this.setState({
+            person: !this.state.person,
+        });
+    };
+
+    handleSave = () => {
+        var profile = this.state.profileData;
+        api.post('/auth/saveUserProfileById', {
+            profile
+        });
+    }
+
+    handleDeleteEvent = (event_id) => {
+        var profile = this.state.profileData;
+        var events = this.state.person == 0 ? profile.posted_event : profile.offered_event;
+        var res = [];
+        events.forEach(function(cursor, err) {
+            if (cursor.event_id.localeCompare(event_id) !== 0) {
+                res.push(cursor);
+            }
+        });
+        if (this.state.person == 0)
+            profile.posted_event = res;
+        else
+            profile.offered_event = res;
+        console.log(res);
+        this.setState({ profileData: profile });
+        this.handleSave();
     }
 
     render()
     {
-        const {activities, posts} = this.state;
+        const {person} = this.state;
+        var posted_events = this.state.profileData === null ? null : this.state.profileData.posted_event;
+        var offered_events = this.state.profileData === null ? null : this.state.profileData.offered_event;
+        var provide_feedback = this.state.profileData === null ? null : this.state.profileData.provide_feedback;
+        var receive_feedback = this.state.profileData === null ? null : this.state.profileData.receive_feedback;
 
         return (
             <div className="md:flex max-w-2xl">
-
                 <div className="flex flex-col flex-1 md:pr-32">
-
                     <FuseAnimateGroup
                         enter={{
                             animation: "transition.slideUpBigIn"
                         }}
                     >
-                        <div>
-                            <Card className="w-full overflow-hidden">
-                                <Input
-                                    className="p-16 w-full"
-                                    classes={{root: 'text-14'}}
-                                    placeholder="Write something.."
-                                    multiline
-                                    rows="6"
-                                    margin="none"
-                                    disableUnderline
-                                />
-                                <AppBar className="card-footer flex flex-row border-t-1" position="static" color="default" elevation={0}>
-                                    <div className="flex-1 items-center">
-                                        <IconButton aria-label="Add photo">
-                                            <Icon>photo</Icon>
+                    <AppBar position="static" elevation={0}>
+                        <Toolbar className="pl-16 pr-8">
+                            <Typography variant="subtitle1" color="inherit" className="flex-1">
+                                Feedback
+                            </Typography>
+                            {/* <Button color="inherit" size="small">See All</Button> */}
+                        </Toolbar>
+                    </AppBar>
+                    {person == 0 && provide_feedback && provide_feedback.map((post) => (
+                            <Card className="mb-32 overflow-hidden" key={post.event_id}>
+                                <CardHeader
+                                    avatar={
+                                        <Avatar aria-label="Recipe" src={post.avatar}/>
+                                    }
+                                    action={
+                                        <IconButton aria-label="more">
+                                            <Icon>more_vert</Icon>
                                         </IconButton>
-                                        <IconButton aria-label="Mention somebody">
-                                            <Icon>person</Icon>
-                                        </IconButton>
-                                        <IconButton aria-label="Add location">
-                                            <Icon>location_on</Icon>
-                                        </IconButton>
-                                    </div>
-
-                                    <div className="p-8">
-                                        <Button variant="contained" color="primary" size="small" aria-label="post">
-                                            POST
-                                        </Button>
-                                    </div>
-
-                                </AppBar>
-                            </Card>
-
-                            <Divider className="my-32"/>
-                        </div>
-
-                        {posts && posts.map((post) => (
-                                <Card className="mb-32 overflow-hidden" key={post.id}>
-                                    <CardHeader
-                                        avatar={
-                                            <Avatar aria-label="Recipe" src={post.user.avatar}/>
-                                        }
-                                        action={
-                                            <IconButton aria-label="more">
-                                                <Icon>more_vert</Icon>
-                                            </IconButton>
-                                        }
-                                        title={(
-                                            <span>
-                                                <Typography className="inline font-medium mr-4" color="primary" paragraph={false}>
-                                                    {post.user.name}
-                                                </Typography>
-                                                {post.type === 'post' && "posted on your timeline"}
-                                                {post.type === 'something' && "shared something with you"}
-                                                {post.type === 'video' && "shared a video with you"}
-                                                {post.type === 'article' && "shared an article with you"}
-                                            </span>
-                                        )}
-                                        subheader={post.time}
-                                    />
-
-                                    <CardContent className="py-0">
-                                        {post.message && (
-                                            <Typography component="p" className="mb-16">
-                                                {post.message}
+                                    }
+                                    title={(
+                                        <span>
+                                            <Typography className="inline font-medium mr-4" color="primary" paragraph={false}>
+                                                {post.event_name}
                                             </Typography>
-                                        )}
-
-                                        {post.media && (
-                                            <img
-                                                src={post.media.preview}
-                                                alt="post"
-                                            />
-                                        )}
-
-                                        {post.article && (
-                                            <div className="border-1">
-                                                <img className="w-full border-b-1" src={post.article.media.preview} alt="article"/>
-                                                <div className="p-16">
-                                                    <Typography variant="subtitle1">{post.article.title}</Typography>
-                                                    <Typography variant="caption">{post.article.subtitle}</Typography>
-                                                    <Typography className="mt-16">{post.article.excerpt}</Typography>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </CardContent>
-
-                                    <CardActions className="" disableActionSpacing>
-                                        <Button size="small" aria-label="Add to favorites">
-                                            <Icon className="text-16 mr-8" color="action">favorite</Icon>
-                                            <Typography className="normal-case">Like</Typography>
-                                            <Typography className="normal-case ml-4">({post.like})</Typography>
-                                        </Button>
-                                        <Button aria-label="Share">
-                                            <Icon className="text-16 mr-8" color="action">share</Icon>
-                                            <Typography className="normal-case">Share</Typography>
-                                            <Typography className="normal-case ml-4">({post.share})</Typography>
-                                        </Button>
-                                    </CardActions>
-
-                                    <AppBar className="card-footer flex flex-column p-16" position="static" color="default" elevation={0}>
-
-                                        {post.comments && post.comments.length > 0 && (
-                                            <div className="">
-                                                <div className="flex items-center">
-                                                    <Typography>
-                                                        {post.comments.length} comments
-                                                    </Typography>
-                                                    <Icon className="text-16 ml-4" color="action">keyboard_arrow_down</Icon>
-                                                </div>
-
-                                                <List>
-                                                    {post.comments.map((comment) => (
-                                                        <div key={comment.id}>
-                                                            <ListItem className="px-0">
-                                                                <Avatar alt={comment.user.name} src={comment.user.avatar}/>
-                                                                <ListItemText
-                                                                    primary={(
-                                                                        <div>
-                                                                            <Typography className="inline font-medium" color="default" paragraph={false}>
-                                                                                {comment.user.name}
-                                                                            </Typography>
-                                                                            <Typography className="inline ml-4" variant="caption">
-                                                                                {comment.time}
-                                                                            </Typography>
-                                                                        </div>
-                                                                    )}
-                                                                    secondary={comment.message}
-                                                                />
-                                                            </ListItem>
-                                                            <div className="flex items-center ml-56 mb-8">
-                                                                <Link to="#" className="mr-8">Reply</Link>
-                                                                <Icon className="text-14 cursor-pointer">flag</Icon>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </List>
-                                            </div>
-                                        )}
-
-                                        <div className="flex flex-auto">
-                                            <Avatar src="assets/images/avatars/profile.jpg"/>
-                                            <div className="flex-1 pl-8">
-                                                <Paper elevation={0} className="w-full mb-16">
-                                                    <Input
-                                                        className="p-8 w-full border-1"
-                                                        classes={{root: 'text-13'}}
-                                                        placeholder="Add a comment.."
-                                                        multiline
-                                                        rows="6"
-                                                        margin="none"
-                                                        disableUnderline
-                                                    />
-                                                </Paper>
-                                                <Button className="normal-case" variant="contained" color="primary" size="small">Post Comment</Button>
-                                            </div>
-                                        </div>
-                                    </AppBar>
-                                </Card>
-                            )
-                        )
+                                        </span>
+                                    )}
+                                    subheader={post.created_at}
+                                />
+                                <CardContent className="py-0">
+                                    {post.feedback && (
+                                        <Typography component="p" className="mb-16">
+                                            {post.feedback}
+                                        </Typography>
+                                    )}
+                                </CardContent>
+                            </Card>
+                            ))
+                        }
+                        {person == 1 && receive_feedback && receive_feedback.map((post) => (
+                            <Card className="mb-32 overflow-hidden" key={post.event_id}>
+                                <CardHeader
+                                    avatar={
+                                        <Avatar aria-label="Recipe" src={post.avatar}/>
+                                    }
+                                    action={
+                                        <IconButton aria-label="more">
+                                            <Icon>more_vert</Icon>
+                                        </IconButton>
+                                    }
+                                    title={(
+                                        <span>
+                                            <Typography className="inline font-medium mr-4" color="primary" paragraph={false}>
+                                                {post.event_name}
+                                            </Typography>
+                                        </span>
+                                    )}
+                                    subheader={post.created_at}
+                                />
+                                <CardContent className="py-0">
+                                    {post.feedback && (
+                                        <Typography component="p" className="mb-16">
+                                            {post.feedback}
+                                        </Typography>
+                                    )}
+                                </CardContent>
+                            </Card>
+                            ))
                         }
                     </FuseAnimateGroup>
 
                 </div>
-
                 <div className="flex flex-col md:w-320">
                     <FuseAnimateGroup
                         enter={{
@@ -227,37 +214,90 @@ class EventFeedbackTab extends Component {
                             <AppBar position="static" elevation={0}>
                                 <Toolbar className="pl-16 pr-8">
                                     <Typography variant="subtitle1" color="inherit" className="flex-1">
-                                        Latest Activity
+                                        Events
                                     </Typography>
-                                    <Button color="inherit" size="small">See All</Button>
+                                    {/* <Button color="inherit" size="small">See All</Button> */}
                                 </Toolbar>
                             </AppBar>
                             <CardContent className="p-0">
                                 <List>
-                                    {activities && activities.map((activity) => (
-                                        <ListItem key={activity.id} className="">
-                                            <Avatar alt={activity.user.name} src={activity.user.avatar}/>
+                                    {person == 0 && posted_events && posted_events.map((activity) => (
+                                        <ListItem key={activity.event_id} className="">
                                             <ListItemText
                                                 className="flex-1"
                                                 primary={(
                                                     <div className="truncate">
                                                         <Typography className="inline font-medium" color="primary" paragraph={false}>
-                                                            {activity.user.name}
+                                                            {activity.event_name}
                                                         </Typography>
 
                                                         <Typography className="inline ml-4" paragraph={false}>
-                                                            {activity.message}
+                                                            :{activity.event_state}
                                                         </Typography>
                                                     </div>
                                                 )}
-                                                secondary={activity.time}
+                                                secondary={activity.created_at}
                                             />
+                                            <IconButton
+                                                onClick={(ev) => {
+                                                    ev.stopPropagation();
+                                                    if (window.confirm('Are you sure to delete it?')) {
+                                                        this.handleDeleteEvent(activity.event_id);
+                                                    }
+                                                }}
+                                            >
+                                                <Icon>delete</Icon>
+                                            </IconButton>
+                                        </ListItem>
+                                    ))}
+                                    {person == 1 && offered_events && offered_events.map((activity) => (
+                                        <ListItem key={activity.event_id} className="">
+                                            <ListItemText
+                                                className="flex-1"
+                                                primary={(
+                                                    <div className="truncate">
+                                                        <Typography className="inline font-medium" color="primary" paragraph={false}>
+                                                            {activity.event_name}
+                                                        </Typography>
+
+                                                        <Typography className="inline ml-4" paragraph={false}>
+                                                            :{activity.event_state}
+                                                        </Typography>
+                                                    </div>
+                                                )}
+                                                secondary={activity.created_at}
+                                            />
+                                            <IconButton
+                                                onClick={(ev) => {
+                                                    ev.stopPropagation();
+                                                    if (window.confirm('Are you sure to delete it?')) {
+                                                        this.handleDeleteEvent(activity.event_id);
+                                                    }
+                                                }}
+                                            >
+                                                <Icon>delete</Icon>
+                                            </IconButton>
                                         </ListItem>
                                     ))}
                                 </List>
                             </CardContent>
                         </Card>
                     </FuseAnimateGroup>
+                </div>
+                <div className="p-12">
+                    <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
+                        Joiner
+                    </Typography>
+                    <Switch
+                        checked={this.state.person}
+                        onChange={this.handlePersonChange}
+                        value="person"
+                        color="primary"
+                        size="large"
+                    />
+                    <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
+                        Employeer
+                    </Typography>
                 </div>
             </div>
         );

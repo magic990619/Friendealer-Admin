@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import { AppBar, Button, Card, CardContent, Icon, IconButton, List, Toolbar, Typography, Input} from '@material-ui/core';
+import { Avatar, AppBar, Button, Card, CardContent, Icon, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Toolbar, Typography, Input} from '@material-ui/core';
 import {FuseAnimateGroup} from '@fuse';
 import api from 'app/ApiConfig';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
-import FaceIcon from '@material-ui/icons/Face';
-import DoneIcon from '@material-ui/icons/Done';
 
 class AboutTab extends Component {
 
@@ -46,6 +44,7 @@ class AboutTab extends Component {
     {
         this.getUserProfile();
     }
+
     getUserProfile = () => {
         const {user_id} = this.props;
 
@@ -78,7 +77,7 @@ class AboutTab extends Component {
         var res = [];
         languages.forEach(function(cursor, err) {
             console.log(cursor.language);
-            if (cursor.language.localeCompare(event.target.value) != 0) {
+            if (cursor.language.localeCompare(event.target.value) !== 0) {
                 res.push(cursor);
             }
         });
@@ -93,7 +92,7 @@ class AboutTab extends Component {
         var languages = this.state.profileData.language_browse;
         var res = [];
         languages.forEach(function(cursor, err) {
-            if (cursor.language.localeCompare(lang.language) != 0) {
+            if (cursor.language.localeCompare(lang.language) !== 0) {
                 res.push(cursor);
             }
         });
@@ -105,8 +104,8 @@ class AboutTab extends Component {
     {
         // console.log(this.state.profileData);
 
-        var languages = this.state.profileData == undefined ? ['English'] : this.state.profileData.language_browse;
-        var friends = this.state.profileData == undefined ? null : this.state.profileData.friends;
+        var languages = this.state.profileData === null ? ['English'] : this.state.profileData.language_browse;
+        var friends = this.state.profileData === null ? null : this.state.profileData.friends;
 
         return (
             <div className="md:flex max-w-2xl">
@@ -327,7 +326,7 @@ this.state.profileData &&
                                     key={lang.language}
                                     label={lang.language}
                                     onDelete={this.handleDeleteLanguage(lang)}
-                                    color="primary"
+                                    color="default"
                                     />    
                                 ))
                             }
@@ -355,7 +354,29 @@ this.state.profileData &&
                             <CardContent className="p-0">
                                 <List className="p-8">
                                     {friends && friends.map((friend) => (
-                                        <img key={friend.friend_id} className="w-64 m-4" src={friend.avatar} alt={friend.name} />
+                                        // <img key={friend.friend_id} className="w-64 m-4" src={friend.avatar} alt={friend.name} />
+                                        <ListItem key={friend.friend_id}>
+                                            <Avatar src={friend.avatar} alt={friends.name}>{friends.name}</Avatar>
+                                            <ListItemText
+                                                primary={(
+                                                    <div className="">
+                                                        <Typography className="inline font-medium" color="primary" paragraph={false}>
+                                                            {friend.name}
+                                                        </Typography>
+
+                                                        {/* <Typography className="inline ml-4" color="primary" paragraph={false}>
+                                                            {(friend.is_favourite == 0 ? "" : "favourite")}
+                                                        </Typography> */}
+                                                    </div>
+                                                )}
+                                                secondary={friend.is_favourite == 1 ? "favourite" : ""}
+                                            />
+                                            <ListItemSecondaryAction>
+                                                <IconButton>
+                                                    <Icon>more_vert</Icon>
+                                                </IconButton>
+                                            </ListItemSecondaryAction>
+                                        </ListItem>
                                     ))}
                                 </List>
                             </CardContent>
