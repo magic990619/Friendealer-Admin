@@ -23,38 +23,12 @@ import api from 'app/ApiConfig';
 import {Link} from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
 
-class EventFeedbackTab extends Component {
+class EventTab extends Component {
 
     state = {
         person    : false,
         profileData: {
             user_id: '',
-            provide_feedback: [{
-                joiner_id: '',
-                avatar: '',
-                event_id: '',
-                event_name: '',
-                rating_quality: '',
-                rating_communication: '',
-                rating_expertise: '',
-                rating_professionalism: '',
-                rating_hire_again: '',
-                feedback: '',
-                created_at: '',        
-            }],
-            receive_feedback: [{
-                employeer_id: '',
-                avatar: '',
-                event_id: '',
-                event_name: '',
-                rating_clarity: '',
-                rating_communication: '',
-                rating_payment: '',
-                rating_professionalism: '',
-                rating_work_again: '',
-                feedback: '',
-                created_at: '',      
-            }],
             posted_event: [{
                 event_id: '',
                 event_name: '',
@@ -122,95 +96,9 @@ class EventFeedbackTab extends Component {
         const {person} = this.state;
         var posted_events = this.state.profileData === null ? null : this.state.profileData.posted_event;
         var offered_events = this.state.profileData === null ? null : this.state.profileData.offered_event;
-        var provide_feedback = this.state.profileData === null ? null : this.state.profileData.provide_feedback;
-        var receive_feedback = this.state.profileData === null ? null : this.state.profileData.receive_feedback;
 
         return (
             <div className="md:flex max-w-2xl">
-                <div className="flex flex-col flex-1 md:pr-32">
-                    <FuseAnimateGroup
-                        enter={{
-                            animation: "transition.slideUpBigIn"
-                        }}
-                    >
-                    <AppBar position="static" elevation={0}>
-                        <Toolbar className="pl-16 pr-8">
-                            <Typography variant="subtitle1" color="inherit" className="flex-1">
-                                Feedback
-                            </Typography>
-                            {/* <Button color="inherit" size="small">See All</Button> */}
-                        </Toolbar>
-                    </AppBar>
-                    {person == 0 && provide_feedback && provide_feedback.map((post) => (
-                            <Card className="mb-32 overflow-hidden" key={post.event_id}>
-                                <CardHeader
-                                    avatar={
-                                        <Avatar aria-label="Recipe" src={post.avatar}/>
-                                    }
-                                    action={
-                                        <IconButton aria-label="more">
-                                            <Icon>more_vert</Icon>
-                                        </IconButton>
-                                    }
-                                    title={(
-                                        <span>
-                                            <Typography className="inline font-medium mr-4" color="primary" paragraph={false}>
-                                                {post.event_name}
-                                            </Typography>
-                                        </span>
-                                    )}
-                                    subheader={post.created_at}
-                                />
-                                <CardContent className="py-0">
-                                    {post.feedback && (
-                                        <Typography component="p" className="mb-16">
-                                            {post.feedback}
-                                        </Typography>
-                                    )}
-                                </CardContent>
-                                <CardContent className="py-0">
-                                    {post.feedback && (
-                                        <Typography component="p" className="mb-16">
-                                            {post.feedback}
-                                        </Typography>
-                                    )}
-                                </CardContent>
-                            </Card>
-                            ))
-                        }
-                        {person == 1 && receive_feedback && receive_feedback.map((post) => (
-                            <Card className="mb-32 overflow-hidden" key={post.event_id}>
-                                <CardHeader
-                                    avatar={
-                                        <Avatar aria-label="Recipe" src={post.avatar}/>
-                                    }
-                                    action={
-                                        <IconButton aria-label="more">
-                                            <Icon>more_vert</Icon>
-                                        </IconButton>
-                                    }
-                                    title={(
-                                        <span>
-                                            <Typography className="inline font-medium mr-4" color="primary" paragraph={false}>
-                                                {post.event_name}
-                                            </Typography>
-                                        </span>
-                                    )}
-                                    subheader={post.created_at}
-                                />
-                                <CardContent className="py-0">
-                                    {post.feedback && (
-                                        <Typography component="p" className="mb-16">
-                                            {post.feedback}
-                                        </Typography>
-                                    )}
-                                </CardContent>
-                            </Card>
-                            ))
-                        }
-                    </FuseAnimateGroup>
-
-                </div>
                 <div className="flex flex-col md:w-320">
                     <FuseAnimateGroup
                         enter={{
@@ -291,24 +179,9 @@ class EventFeedbackTab extends Component {
                         </Card>
                     </FuseAnimateGroup>
                 </div>
-                <div className="p-12">
-                    <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
-                        Joiner
-                    </Typography>
-                    <Switch
-                        checked={this.state.person}
-                        onChange={this.handlePersonChange}
-                        value="person"
-                        color="primary"
-                        size="large"
-                    />
-                    <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
-                        Employeer
-                    </Typography>
-                </div>
             </div>
         );
     }
 }
 
-export default EventFeedbackTab;
+export default EventTab;

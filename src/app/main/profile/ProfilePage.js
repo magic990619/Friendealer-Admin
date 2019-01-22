@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import api from 'app/ApiConfig'
 import {withStyles, Avatar, Button, Tab, Tabs, Typography} from '@material-ui/core';
 import {FusePageSimple, FuseAnimate} from '@fuse';
-import EventFeedbackTab from './tabs/EventFeedbackTab';
+import EventTab from './tabs/EventTab';
+import FeedbackTab from './tabs/FeedbackTab';
 import PhotosVideosTab from './tabs/PhotosVideosTab';
 import AboutTab from './tabs/AboutTab';
 
@@ -93,7 +94,12 @@ class ProfilePage extends Component {
                             classes={{
                                 root: "h-64"
                             }}
-                            label="Event & Feedback"/>
+                            label="Event"/>
+                        <Tab
+                            classes={{
+                                root: "h-64"
+                            }}
+                            label="Feedback"/>
                         <Tab
                             classes={{
                                 root: "h-64"
@@ -107,9 +113,12 @@ class ProfilePage extends Component {
                             <AboutTab user_id={user_id} />
                         )}
                         {value === 1 && user_id !== undefined && (
-                            <EventFeedbackTab user_id={user_id}/>
+                            <EventTab user_id={user_id}/>
                         )}
                         {value === 2 && user_id !== undefined && (
+                            <FeedbackTab user_id={user_id}/>
+                        )}
+                        {value === 3 && user_id !== undefined && (
                             <PhotosVideosTab user_id={user_id}/>
                         )}
                     </div>

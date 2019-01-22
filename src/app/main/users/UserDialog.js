@@ -82,7 +82,7 @@ class UserDialog extends Component {
                 {...userDialog.props}
                 onClose={this.closeComposeDialog}
                 fullWidth
-                maxWidth="xs"
+                maxWidth="sm"
             >
 
                 <AppBar position="static" elevation={1}>
@@ -110,6 +110,9 @@ class UserDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">account_circle</Icon>
                         </div>
+                        <Typography variant="subtitle1" color="inherit" className="min-w-160 pt-20">
+                                User Name
+                        </Typography>
 
                         <TextField
                             className="mb-24"
@@ -129,6 +132,9 @@ class UserDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">email</Icon>
                         </div>
+                        <Typography variant="subtitle1" color="inherit" className="min-w-160 pt-20">
+                                Email
+                        </Typography>
                         <TextField
                             className="mb-24"
                             label="Email"
@@ -138,6 +144,7 @@ class UserDialog extends Component {
                             onChange={this.handleChange}
                             variant="outlined"
                             fullWidth
+                            required
                         />
                     </div>
 
@@ -145,6 +152,9 @@ class UserDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">accessibility</Icon>
                         </div>
+                        <Typography variant="subtitle1" color="inherit" className="min-w-160 pt-20">
+                                Role
+                        </Typography>
                         <Select
                             className="mb-24"
                             native
@@ -159,7 +169,6 @@ class UserDialog extends Component {
                             }
                             fullWidth
                         >
-                            <option value="" />
                             <option value="admin">admin</option>
                             <option value="staff">staff</option>
                             <option value="user">user</option>
@@ -171,6 +180,9 @@ class UserDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">accessible</Icon>
                         </div>
+                        <Typography variant="subtitle1" color="inherit" className="min-w-160 pt-20">
+                                Account Type
+                        </Typography>
                         <Select
                             className="mb-24"
                             native
@@ -194,6 +206,9 @@ class UserDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">tag_faces</Icon>
                         </div>
+                        <Typography variant="subtitle1" color="inherit" className="min-w-160 pt-20">
+                                Membership
+                        </Typography>
                         <Select
                             className="mb-24"
                             native
@@ -219,6 +234,9 @@ class UserDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">people_outline</Icon>
                         </div>
+                        <Typography variant="subtitle1" color="inherit" className="min-w-160 pt-20">
+                                Account Status
+                        </Typography>
                         <Select
                             className="mb-24"
                             native
@@ -233,7 +251,6 @@ class UserDialog extends Component {
                             }
                             fullWidth
                         >
-                            <option value="" />
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                             <option value="Closed">Closed</option>
@@ -246,6 +263,9 @@ class UserDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">Start Time</Icon>
                         </div>
+                        <Typography variant="subtitle1" color="inherit" className="min-w-160 pt-20">
+                                Start Time
+                        </Typography>
                         <TextField
                             className="mb-24"
                             id="start_time"
@@ -268,6 +288,9 @@ class UserDialog extends Component {
                         <div className="min-w-48 pt-20">
                             <Icon color="action">End Time</Icon>
                         </div>
+                        <Typography variant="subtitle1" color="inherit" className="min-w-160 pt-20">
+                                End Time
+                        </Typography>
                         <TextField
                             className="mb-24"
                             id="end_time"
@@ -316,8 +339,10 @@ class UserDialog extends Component {
                         </Button>
                         <IconButton
                             onClick={() => {
-                                removeUser(this.state._id);
-                                this.closeComposeDialog();
+                                if (window.confirm('Are you sure to delete it?')) {
+                                    removeUser(this.state._id);
+                                    this.closeComposeDialog();
+                                }
                             }}
                         >
                             <Icon>delete</Icon>

@@ -7,38 +7,39 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
 
+const newProfile = {
+    profileData: {
+        user_id: '',
+        first_name: '',
+        last_name: '',
+        phone_number: '',
+        hourly_rate: '',
+        address: '',
+        city: '',
+        zip_code: '',
+        state_province: '',
+        country: '',
+        company: '',
+        time_zone: '',
+        location: '',
+        headline: '',
+        description: '',
+        language: '',
+        language_browse: [ {
+            language: '',
+        }],
+        friends: [ {
+            friend_id: '',
+            name: '',
+            avatar: '',
+            is_favourite: '',
+            created_at: '',
+        }],
+    },
+};
 class AboutTab extends Component {
 
-    state = {
-        profileData: {
-            user_id: '',
-            first_name: '',
-            last_name: '',
-            phone_number: '',
-            hourly_rate: '',
-            address: '',
-            city: '',
-            zip_code: '',
-            state_province: '',
-            country: '',
-            company: '',
-            time_zone: '',
-            location: '',
-            headline: '',
-            description: '',
-            language: '',
-            language_browse: [ {
-                language: '',
-            }],
-            friends: [ {
-                friend_id: '',
-                name: '',
-                avatar: '',
-                is_favourite: '',
-                created_at: '',
-            }],
-        },
-    };
+    state = {...newProfile};
 
     componentDidMount()
     {
@@ -99,6 +100,10 @@ class AboutTab extends Component {
         });
         profile.language_browse = res;
         this.setState({ profileData: profile });
+    }
+
+    handleClear = () => {
+        this.setState(newProfile);
     }
       
     render()
@@ -394,13 +399,24 @@ this.state.profileData &&
                                             </ListItemSecondaryAction>
                                         </ListItem>
                                     ))}
+                                    {
+                                        friends == null &&
+                                        <Typography className="inline font-medium" color="primary" paragraph={false}>
+                                            There are no friends.
+                                       </Typography>
+                                    }
                                 </List>
                             </CardContent>
                         </Card>
 
-                        <Button variant="contained" color="secondary" className="normal-case" onClick={this.handleSave}>
-                        Save
-                    </Button>
+                        <div>
+                            <Button variant="contained" color="secondary" className="m-32 min-w-76" onClick={this.handleSave}>
+                                Save
+                            </Button>
+                            <Button variant="contained" color="secondary" className="m-32 min-w-76" onClick={this.handleClear}>
+                                Clear
+                            </Button>
+                        </div>
 
 
                     </FuseAnimateGroup>
