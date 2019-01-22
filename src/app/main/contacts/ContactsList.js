@@ -195,16 +195,6 @@ class ContactsList extends Component {
                             filterable: true
                         },
                         {
-                            Header    : "Start Time",
-                            accessor  : "start_time",
-                            filterable: true
-                        },
-                        {
-                            Header    : "End Time",
-                            accessor  : "end_time",
-                            filterable: true
-                        },
-                        {
                             Header: "",
                             width : 128,
                             Cell  : row => (

@@ -50,7 +50,7 @@ class AboutTab extends Component {
 
         api.post('/auth/getUserProfileById', {
             user_id
-        }).then(res => {
+        }).then(res => {res.data.doc &&
             this.setState({ profileData: res.data.doc });
         });
     }
@@ -65,6 +65,7 @@ class AboutTab extends Component {
 
     handleSave = () => {
         var profile = this.state.profileData;
+        profile.user_id = this.props.user_id;
         api.post('/auth/saveUserProfileById', {
             profile
         });
@@ -108,140 +109,10 @@ class AboutTab extends Component {
         var friends = this.state.profileData === null ? null : this.state.profileData.friends;
 
         return (
-            <div className="md:flex max-w-2xl">
+            <div className="md:flex max-w-full">
 
 {this.state.profileData &&
-                <div className="flex flex-col md:w-320">
-                    <FuseAnimateGroup
-                        enter={{
-                            animation: "transition.slideUpBigIn"
-                        }}
-                    >
-                    <TextField
-                        className="mb-24"
-                        label="First Name"
-                        id="first_name"
-                        name="first_name"
-                        value={this.state.profileData.first_name}
-                        onChange={this.handleChange('first_name')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="Last Name"
-                        id="last_name"
-                        name="last_name"
-                        value={this.state.profileData.last_name}
-                        onChange={this.handleChange('last_name')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="Phone Number"
-                        id="phone_number"
-                        name="phone_number"
-                        value={this.state.profileData.phone_number}
-                        onChange={this.handleChange('phone_number')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="Hourly Rate"
-                        id="hourly_rate"
-                        name="hourly_rate"
-                        value={this.state.profileData.hourly_rate}
-                        onChange={this.handleChange('hourly_rate')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="Address"
-                        id="address"
-                        name="address"
-                        value={this.state.profileData.address}
-                        onChange={this.handleChange('address')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="City"
-                        id="city"
-                        name="city"
-                        value={this.state.profileData.city}
-                        onChange={this.handleChange('city')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="Zip Code"
-                        id="zip_code"
-                        name="zip_code"
-                        value={this.state.profileData.zip_code}
-                        onChange={this.handleChange('zip_code')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="State & Province"
-                        id="state_province"
-                        name="state_province"
-                        value={this.state.profileData.state_province}
-                        onChange={this.handleChange('state_province')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="Country"
-                        id="country"
-                        name="country"
-                        value={this.state.profileData.country}
-                        onChange={this.handleChange('country')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="Company"
-                        id="company"
-                        name="company"
-                        value={this.state.profileData.company}
-                        onChange={this.handleChange('company')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="Time Zone"
-                        id="time_zone"
-                        name="time_zone"
-                        value={this.state.profileData.time_zone}
-                        onChange={this.handleChange('time_zone')}
-                        margin="normal"
-                    />
-
-                    <TextField
-                        className="mb-24"
-                        label="Location"
-                        id="location"
-                        name="location"
-                        value={this.state.profileData.location}
-                        onChange={this.handleChange('location')}
-                        margin="normal"
-                    />
-                    </FuseAnimateGroup>
-                </div>
-}
-{
-this.state.profileData &&
-                <div className="flex flex-col md:w-320">
+                <div className="flex flex-col md:w-400">
                     <FuseAnimateGroup
                         enter={{
                             animation: "transition.slideUpBigIn"
@@ -249,18 +120,156 @@ this.state.profileData &&
                     >
                         <TextField
                             className="mb-24"
-                            label="Headline"
-                            id="headline"
-                            name="headline"
-                            value={this.state.profileData.headline}
-                            onChange={this.handleChange('headline')}
-                            multiline
-                            rows={3}
+                            label="First Name"
+                            id="first_name"
+                            name="first_name"
+                            value={this.state.profileData.first_name}
+                            onChange={this.handleChange('first_name')}
                             margin="normal"
                         />
 
                         <TextField
                             className="mb-24"
+                            label="Phone Number"
+                            id="phone_number"
+                            name="phone_number"
+                            value={this.state.profileData.phone_number}
+                            onChange={this.handleChange('phone_number')}
+                            margin="normal"
+                        />
+
+                        <TextField
+                            className="mb-24"
+                            label="Address"
+                            id="address"
+                            name="address"
+                            value={this.state.profileData.address}
+                            onChange={this.handleChange('address')}
+                            margin="normal"
+                        />
+
+                        <TextField
+                            className="mb-24"
+                            label="Zip Code"
+                            id="zip_code"
+                            name="zip_code"
+                            value={this.state.profileData.zip_code}
+                            onChange={this.handleChange('zip_code')}
+                            margin="normal"
+                        />
+
+                        <TextField
+                            className="mb-24"
+                            label="Country"
+                            id="country"
+                            name="country"
+                            value={this.state.profileData.country}
+                            onChange={this.handleChange('country')}
+                            margin="normal"
+                        />
+
+                        <TextField
+                            className="mb-24"
+                            label="Time Zone"
+                            id="time_zone"
+                            name="time_zone"
+                            value={this.state.profileData.time_zone}
+                            onChange={this.handleChange('time_zone')}
+                            margin="normal"
+                        />
+                    </FuseAnimateGroup>
+                </div>
+}
+{this.state.profileData &&
+                <div className="flex flex-col md:w-400">
+                    <FuseAnimateGroup
+                        enter={{
+                            animation: "transition.slideUpBigIn"
+                        }}
+                    >
+                        <TextField
+                            className="mb-24"
+                            label="Last Name"
+                            id="last_name"
+                            name="last_name"
+                            value={this.state.profileData.last_name}
+                            onChange={this.handleChange('last_name')}
+                            margin="normal"
+                        />
+
+                        <TextField
+                            className="mb-24"
+                            label="Hourly Rate"
+                            id="hourly_rate"
+                            name="hourly_rate"
+                            value={this.state.profileData.hourly_rate}
+                            onChange={this.handleChange('hourly_rate')}
+                            margin="normal"
+                        />
+
+                        <TextField
+                            className="mb-24"
+                            label="City"
+                            id="city"
+                            name="city"
+                            value={this.state.profileData.city}
+                            onChange={this.handleChange('city')}
+                            margin="normal"
+                        />
+
+                        <TextField
+                            className="mb-24"
+                            label="State & Province"
+                            id="state_province"
+                            name="state_province"
+                            value={this.state.profileData.state_province}
+                            onChange={this.handleChange('state_province')}
+                            margin="normal"
+                        />
+
+                        <TextField
+                            className="mb-24"
+                            label="Company"
+                            id="company"
+                            name="company"
+                            value={this.state.profileData.company}
+                            onChange={this.handleChange('company')}
+                            margin="normal"
+                        />
+
+                        <TextField
+                            className="mb-24"
+                            label="Location"
+                            id="location"
+                            name="location"
+                            value={this.state.profileData.location}
+                            onChange={this.handleChange('location')}
+                            margin="normal"
+                        />
+                    </FuseAnimateGroup>
+                </div>
+}
+{
+this.state.profileData &&
+                <div className="flex flex-col md:w-lg">
+                    <FuseAnimateGroup
+                        enter={{
+                            animation: "transition.slideUpBigIn"
+                        }}
+                    >
+                        <TextField
+                            className="mb-24 w-sm"
+                            label="Headline"
+                            id="headline"
+                            name="headline"
+                            value={this.state.profileData.headline}
+                            onChange={this.handleChange('headline')}
+                            margin="normal"
+                        />
+
+                        <div>
+                        <TextField
+                            className="mb-24 w-sm"
                             label="Description"
                             id="description"
                             name="description"
@@ -271,55 +280,58 @@ this.state.profileData &&
                             rows={10}
                             margin="normal"
                         />
+                        </div>
 
                         <div>
-                        <InputLabel shrink htmlFor="language-label-placeholder">
-                            Language
-                        </InputLabel>
-                        <Select
-                            className="mb-24"
-                            native
-                            value={this.state.profileData.language}
-                            onChange={this.handleChange('language')}
-                            input={
-                            <Input
-                                name="language"
-                                id="language"
-                            />
-                            }
-                            fullWidth
-                        >
-                            <option value="English">English</option>
-                            <option value="Russian">Russian</option>
-                            <option value="French">Franch</option>
-                            <option value="German">German</option>
-                        </Select>
+                            <InputLabel shrink htmlFor="language-label-placeholder">
+                                Language
+                            </InputLabel>
+                            <div>
+                                <Select
+                                    className="mb-24 w-sm"
+                                    native
+                                    value={this.state.profileData.language}
+                                    onChange={this.handleChange('language')}
+                                    input={
+                                    <Input
+                                        name="language"
+                                        id="language"
+                                    />
+                                    }
+                                >
+                                    <option value="English">English</option>
+                                    <option value="Russian">Russian</option>
+                                    <option value="French">Franch</option>
+                                    <option value="German">German</option>
+                                </Select>
+                            </div>
                         </div>
 
                         <div>
                             <InputLabel shrink htmlFor="language-label-placeholder">
                                 Language for browse project
                             </InputLabel>
-                            <Select
-                                className="mb-24"
-                                native
-                                value="default"
-                                onChange={this.handleAddLanguage}
-                                input={
-                                <Input
-                                    name="language"
-                                    id="language"
-                                />
-                                }
-                                fullWidth
-                            >
-                                <option value="default">Add Language</option>
-                                <option value="English">English</option>
-                                <option value="Russian">Russian</option>
-                                <option value="French">Franch</option>
-                                <option value="German">German</option>
-                            </Select>
-                                <div>
+                            <div>
+                                <Select
+                                    className="mb-24 w-sm"
+                                    native
+                                    value="default"
+                                    onChange={this.handleAddLanguage}
+                                    input={
+                                    <Input
+                                        name="language"
+                                        id="language"
+                                    />
+                                    }
+                                >
+                                    <option value="default">Add Language</option>
+                                    <option value="English">English</option>
+                                    <option value="Russian">Russian</option>
+                                    <option value="French">Franch</option>
+                                    <option value="German">German</option>
+                                </Select>
+                            </div>
+                            <div>
                             {
                                 languages && languages.map((lang) => (
                                     <Chip
@@ -336,13 +348,13 @@ this.state.profileData &&
                 </div>
 }
 
-                <div className="flex flex-col md:w-320">
+                <div className="flex flex-col md:w-400">
                     <FuseAnimateGroup
                         enter={{
                             animation: "transition.slideUpBigIn"
                         }}
                     >
-                        <Card className="w-full mb-16">
+                        <Card className="w-full mb-16 mr-24">
                             <AppBar position="static" elevation={0}>
                                 <Toolbar className="pl-16 pr-8">
                                     <Typography variant="subtitle1" color="inherit" className="flex-1">
