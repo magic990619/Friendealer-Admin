@@ -6,6 +6,7 @@ import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import ReactTable from "react-table";
 import * as Actions from './store/actions';
+import api from 'app/ApiConfig'
 
 class UsersList extends Component {
 
@@ -31,9 +32,16 @@ class UsersList extends Component {
         this.setState({selectedUsersMenu: null});
     };
 
+    resetPassword = (accountId) => {
+        api.post("/auth/resetPassword", {
+            accountId
+        });
+        alert("Successfully reset password.");
+    }
+
     render()
     {
-        const { users, user, searchText, selectedUserIds, selectAllUsers, deSelectAllUsers, toggleInSelectedUsers, openEditUserDialog, removeUsers, removeUser} = this.props;
+        const { users, searchText, selectedUserIds, selectAllUsers, deSelectAllUsers, toggleInSelectedUsers, openEditUserDialog, removeUsers, removeUser} = this.props;
         const data = this.getFilteredArray(users, searchText);
 
         const {selectedUsersMenu} = this.state;
@@ -174,7 +182,7 @@ class UsersList extends Component {
                         },
                         {
                             Header: "",
-                            width : 128,
+                            width : 160,
                             Cell  : row => (
                                 <div className="flex items-center">
                                     <IconButton
@@ -194,6 +202,16 @@ class UsersList extends Component {
                                         }}
                                     >
                                         <Icon>delete</Icon>
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={(ev) => {
+                                            ev.stopPropagation();
+                                            if (window.confirm('Are you sure to reset password to \'friendealer\'')) {
+                                                this.resetPassword(row.original._id);
+                                            }
+                                        }}
+                                    >
+                                        <Icon>enhanced_encryption</Icon>
                                     </IconButton>
                                 </div>
                             )

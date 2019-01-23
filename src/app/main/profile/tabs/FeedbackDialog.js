@@ -56,34 +56,52 @@ export default class FormDialog extends React.Component {
     var profile = this.props.profileData;
     var row = this.state.row;
     var feedbacks = person == 0 ? profile.provide_feedback : profile.receive_feedback;
-    var res = [];
     feedbacks.forEach(function(feedback, err) {
         var cursor = feedback;
         if (feedback.user_id === row.user_id && feedback.event_id.localeCompare(row.event_id) === 0) {
             cursor.feedback = row.feedback;
-            cursor.rating_communication = row.rating_communication;
-            cursor.rating_professionalism = row.rating_professionalism;
+            cursor.rating_communication = parseInt(row.rating_communication);
+            cursor.rating_professionalism = parseInt(row.rating_professionalism);
             if (person == 0) {
-                cursor.rating_quality = row.rating_quality;
-                cursor.rating_expertise = row.rating_expertise;
-                cursor.rating_hire_again = row.rating_hire_again;
+                cursor.rating_quality = parseInt(row.rating_quality);
+                cursor.rating_expertise = parseInt(row.rating_expertise);
+                cursor.rating_hire_again = parseInt(row.rating_hire_again);
             }
             else {
-                cursor.rating_clarity = row.rating_clarity;
-                cursor.rating_payment = row.rating_payment;
-                cursor.rating_work_again = row.rating_work_again;
+                cursor.rating_clarity = parseInt(row.rating_clarity);
+                cursor.rating_payment = parseInt(row.rating_payment);
+                cursor.rating_work_again = parseInt(row.rating_work_again);
             }
         }
-        res.push(cursor);
     });
+    // if (person == 0)
+    //     profile.provide_feedback = res;
+    // else profile.receive_feedback = res;
     api.post('/auth/saveUserProfileById', {
         profile
     });
     this.handleClose();
+    this.props.onRefresh();
   }
 
   handleDelete = () => {
-      
+    const {person} = this.props;
+    var profile = this.props.profileData;
+    var row = this.state.row;
+    var feedbacks = person == 0 ? profile.provide_feedback : profile.receive_feedback;
+    var res = [];
+    feedbacks.forEach(function(feedback, err) {
+        if (feedback.user_id !== row.user_id || feedback.event_id.localeCompare(row.event_id) !== 0) {
+            res.push(feedback);
+        }
+    });
+    if (person == 0)
+        profile.provide_feedback = res;
+    else profile.receive_feedback = res;
+    api.post('/auth/saveUserProfileById', {
+        profile
+    });
+    this.props.onRefresh();
   }
 
   render() {

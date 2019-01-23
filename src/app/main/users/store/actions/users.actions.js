@@ -13,6 +13,7 @@ export const ADD_USER = '[USERS APP] ADD USER';
 export const UPDATE_USER = '[USERS APP] UPDATE USER';
 export const REMOVE_USER = '[USERS APP] REMOVE USER';
 export const REMOVE_USERS = '[USERS APP] REMOVE USERS';
+export const RESET_PASSWORD = '[USERS APP] RESET PASSWORD';
 
 export function getUsers(routeParams)
 {

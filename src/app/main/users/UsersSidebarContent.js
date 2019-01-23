@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {withStyles, Avatar, Divider, Icon, List, ListItem, ListItemText, Paper, Typography} from '@material-ui/core';
+import {withStyles, Divider, Icon, List, ListItem, ListItemText, Paper} from '@material-ui/core';
 import {FuseAnimate} from '@fuse';
 import {NavLink, withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
@@ -29,7 +29,7 @@ class UsersSidebarContent extends Component {
 
     render()
     {
-        const {classes, user} = this.props;
+        const {classes} = this.props;
 
         return (
             <div className="p-16 lg:p-24 lg:pr-4">

@@ -5,7 +5,6 @@ import {
 import {FuseAnimateGroup} from '@fuse';
 import api from 'app/ApiConfig';
 import { withStyles } from '@material-ui/core/styles';
-import {Link} from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -28,6 +27,24 @@ class FeedbackTab extends Component {
 
     state = {
         person    : false,
+        refresh     : false, 
+        open: false,
+        row: {
+            joiner_email: '',
+            employeer_email: '',
+            event_id: '',
+            event_name: '',
+            rating_clarity: '',
+            rating_quality: '',
+            rating_communication: '',
+            rating_payment: '',
+            rating_expertise: '',
+            rating_professionalism: '',
+            rating_work_again: '',
+            rating_hire_again: '',
+            feedback: '',
+            created_at: '',
+        },
         profileData: {
             user_id: '',
             provide_feedback: [{
@@ -104,11 +121,18 @@ class FeedbackTab extends Component {
         this.handleSave();
     }
 
+    handleRefresh = () => {
+        this.setState({refresh : !this.state.refresh});
+    }
+
     render()
     {
         const {person} = this.state;
-        var provide_feedback = this.state.profileData === null ? null : this.state.profileData.provide_feedback;
-        var receive_feedback = this.state.profileData === null ? null : this.state.profileData.receive_feedback;
+        const provide_feedback = this.state.profileData === null ? null : this.state.profileData.provide_feedback;
+        const receive_feedback = this.state.profileData === null ? null : this.state.profileData.receive_feedback;
+        const feedbacks = person == 0 ? provide_feedback : receive_feedback;
+
+        console.log(feedbacks);
 
         return (
             <div>
@@ -138,45 +162,35 @@ class FeedbackTab extends Component {
                                 <TableHead>
                                 <TableRow>
                                     <CustomTableCell>Created At</CustomTableCell>
-                                    <CustomTableCell align="right">Event Name</CustomTableCell>
-                                    <CustomTableCell align="right">Feedback</CustomTableCell>
-                                    <CustomTableCell align="right">Overall Rating</CustomTableCell>
-                                    <CustomTableCell align="right"></CustomTableCell>
+                                    <CustomTableCell align="center">Event Name</CustomTableCell>
+                                    <CustomTableCell align="center">Feedback</CustomTableCell>
+                                    <CustomTableCell align="center">Overall Rating</CustomTableCell>
+                                    <CustomTableCell align="center"></CustomTableCell>
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {person == 0 && provide_feedback && provide_feedback.map(row => {
+                                    {feedbacks && feedbacks.map(row => {
                                         return (
                                         <TableRow key={row.event_id}>
                                             <CustomTableCell component="th" scope="row">
                                             {row.created_at}
                                             </CustomTableCell>
-                                            <CustomTableCell align="right">{row.event_name}</CustomTableCell>
-                                            <CustomTableCell align="right">{row.feedback}</CustomTableCell>
-                                            <CustomTableCell align="right">{(row.rating_communication + row.rating_expertise + row.rating_quality
-                                                + row.rating_professionalism + row.rating_hire_again) / 5}</CustomTableCell>
-                                            <CustomTableCell align="right">
-                                                <FeedbackDialog person={person} row={row} profileData={this.state.profileData} />
+                                            <CustomTableCell align="center">{row.event_name}</CustomTableCell>
+                                            <CustomTableCell align="center">{row.feedback}</CustomTableCell>
+                                            <CustomTableCell align="center">{person == 0 ? ((row.rating_communication + row.rating_expertise + row.rating_quality
+                                                + row.rating_professionalism + row.rating_hire_again) / 5) : ((row.rating_communication + row.rating_payment + row.rating_clarity
+                                                    + row.rating_professionalism + row.rating_work_again) / 5)}</CustomTableCell>
+                                            <CustomTableCell align="center">
+                                                <FeedbackDialog person={person} row={row} profileData={this.state.profileData} onRefresh={this.handleRefresh}/>
                                             </CustomTableCell>
                                         </TableRow>
                                         );
                                     })}
-                                    {person == 1 && receive_feedback && receive_feedback.map(row => {
-                                        return (
-                                        <TableRow key={row.event_id}>
-                                            <CustomTableCell component="th" scope="row">
-                                            {row.created_at}
-                                            </CustomTableCell>
-                                            <CustomTableCell align="right">{row.event_name}</CustomTableCell>
-                                            <CustomTableCell align="right">{row.feedback}</CustomTableCell>
-                                            <CustomTableCell align="right">{(row.rating_communication + row.rating_clarity + row.rating_payment
-                                                + row.rating_professionalism + row.rating_work_again) / 5}</CustomTableCell>
-                                            <CustomTableCell align="right">
-                                                <FeedbackDialog person={person} row={row} profileData={this.state.profileData} />
-                                            </CustomTableCell>
-                                        </TableRow>
-                                        );
-                                    })}
+                                    {feedbacks.length == 0 && 
+                                        <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
+                                            There are no feedbacks.
+                                        </Typography>
+                                    }
                                 </TableBody>
                             </Table>
                         </FuseAnimateGroup>
