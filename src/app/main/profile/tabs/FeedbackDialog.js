@@ -55,14 +55,14 @@ export default class FormDialog extends React.Component {
     const {person} = this.props;
     var profile = this.props.profileData;
     var row = this.state.row;
-    var feedbacks = person == 0 ? profile.provide_feedback : profile.receive_feedback;
+    var feedbacks = person === false ? profile.provide_feedback : profile.receive_feedback;
     feedbacks.forEach(function(feedback, err) {
         var cursor = feedback;
         if (feedback.user_id === row.user_id && feedback.event_id.localeCompare(row.event_id) === 0) {
             cursor.feedback = row.feedback;
             cursor.rating_communication = parseInt(row.rating_communication);
             cursor.rating_professionalism = parseInt(row.rating_professionalism);
-            if (person == 0) {
+            if (person === false) {
                 cursor.rating_quality = parseInt(row.rating_quality);
                 cursor.rating_expertise = parseInt(row.rating_expertise);
                 cursor.rating_hire_again = parseInt(row.rating_hire_again);
@@ -88,14 +88,14 @@ export default class FormDialog extends React.Component {
     const {person} = this.props;
     var profile = this.props.profileData;
     var row = this.state.row;
-    var feedbacks = person == 0 ? profile.provide_feedback : profile.receive_feedback;
+    var feedbacks = person === false ? profile.provide_feedback : profile.receive_feedback;
     var res = [];
     feedbacks.forEach(function(feedback, err) {
         if (feedback.user_id !== row.user_id || feedback.event_id.localeCompare(row.event_id) !== 0) {
             res.push(feedback);
         }
     });
-    if (person == 0)
+    if (person === false)
         profile.provide_feedback = res;
     else profile.receive_feedback = res;
     api.post('/auth/saveUserProfileById', {
@@ -152,9 +152,9 @@ export default class FormDialog extends React.Component {
             <div>
             <TextField
                     id="rating_quality"
-                    label={person == 0 ? "Rating for quality" : "Rating for clarity"}
-                    value={person == 0 ? this.state.row.rating_quality : this.state.row.rating_clarity}
-                    onChange={person == 0 ? this.handleChange('rating_quality') : this.handleChange('rating_clarity')}
+                    label={person === false ? "Rating for quality" : "Rating for clarity"}
+                    value={person === false ? this.state.row.rating_quality : this.state.row.rating_clarity}
+                    onChange={person === false ? this.handleChange('rating_quality') : this.handleChange('rating_clarity')}
                     type="number"
                     InputLabelProps={{
                         shrink: true,
@@ -174,9 +174,9 @@ export default class FormDialog extends React.Component {
                 />
                 <TextField
                     id="rating_expertise"
-                    label={person == 0 ? "Rating for expertise" : "Rating for payment"}
-                    value={person == 0 ? this.state.row.rating_expertise : this.state.row.rating_payment}
-                    onChange={person == 0 ? this.handleChange('rating_expertise') : this.handleChange('rating_payment')}
+                    label={person === false ? "Rating for expertise" : "Rating for payment"}
+                    value={person === false ? this.state.row.rating_expertise : this.state.row.rating_payment}
+                    onChange={person === false ? this.handleChange('rating_expertise') : this.handleChange('rating_payment')}
                     type="number"
                     InputLabelProps={{
                         shrink: true,
@@ -196,9 +196,9 @@ export default class FormDialog extends React.Component {
                 />
                 <TextField
                     id="rating_hire_again"
-                    label={person == 0 ? "Rating for hire again" : "Rating for work again"}
-                    value={person == 0 ? this.state.row.rating_hire_again : this.state.row.rating_work_again}
-                    onChange={person == 0 ? this.handleChange('rating_hire_again') : this.handleChange('rating_work_again')}
+                    label={person === false ? "Rating for hire again" : "Rating for work again"}
+                    value={person === false ? this.state.row.rating_hire_again : this.state.row.rating_work_again}
+                    onChange={person === false ? this.handleChange('rating_hire_again') : this.handleChange('rating_work_again')}
                     type="number"
                     InputLabelProps={{
                         shrink: true,

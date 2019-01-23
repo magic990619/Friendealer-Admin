@@ -4,7 +4,6 @@ import * as userActions from 'app/auth/store/actions';
 import {bindActionCreators} from 'redux';
 import * as Actions from 'app/store/actions';
 import jwtService from 'app/services/jwtService';
-import history from 'history.js';
 
 class Auth extends Component {
     /*eslint-disable-next-line no-useless-constructor*/

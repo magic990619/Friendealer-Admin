@@ -105,14 +105,14 @@ class FeedbackTab extends Component {
 
     handleDeleteEvent = (event_id) => {
         var profile = this.state.profileData;
-        var events = this.state.person == 0 ? profile.posted_event : profile.offered_event;
+        var events = this.state.person === false ? profile.posted_event : profile.offered_event;
         var res = [];
         events.forEach(function(cursor, err) {
             if (cursor.event_id.localeCompare(event_id) !== 0) {
                 res.push(cursor);
             }
         });
-        if (this.state.person == 0)
+        if (this.state.person === false)
             profile.posted_event = res;
         else
             profile.offered_event = res;
@@ -130,7 +130,7 @@ class FeedbackTab extends Component {
         const {person} = this.state;
         const provide_feedback = this.state.profileData === null ? null : this.state.profileData.provide_feedback;
         const receive_feedback = this.state.profileData === null ? null : this.state.profileData.receive_feedback;
-        const feedbacks = (person == 0 ? provide_feedback : receive_feedback);
+        const feedbacks = (person === false ? provide_feedback : receive_feedback);
 
         console.log(feedbacks);
 
@@ -177,7 +177,7 @@ class FeedbackTab extends Component {
                                             </CustomTableCell>
                                             <CustomTableCell align="center">{row.event_name}</CustomTableCell>
                                             <CustomTableCell align="center">{row.feedback}</CustomTableCell>
-                                            <CustomTableCell align="center">{person == 0 ? ((row.rating_communication + row.rating_expertise + row.rating_quality
+                                            <CustomTableCell align="center">{person === false ? ((row.rating_communication + row.rating_expertise + row.rating_quality
                                                 + row.rating_professionalism + row.rating_hire_again) / 5) : ((row.rating_communication + row.rating_payment + row.rating_clarity
                                                     + row.rating_professionalism + row.rating_work_again) / 5)}</CustomTableCell>
                                             <CustomTableCell align="center">
@@ -186,13 +186,13 @@ class FeedbackTab extends Component {
                                         </TableRow>
                                         );
                                     })}
-                                    {(feedbacks == null || feedbacks.length == 0) && 
+                                </TableBody>
+                            </Table>
+                            {(feedbacks === null || feedbacks.length === 0) && 
                                         <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
                                             There are no feedbacks.
                                         </Typography>
                                     }
-                                </TableBody>
-                            </Table>
                         </FuseAnimateGroup>
                     </div>
                 </div>

@@ -3,7 +3,6 @@ import {
     Icon,
     IconButton,
     Typography,
-    Button,
 } from '@material-ui/core';
 import {FuseAnimateGroup} from '@fuse';
 import api from 'app/ApiConfig';
@@ -104,16 +103,16 @@ class EventTab extends Component {
         posted_events && posted_events.map((event) => {
             count_all ++;
             count_posted ++;
-            if (selectedValue == '0' || selectedValue == '1')
+            if (selectedValue === '0' || selectedValue === '1')
                 res.push(event);
             if (event.event_state === "Finished") {
                 count_finished ++;
-                if (selectedValue == '3')
+                if (selectedValue === '3')
                     res.push(event);
             }
             if (event.event_state === "Progress") {
                 count_progress ++;
-                if (selectedValue == '4')
+                if (selectedValue === '4')
                     res.push(event);
             }
             return null;
@@ -123,16 +122,16 @@ class EventTab extends Component {
         offered_events && offered_events.map((event) => {
             count_all ++;
             count_offered ++;
-            if (selectedValue == '0' || selectedValue == '2')
+            if (selectedValue === '0' || selectedValue === '2')
                 res.push(event);
             if (event.event_state === "Finished") {
                 count_finished ++;
-                if (selectedValue == '3')
+                if (selectedValue === '3')
                     res.push(event);
             }
             if (event.event_state === "Progress") {
                 count_progress ++;
-                if (selectedValue == '4')
+                if (selectedValue === '4')
                     res.push(event);
             }
             return null;
@@ -189,7 +188,7 @@ class EventTab extends Component {
                         </TableRow>
                         </TableHead>
                         <TableBody>
-                            {posted_events && selectedValue != "2" && posted_events.map((activity) => (
+                            {posted_events && selectedValue !== "2" && posted_events.map((activity) => (
                                 <TableRow key={activity.event_id}>
                                     <CustomTableCell align="center">{activity.created_at}</CustomTableCell>
                                     <CustomTableCell align="center">{activity.event_name}</CustomTableCell>
@@ -209,7 +208,7 @@ class EventTab extends Component {
                                     </CustomTableCell>
                                 </TableRow>
                             ))}
-                            {offered_events && selectedValue != "1" && offered_events.map((activity) => (
+                            {offered_events && selectedValue !== "1" && offered_events.map((activity) => (
                                 <TableRow key={activity.event_id}>
                                     <CustomTableCell align="center">{activity.created_at}</CustomTableCell>
                                     <CustomTableCell align="center">{activity.event_name}</CustomTableCell>
@@ -229,13 +228,13 @@ class EventTab extends Component {
                                     </CustomTableCell>
                                 </TableRow>
                             ))}
-                            {offered_events.length + posted_events.length == 0 && 
+                        </TableBody>
+                    </Table>
+                    {offered_events.length + posted_events.length === 0 && 
                                 <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
                                     There are no events.
                                 </Typography>
                             }
-                        </TableBody>
-                    </Table>
                 </FuseAnimateGroup>
             </div>
         );

@@ -258,7 +258,7 @@ class UserDialog extends Component {
                         </Select>
                     </div>
 
-{this.state.account_status == 'Restricted' &&
+{this.state.account_status === 'Restricted' &&
                     <div className="flex">
                         <div className="min-w-48 pt-20">
                             <Icon color="action">Start Time</Icon>
@@ -283,7 +283,7 @@ class UserDialog extends Component {
                     </div>
 }
 
-{this.state.account_status == 'Restricted' &&
+{this.state.account_status === 'Restricted' &&
                     <div className="flex">
                         <div className="min-w-48 pt-20">
                             <Icon color="action">End Time</Icon>

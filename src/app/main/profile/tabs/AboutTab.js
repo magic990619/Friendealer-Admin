@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
 import history from 'history.js';
-import { Redirect } from 'react-router-dom'
 
 const newProfile = {
     profileData: {
@@ -377,7 +376,7 @@ this.state.profileData &&
                                     {friends && friends.map((friend) => (
                                         // <img key={friend.friend_id} className="w-64 m-4" src={friend.avatar} alt={friend.name} />
                                         <ListItem key={friend.friend_id}>
-                                        {friend.friend_id != '' &&
+                                        {friend.friend_id !== '' &&
                                             <Avatar src={friend.avatar} alt={friends.name}>{friends.name}</Avatar>
                                     }
                                             <ListItemText
@@ -392,7 +391,7 @@ this.state.profileData &&
                                                         </Typography> */}
                                                     </div>
                                                 )}
-                                                secondary={friend.is_favourite == 1 ? "favourite" : ""}
+                                                secondary={friend.is_favourite === true ? "favourite" : ""}
                                             />
                                             <ListItemSecondaryAction>
                                                     <IconButton onClick={(ev) => {
