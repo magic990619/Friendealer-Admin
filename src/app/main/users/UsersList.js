@@ -196,22 +196,22 @@ class UsersList extends Component {
                                     <IconButton
                                         onClick={(ev) => {
                                             ev.stopPropagation();
-                                            if (window.confirm('Are you sure to delete it?')) {
-                                                removeUser(row.original._id);
-                                            }
-                                        }}
-                                    >
-                                        <Icon>delete</Icon>
-                                    </IconButton>
-                                    <IconButton
-                                        onClick={(ev) => {
-                                            ev.stopPropagation();
                                             if (window.confirm('Are you sure to reset password to \'friendealer\'')) {
                                                 this.resetPassword(row.original._id);
                                             }
                                         }}
                                     >
                                         <Icon>enhanced_encryption</Icon>
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={(ev) => {
+                                            ev.stopPropagation();
+                                            if (window.confirm('Are you sure to delete it?')) {
+                                                removeUser(row.original._id);
+                                            }
+                                        }}
+                                    >
+                                        <Icon>delete</Icon>
                                     </IconButton>
                                 </div>
                             )

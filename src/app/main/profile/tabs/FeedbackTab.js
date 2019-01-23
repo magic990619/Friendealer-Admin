@@ -130,7 +130,7 @@ class FeedbackTab extends Component {
         const {person} = this.state;
         const provide_feedback = this.state.profileData === null ? null : this.state.profileData.provide_feedback;
         const receive_feedback = this.state.profileData === null ? null : this.state.profileData.receive_feedback;
-        const feedbacks = person == 0 ? provide_feedback : receive_feedback;
+        const feedbacks = (person == 0 ? provide_feedback : receive_feedback);
 
         console.log(feedbacks);
 
@@ -186,7 +186,7 @@ class FeedbackTab extends Component {
                                         </TableRow>
                                         );
                                     })}
-                                    {feedbacks.length == 0 && 
+                                    {(feedbacks == null || feedbacks.length == 0) && 
                                         <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
                                             There are no feedbacks.
                                         </Typography>

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import * as authActions from 'app/auth/store/actions';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
-
+import history from 'history.js';
 class UserMenu extends Component {
 
     state = {
@@ -84,7 +84,11 @@ class UserMenu extends Component {
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
-                            <MenuItem component={Link} to={"/profile/"+user.userId} onClick={this.userMenuClose}>
+                            <MenuItem  onClick={(ev) => {
+                                                        ev.stopPropagation();
+                                                        history.push('/profile/' + user.userId);
+                                                        window.location.reload();
+                                                    }}>
                                 <ListItemIcon>
                                     <Icon>account_circle</Icon>
                                 </ListItemIcon>

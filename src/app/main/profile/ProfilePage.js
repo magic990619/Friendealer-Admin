@@ -6,6 +6,7 @@ import EventTab from './tabs/EventTab';
 import FeedbackTab from './tabs/FeedbackTab';
 import PhotosVideosTab from './tabs/PhotosVideosTab';
 import AboutTab from './tabs/AboutTab';
+import _ from '@lodash';
 
 const styles = theme => ({
     layoutHeader : {
@@ -27,16 +28,24 @@ class ProfilePage extends Component {
 
     componentDidMount()
     {
-        var user_id = this.props.match.params;
+        this.getAccountData(this.props.match.params);
+    }
 
+    componentDidUpdate(prevProps, prevState)
+    {
+        if ( !_.isEqual(this.props.location, prevProps.location) )
+        {
+            this.getAccountData(this.props.match.params);
+        }
+    }
+
+    getAccountData = user_id => {
         api.post('/auth/getAccountDataById', {
             user_id
         }).then(res => {
             this.setState({ accountData: res.data.doc });
-//            console.log(res.data.doc);
         });
     }
-
 
     handleChange = (event, value) => {
         this.setState({value});
@@ -108,8 +117,7 @@ class ProfilePage extends Component {
                 }
                 content={
                     <div className="p-16 sm:p-24">
-                        {value === 0 && user_id !== undefined &&
-                        (
+                        {value === 0 && user_id !== undefined && (
                             <AboutTab user_id={user_id} />
                         )}
                         {value === 1 && user_id !== undefined && (

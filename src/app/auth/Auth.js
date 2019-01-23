@@ -31,9 +31,9 @@ class Auth extends Component {
                     this.props.setUserData(user);
                     this.props.showMessage({message: 'Logged in with JWT'});
                     
-                    history.push({
-                        pathname: '/'
-                    });
+                    // history.push({
+                    //     pathname: '/'
+                    // });
                 })
                 .catch(error => {
                     console.log(error);

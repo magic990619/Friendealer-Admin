@@ -101,7 +101,7 @@ class EventTab extends Component {
         var count_all = 0, count_posted = 0, count_offered = 0, count_finished = 0, count_progress = 0;
 
         var res = [];
-        posted_events.map((event) => {
+        posted_events && posted_events.map((event) => {
             count_all ++;
             count_posted ++;
             if (selectedValue == '0' || selectedValue == '1')
@@ -120,7 +120,7 @@ class EventTab extends Component {
         });
         posted_events = res;
         res = [];
-        offered_events.map((event) => {
+        offered_events && offered_events.map((event) => {
             count_all ++;
             count_offered ++;
             if (selectedValue == '0' || selectedValue == '2')

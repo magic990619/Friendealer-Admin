@@ -6,6 +6,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
+import history from 'history.js';
+import { Redirect } from 'react-router-dom'
 
 const newProfile = {
     profileData: {
@@ -393,9 +395,13 @@ this.state.profileData &&
                                                 secondary={friend.is_favourite == 1 ? "favourite" : ""}
                                             />
                                             <ListItemSecondaryAction>
-                                                <IconButton>
-                                                    <Icon>more_vert</Icon>
-                                                </IconButton>
+                                                    <IconButton onClick={(ev) => {
+                                                        ev.stopPropagation();
+                                                        history.push('/profile/' + friend.friend_id);
+                                                        window.location.reload();
+                                                    }}>
+                                                        <Icon>more_vert</Icon>
+                                                    </IconButton>
                                             </ListItemSecondaryAction>
                                         </ListItem>
                                     ))}
