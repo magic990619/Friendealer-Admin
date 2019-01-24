@@ -12,6 +12,12 @@ export const SettingsConfig = {
             component: FuseLoadable({
                 loader: () => import('./categories/Categories')
             })
+        },
+        {
+            path     : '/settings/faq',
+            component: FuseLoadable({
+                loader: () => import('./faq/Faq')
+            })
         }
     ]
 };
