@@ -7,6 +7,7 @@ import FeedbackTab from './tabs/FeedbackTab';
 import PhotosVideosTab from './tabs/PhotosVideosTab';
 import AboutTab from './tabs/AboutTab';
 import _ from '@lodash';
+import AvatarEditDialog from './AvatarEditDialog'
 
 const styles = theme => ({
     layoutHeader : {
@@ -51,6 +52,15 @@ class ProfilePage extends Component {
         this.setState({value});
     };
 
+    handleSaveAvatar = path => {
+        var user_id = this.state.accountData._id;
+        api.post('/auth/setAccountAvatar', {
+            path, user_id,
+        }).then(res => {
+            this.setState({ accountData: res.data.doc });
+        });
+    }
+
     render()
     {
         const {value} = this.state;
@@ -72,6 +82,9 @@ class ProfilePage extends Component {
                                     src={this.state.accountData.avatar && this.state.accountData.avatar !== '' ? this.state.accountData.avatar : "assets/images/avatars/profile.jpg"}
                                 />
                             </FuseAnimate>
+                            <div className="align-bottom">
+                            <AvatarEditDialog type="avatar" onSave={this.handleSaveAvatar} />
+                            </div>
                             <FuseAnimate animation="transition.slideLeftIn" delay={300}>
                                 <Typography className="md:ml-24" variant="h4" color="inherit">{this.state.accountData.user_name}</Typography>
                             </FuseAnimate>
