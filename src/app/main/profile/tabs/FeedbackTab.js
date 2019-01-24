@@ -82,7 +82,7 @@ class FeedbackTab extends Component {
     getUserProfile = () => {
         const {user_id} = this.props;
 
-        api.post('/auth/getUserProfileById', {
+        api.post('/profile/getUserProfileById', {
             user_id
         }).then(res => {
             this.setState({ profileData: res.data.doc });
@@ -98,7 +98,7 @@ class FeedbackTab extends Component {
 
     handleSave = () => {
         var profile = this.state.profileData;
-        api.post('/auth/saveUserProfileById', {
+        api.post('/profile/saveUserProfileById', {
             profile
         });
     }

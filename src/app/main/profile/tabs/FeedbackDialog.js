@@ -77,7 +77,7 @@ export default class FormDialog extends React.Component {
     // if (person == 0)
     //     profile.provide_feedback = res;
     // else profile.receive_feedback = res;
-    api.post('/auth/saveUserProfileById', {
+    api.post('/profile/saveUserProfileById', {
         profile
     });
     this.handleClose();
@@ -98,7 +98,7 @@ export default class FormDialog extends React.Component {
     if (person === false)
         profile.provide_feedback = res;
     else profile.receive_feedback = res;
-    api.post('/auth/saveUserProfileById', {
+    api.post('/profile/saveUserProfileById', {
         profile
     });
     this.props.onRefresh();

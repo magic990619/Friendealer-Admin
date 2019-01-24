@@ -50,7 +50,7 @@ class AboutTab extends Component {
     getUserProfile = () => {
         const {user_id} = this.props;
 
-        api.post('/auth/getUserProfileById', {
+        api.post('/profile/getUserProfileById', {
             user_id
         }).then(res => { res.data.doc &&
             this.setState({ profileData: res.data.doc });
@@ -68,7 +68,7 @@ class AboutTab extends Component {
     handleSave = () => {
         var profile = this.state.profileData;
         profile.user_id = this.props.user_id;
-        api.post('/auth/saveUserProfileById', {
+        api.post('/profile/saveUserProfileById', {
             profile
         });
     }
