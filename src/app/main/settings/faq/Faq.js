@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import api from 'app/ApiConfig'
 import { withStyles, Typography } from '@material-ui/core';
-import {FusePageSimple, FuseAnimate} from '@fuse';
+import { FuseAnimate} from '@fuse';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -41,7 +41,7 @@ class Fag extends Component {
         if (type === 'edit') {
             api.post('/faq/updateFaq', {row});
             rows.forEach(function(cur, err) {
-                if (cur._id != row._id)
+                if (cur._id !== row._id)
                     res.push(cur);
                 else res.push(row);
             });
@@ -62,7 +62,7 @@ class Fag extends Component {
         api.post('/faq/removeFaq', {row});
 
         rows.forEach(function(cur, err) {
-            if (cur._id != row._id)
+            if (cur._id !== row._id)
                 res.push(cur);
         });
         this.setState({rows: res});
