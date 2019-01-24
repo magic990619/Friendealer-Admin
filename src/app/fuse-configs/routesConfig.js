@@ -7,6 +7,7 @@ import {LoginConfig} from 'app/main/login/LoginConfig';
 import {RegisterConfig} from 'app/main/register/RegisterConfig';
 import {LogoutConfig} from 'app/main/logout/LogoutConfig';
 import {ProfilePageConfig} from 'app/main/profile/ProfilePageConfig'
+import {SettingsConfig} from 'app/main/settings/SettingsConfig'
 
 const routeConfigs = [
     UsersAppConfig,
@@ -14,13 +15,14 @@ const routeConfigs = [
     RegisterConfig,
     LogoutConfig,
     ProfilePageConfig,
+    SettingsConfig
 ];
 
  const routes = [
     ...FuseUtils.generateRoutesFromConfigs(routeConfigs),
     {
-        path     : '/',
-        component: () => <Redirect to="/"/>
+        path        : '/',
+        component   : () => <Redirect to="/"/>
     }
 ];
 

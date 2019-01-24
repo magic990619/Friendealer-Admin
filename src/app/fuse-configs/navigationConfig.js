@@ -11,6 +11,23 @@ const navigationConfig = [
                 'type' : 'item',
                 'icon' : 'whatshot',
                 'url'  : '/users'
+            },
+            {
+                'id'   : 'settings-component',
+                'title': 'Settings',
+                'type' : 'collapse',
+                'icon' : 'settings',
+                'url'  : '/settings',
+                'children': [
+                    {
+                        'id'   : 'categories',
+                        'title': 'Event Categories',
+                        'type' : 'item',
+                        'icon' : 'category',
+                        'url'  : '/settings/categories',
+                        'exact': true
+                    },
+                ]
             }
         ]
     }

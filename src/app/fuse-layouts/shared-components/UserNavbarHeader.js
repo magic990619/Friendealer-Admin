@@ -31,7 +31,6 @@ const styles = theme => ({
 });
 
 const UserNavbarHeader = ({user, classes}) => {
-    console.log(user);
     return (
         <AppBar
             position="static"
