@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import api from 'app/ApiConfig';
 import {
-    Icon, IconButton, withStyles, Typography,
+    Icon, withStyles, Typography,
 } from '@material-ui/core';
 import classNames from 'classnames';
 import {fade} from '@material-ui/core/styles/colorManipulator';

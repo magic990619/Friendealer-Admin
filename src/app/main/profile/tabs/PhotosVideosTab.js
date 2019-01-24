@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {GridList, GridListTile, GridListTileBar, Icon, IconButton, Typography, ListSubheader, withStyles} from '@material-ui/core';
+import {GridList, GridListTile, GridListTileBar, Icon, IconButton, Typography, ListSubheader} from '@material-ui/core';
 import {FuseAnimateGroup} from '@fuse';
 import api from 'app/ApiConfig';
 import PhotoEditDialog from './PhotoEditDialog.js'
@@ -82,7 +82,7 @@ class PhotosVideosTab extends Component {
 
     render()
     {
-        const photosVideos =  this.state.profileData.user_id === '' ? null : this.state.profileData.photos;
+        const photosVideos =  (this.state.profileData === null || this.state.profileData.user_id === '') ? null : this.state.profileData.photos;
 
         console.log(this.state.profileData);
         console.log(photosVideos);
@@ -99,14 +99,14 @@ class PhotosVideosTab extends Component {
                             <Typography className="mr-16" variant="h6">Portfolio</Typography>
                         </ListSubheader>
                         <div className="mb-48">
-                            <GridList className="" spacing={8} cols={0}>
-                            {photosVideos && photosVideos.map((period) => (
+                            <GridList className="" spacing={8} cols={0} children="">
+                            {photosVideos && photosVideos.map((period, i) => (
                                 <GridListTile
                                     classes={{
                                         root: "w-1 sm:w-1/2 md:w-1/4",
                                         tile: "rounded-8"
                                     }}
-                                    key={period.photo_url}
+                                    key={i}
                                 >
                                     <img src={period.photo_url} alt={period.comment}/>
                                     <GridListTileBar
@@ -127,11 +127,14 @@ class PhotosVideosTab extends Component {
                                     />
                                 </GridListTile>
                                 ))}
+                                {
+                                    (photosVideos === null || photosVideos.length === 0) && 
+                                    <div>
+                                        <Typography className="mr-16" variant="subtitle1">There are no photos.</Typography>
+                                    </div>
+                                }
                             </GridList>
                         </div>
-                        {
-                            (photosVideos === null || photosVideos.length === 0) && <Typography className="mr-16" variant="subtitle1">There are no photos.</Typography>
-                        }
                             <div className="w-1 sm:w-1/2 md:w-1/4 m-32">
                                 <PhotoAddDialog onSave={this.handleURLAdd}/>
                             </div>

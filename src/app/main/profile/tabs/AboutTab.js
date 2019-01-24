@@ -103,6 +103,19 @@ class AboutTab extends Component {
         this.setState({ profileData: profile });
     }
 
+    handleDeleteFriend = friend_id => {
+        var profile = this.state.profileData;
+        var friends = this.state.profileData.friends;
+        var res = [];
+        friends.forEach(function(cursor, err) {
+            if (cursor.friend_id !== friend_id) {
+                res.push(cursor);
+            }
+        });
+        profile.friends = res;
+        this.setState({ profileData: profile });
+    }
+
     handleClear = () => {
         this.setState(newProfile);
     }
@@ -378,7 +391,7 @@ this.state.profileData &&
                                         <ListItem key={friend.friend_id}>
                                         {friend.friend_id !== '' &&
                                             <Avatar src={friend.avatar} alt={friends.name}>{friends.name}</Avatar>
-                                    }
+                                        }
                                             <ListItemText
                                                 primary={(
                                                     <div className="">
@@ -394,12 +407,17 @@ this.state.profileData &&
                                                 secondary={friend.is_favourite === true ? "favourite" : ""}
                                             />
                                             <ListItemSecondaryAction>
-                                                    <IconButton onClick={(ev) => {
-                                                        ev.stopPropagation();
-                                                        history.push('/profile/' + friend.friend_id);
-                                                        window.location.reload();
-                                                    }}>
-                                                        <Icon>more_vert</Icon>
+                                                    <IconButton>
+                                                        <Icon onClick={(ev) => {
+                                                            ev.stopPropagation();
+                                                            history.push('/profile/' + friend.friend_id);
+                                                            window.location.reload();
+                                                            }}>more_vert</Icon>
+                                                        <Icon onClick={(ev) => {
+                                                            ev.stopPropagation();
+                                                            if (window.confirm('Are you sure to remove this friend?'))
+                                                                this.handleDeleteFriend(friend.friend_id);
+                                                            }}>delete</Icon>
                                                     </IconButton>
                                             </ListItemSecondaryAction>
                                         </ListItem>
