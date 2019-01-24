@@ -36,6 +36,14 @@ const navigationConfig = [
                         'exact': true
                     },
                     {
+                        'id'   : 'get-support',
+                        'title': 'Get Support',
+                        'type' : 'item',
+                        'icon' : 'question_answer',
+                        'url'  : '/settings/support',
+                        'exact': true
+                    },
+                    {
                         'id'   : 'faq',
                         'title': 'FAQ',
                         'type' : 'item',

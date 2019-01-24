@@ -8,7 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import FaqDialog from './FaqDialog'
+import SupportDialog from './SupportDialog'
 
 const styles = theme => ({
   root: {
@@ -21,14 +21,14 @@ const styles = theme => ({
   },
 });
 
-class Fag extends Component {
+class Support extends Component {
 
     state = {
         rows : [],
     };
 
     componentDidMount() {
-        api.post('/faq/getAllFaqs', {})
+        api.post('/support/getAllSupports', {})
         .then(res => {
             this.setState({rows: res.data.doc});
         });
@@ -39,7 +39,7 @@ class Fag extends Component {
         var res = [];
         console.log(row);
         if (type === 'edit') {
-            api.post('/faq/updateFaq', {row});
+            api.post('/support/updateSupport', {row});
             rows.forEach(function(cur, err) {
                 if (cur._id !== row._id)
                     res.push(cur);
@@ -47,7 +47,7 @@ class Fag extends Component {
             });
         }
         else {
-            api.post('/faq/addFaq', {row}).then(res=>row._id=res.data.doc._id);
+            api.post('/support/addSupport', {row}).then(res=>row._id=res.data.doc._id);
             res = rows;
             res.push(row);
         }
@@ -59,7 +59,7 @@ class Fag extends Component {
         var rows = this.state.rows;
         var res = [];
 
-        api.post('/faq/removeFaq', {row});
+        api.post('/support/removeSupport', {row});
 
         rows.forEach(function(cur, err) {
             if (cur._id !== row._id)
@@ -75,11 +75,11 @@ class Fag extends Component {
             <div className="p-24 flex flex-1 flex-col items-center justify-center md:flex-row md:items-center">
             <div className="flex flex-1 flex-col items-center justify-center md:flex-row md:items-center md:justify-start">
                 <FuseAnimate animation="transition.slideLeftIn" delay={300}>
-                    <Typography className="md:ml-24" variant="h4" color="inherit">FAQ</Typography>
+                    <Typography className="md:ml-24" variant="h4" color="inherit">Get Supports</Typography>
                 </FuseAnimate>
             </div>
 
-            <FaqDialog type='add' onSave={this.handleSave} onRemove={this.handleRemove} row={{_id: '', title: '', subtitle: '', description: ''}}/>
+            <SupportDialog type='add' onSave={this.handleSave} onRemove={this.handleRemove} row={{_id: '', title: '', subtitle: '', description: ''}}/>
         </div>
             <Paper className={classes.root}>
                 <Table className={classes.table}>
@@ -100,7 +100,7 @@ class Fag extends Component {
                             <TableCell align="left">{row.subtitle}</TableCell>
                             <TableCell align="left">{row.description}</TableCell>
                             <TableCell align="center">
-                                <FaqDialog type='edit' onSave={this.handleSave} onRemove={this.handleRemove} row={row}/>
+                                <SupportDialog type='edit' onSave={this.handleSave} onRemove={this.handleRemove} row={row}/>
                             </TableCell>
                         </TableRow>
                     ))}
@@ -108,7 +108,7 @@ class Fag extends Component {
                         this.state.rows.length === 0 && 
                         <TableRow>
                         <TableCell align="center">
-                        'No FAQs.'
+                        'No support messages.'
                         </TableCell>
                         </TableRow>
                     }
@@ -120,4 +120,4 @@ class Fag extends Component {
     }
 }
 
-export default withStyles(styles)(Fag);
+export default withStyles(styles)(Support);

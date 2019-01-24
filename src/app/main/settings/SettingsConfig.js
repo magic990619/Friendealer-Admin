@@ -14,10 +14,16 @@ export const SettingsConfig = {
             })
         },
         {
+            path     : '/settings/support',
+            component: FuseLoadable({
+                loader: () => import('./support/Support')
+            })
+        },
+        {
             path     : '/settings/faq',
             component: FuseLoadable({
                 loader: () => import('./faq/Faq')
             })
-        }
+        },
     ]
 };
