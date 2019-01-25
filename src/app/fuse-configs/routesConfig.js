@@ -8,6 +8,7 @@ import {RegisterConfig} from 'app/main/register/RegisterConfig';
 import {LogoutConfig} from 'app/main/logout/LogoutConfig';
 import {ProfilePageConfig} from 'app/main/profile/ProfilePageConfig'
 import {SettingsConfig} from 'app/main/settings/SettingsConfig'
+import {EventsConfig} from 'app/main/events/EventsConfig'
 
 const routeConfigs = [
     UsersAppConfig,
@@ -15,14 +16,15 @@ const routeConfigs = [
     RegisterConfig,
     LogoutConfig,
     ProfilePageConfig,
-    SettingsConfig
+    SettingsConfig,
+    EventsConfig
 ];
 
  const routes = [
     ...FuseUtils.generateRoutesFromConfigs(routeConfigs),
     {
         path        : '/',
-        component   : () => <Redirect to="/"/>
+        component   : () => <Redirect to="/users/all"/>
     }
 ];
 

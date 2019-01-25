@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import {
-    Typography
+    Typography,
+    Paper,
+    Input,
+    Icon,
 } from '@material-ui/core';
-import {FuseAnimateGroup} from '@fuse';
+import {FuseAnimateGroup, FuseUtils, FuseAnimate} from '@fuse';
 import api from 'app/ApiConfig';
 import { withStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
@@ -29,6 +32,7 @@ class FeedbackTab extends Component {
         person    : false,
         refresh     : false, 
         open: false,
+        searchText: '',
         row: {
             joiner_email: '',
             employeer_email: '',
@@ -125,18 +129,33 @@ class FeedbackTab extends Component {
         this.setState({refresh : !this.state.refresh});
     }
 
+    setSearchText = event => {
+        this.setState({searchText: event.target.value});
+    }
+
+    getFilteredArray = (entities, searchText) => {
+        const arr = Object.keys(entities).map((id) => entities[id]);
+        if ( searchText.length === 0 )
+        {
+            return arr;
+        }
+        return FuseUtils.filterArrayByString(arr, searchText);
+    };
+
     render()
     {
         const {person} = this.state;
         const provide_feedback = this.state.profileData === null ? null : this.state.profileData.provide_feedback;
         const receive_feedback = this.state.profileData === null ? null : this.state.profileData.receive_feedback;
-        const feedbacks = (person === false ? provide_feedback : receive_feedback);
+        var feedbacks = (person === false ? provide_feedback : receive_feedback);
+
+        feedbacks = this.getFilteredArray(feedbacks, this.state.searchText);
 
         console.log(feedbacks);
 
         return (
             <div>
-                <div className="max-w-full">
+                <div className="flex max-w-full">
                     <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
                         Joiner
                     </Typography>
@@ -150,6 +169,24 @@ class FeedbackTab extends Component {
                     <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
                         Employeer
                     </Typography>
+                    <div className="flex flex-1 items-center justify-center pr-8 sm:px-12">
+                <FuseAnimate animation="transition.slideLeftIn" delay={300}>
+                    <Paper className="flex p-4 items-center w-full max-w-512 px-8 py-4" elevation={1}>
+                        <Icon className="mr-8" color="action">search</Icon>
+                        <Input
+                            placeholder="Search for anything"
+                            className="flex flex-1"
+                            disableUnderline
+                            fullWidth
+                            value={this.state.searchText}
+                            inputProps={{
+                                'aria-label': 'Search'
+                            }}
+                            onChange={this.setSearchText}
+                        />
+                    </Paper>
+                </FuseAnimate>
+                </div>
                 </div>
                 <div className="md:flex max-w-full">
                     <div className="flex flex-col flex-1 md:pr-32">

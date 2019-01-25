@@ -52,7 +52,14 @@ const navigationConfig = [
                         'exact': true
                     },
                 ]
-            }
+            },
+            {
+                'id'   : 'events-component',
+                'title': 'Event Management',
+                'type' : 'item',
+                'icon' : 'whatshot',
+                'url'  : '/events'
+            },
         ]
     }
 ];

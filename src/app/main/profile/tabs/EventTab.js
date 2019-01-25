@@ -3,8 +3,10 @@ import {
     Icon,
     IconButton,
     Typography,
+    Input,
+    Paper
 } from '@material-ui/core';
-import {FuseAnimateGroup} from '@fuse';
+import {FuseUtils, FuseAnimateGroup, FuseAnimate} from '@fuse';
 import api from 'app/ApiConfig';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -28,6 +30,7 @@ class EventTab extends Component {
 
     state = {
         selectedValue: "0",
+        searchText: '',
         profileData: {
             user_id: '',
             posted_event: [{
@@ -92,6 +95,19 @@ class EventTab extends Component {
         this.setState({selectedValue: event.target.value});
     }
 
+    setSearchText = event => {
+        this.setState({searchText: event.target.value});
+    }
+
+    getFilteredArray = (entities, searchText) => {
+        const arr = Object.keys(entities).map((id) => entities[id]);
+        if ( searchText.length === 0 )
+        {
+            return arr;
+        }
+        return FuseUtils.filterArrayByString(arr, searchText);
+    };
+
     render()
     {
         const {selectedValue} = this.state;
@@ -117,7 +133,7 @@ class EventTab extends Component {
             }
             return null;
         });
-        posted_events = res;
+        posted_events = this.getFilteredArray(res, this.state.searchText);
         res = [];
         offered_events && offered_events.map((event) => {
             count_all ++;
@@ -136,7 +152,7 @@ class EventTab extends Component {
             }
             return null;
         });
-        offered_events = res;
+        offered_events = this.getFilteredArray(res, this.state.searchText);
 
         return (
             <div className="flex flex-col flex-1 md:pr-32">
@@ -171,6 +187,24 @@ class EventTab extends Component {
                             <Typography className="font-medium mr-4 text-center py-8" color="primary" paragraph={false} variant="h6">PROGRESS EVENTS</Typography>
                         </Badge>
                     </div>
+                </div>
+                <div className="flex flex-1 items-center justify-center pr-8 sm:px-12">
+                <FuseAnimate animation="transition.slideLeftIn" delay={300}>
+                    <Paper className="flex p-4 items-center w-full max-w-512 px-8 py-4" elevation={1}>
+                        <Icon className="mr-8" color="action">search</Icon>
+                        <Input
+                            placeholder="Search for anything"
+                            className="flex flex-1"
+                            disableUnderline
+                            fullWidth
+                            value={this.state.searchText}
+                            inputProps={{
+                                'aria-label': 'Search'
+                            }}
+                            onChange={this.setSearchText}
+                        />
+                    </Paper>
+                </FuseAnimate>
                 </div>
                 <FuseAnimateGroup
                     enter={{
