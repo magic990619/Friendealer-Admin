@@ -148,7 +148,8 @@ class PhotosVideosTab extends Component {
         }
         return api.post("/upload", formData, config)
             .then(res => {
-                edit['photo_url'] = res.data.file.path;
+                console.log(res.data.file);
+                edit['photo_url'] = res.data.file.filename;
                 this.setState({
                 edit_photo: edit,
             })});
@@ -210,7 +211,7 @@ class PhotosVideosTab extends Component {
                                     }}
                                     key={period._id}
                                 >
-                                    <img src={period.photo_url} alt={period.title} onClick={(ev) => {
+                                    <img src={"http://localhost:8888/uploads/" + period.photo_url} alt={period.title} onClick={(ev) => {
                                         ev.stopPropagation();
                                         this.handleClickOpen(period);
                                     }}/>
@@ -224,7 +225,7 @@ class PhotosVideosTab extends Component {
                                         {/* <DialogTitle id="form-dialog-title">Photo</DialogTitle> */}
                                         <div className={classes.form}>
                                             <div className={classes.imageshow + ' bg-black'}>
-                                                <img src={this.state.edit_photo.photo_url} alt={period.title} className={classes.image} />
+                                                <img src={"http://localhost:8888/uploads/" + this.state.edit_photo.photo_url} alt={period.title} className={classes.image} />
                                             </div>
                                             <div className={classes.editshow}>
                                             <DialogContent>
