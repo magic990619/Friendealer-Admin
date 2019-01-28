@@ -41,8 +41,9 @@ class ProfilePage extends Component {
     }
 
     getAccountData = user_id => {
+        var _id = user_id.id;
         api.post('/auth/getAccountDataById', {
-            user_id
+            _id
         }).then(res => {
             this.setState({ accountData: res.data.doc });
         });
@@ -125,7 +126,7 @@ class ProfilePage extends Component {
                         <Tab
                             classes={{
                                 root: "h-64"
-                            }} label="Photos & Videos"/>
+                            }} label="Photos"/>
                     </Tabs>
                 }
                 content={

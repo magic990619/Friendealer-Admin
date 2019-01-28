@@ -58,8 +58,7 @@ class UsersHeader extends Component {
                     </MuiThemeProvider>
                 </div>
             </div>
-        )
-            ;
+        );
     }
 }
 

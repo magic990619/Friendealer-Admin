@@ -43,7 +43,6 @@ class UsersList extends Component {
     {
         const { users, searchText, selectedUserIds, selectAllUsers, deSelectAllUsers, toggleInSelectedUsers, openEditUserDialog, removeUsers, removeUser} = this.props;
         const data = this.getFilteredArray(users, searchText);
-
         const {selectedUsersMenu} = this.state;
 
         if ( !data && data.length === 0 )

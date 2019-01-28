@@ -1,15 +1,18 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {
     Icon,
     IconButton,
     Typography,
     Input,
-    Paper
+    Paper,
+    Tooltip,
 } from '@material-ui/core';
 import {FuseUtils, FuseAnimateGroup, FuseAnimate} from '@fuse';
 import api from 'app/ApiConfig';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -17,20 +20,114 @@ import TableRow from '@material-ui/core/TableRow';
 import Badge from '@material-ui/core/Badge';
 import Radio from '@material-ui/core/Radio';
 
+
+function desc(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+}
+
+function createdata(event, type) {
+    return {
+        event_id : event.event_id,
+        created_at: event.created_at,
+        event_name: event.event_name,
+        event_type: type,
+        event_state: event.event_state,
+    }
+}
+
+
+function stableSort(array, cmp) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+        const order = cmp(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+    });
+    return stabilizedThis.map(el => el[0]);
+}
+
+function getSorting(order, orderBy) {
+    return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+}
+
+const rows = [
+    { id: 'create_at', numeric: false, disablePadding: true, label: 'Created At' },
+    { id: 'event_name', numeric: true, disablePadding: false, label: 'Event Name' },
+    { id: 'event_type', numeric: true, disablePadding: false, label: 'Event Type' },
+    { id: 'event_state', numeric: true, disablePadding: false, label: 'Event State' },
+    { id: 'action', numeric: true, disablePadding: false, label: 'Action' },
+];
+
+class EnhancedTableHead extends React.Component {
+    createSortHandler = property => event => {
+        this.props.onRequestSort(event, property);
+};
+
+render() {
+    const { order, orderBy } = this.props;
+
+    return (
+        <TableHead>
+            <TableRow>
+            {rows.map(row => {
+                return (
+                <TableCell
+                    key={row.id}
+                    align="center"
+                    padding={row.disablePadding ? 'none' : 'default'}
+                    sortDirection={orderBy === row.id ? order : false}
+                >
+                    <Tooltip
+                    title="Sort"
+                    placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                    enterDelay={300}
+                    >
+                    <TableSortLabel
+                        active={orderBy === row.id}
+                        direction={order}
+                        onClick={this.createSortHandler(row.id)}
+                    >
+                        {row.label}
+                    </TableSortLabel>
+                    </Tooltip>
+                </TableCell>
+                );
+            }, this)}
+            </TableRow>
+        </TableHead>
+        );
+    }
+}
+
+EnhancedTableHead.propTypes = {
+    onRequestSort: PropTypes.func.isRequired,
+    order: PropTypes.string.isRequired,
+    orderBy: PropTypes.string.isRequired,
+};
+  
 const CustomTableCell = withStyles(theme => ({
     head: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
     },
     body: {
-      fontSize: 14,
+        fontSize: 14,
     },
-  }))(TableCell);
+}))(TableCell);
 class EventTab extends Component {
 
     state = {
         selectedValue: "0",
-        searchText: '',
+        searchText: '', 
+        order: 'asc',
+        orderBy: 'created_at',
+        selected: '',
         profileData: {
             user_id: '',
             posted_event: [{
@@ -91,6 +188,17 @@ class EventTab extends Component {
         this.handleSave();
     }
 
+    handleRequestSort = (event, property) => {
+        const orderBy = property;
+        let order = 'desc';
+    
+        if (this.state.orderBy === property && this.state.order === 'desc') {
+          order = 'asc';
+        }
+    
+        this.setState({ order, orderBy });
+      };
+    
     handleChange = (event) => {
         this.setState({selectedValue: event.target.value});
     }
@@ -110,7 +218,7 @@ class EventTab extends Component {
 
     render()
     {
-        const {selectedValue} = this.state;
+        const {selectedValue, order, orderBy} = this.state;
         var posted_events = this.state.profileData === null ? null : this.state.profileData.posted_event;
         var offered_events = this.state.profileData === null ? null : this.state.profileData.offered_event;
         var count_all = 0, count_posted = 0, count_offered = 0, count_finished = 0, count_progress = 0;
@@ -120,39 +228,38 @@ class EventTab extends Component {
             count_all ++;
             count_posted ++;
             if (selectedValue === '0' || selectedValue === '1')
-                res.push(event);
+                res.push(createdata(event, 'Posted'));
             if (event.event_state === "Finished") {
                 count_finished ++;
                 if (selectedValue === '3')
-                    res.push(event);
+                    res.push(createdata(event, 'Posted'));
             }
             if (event.event_state === "Progress") {
                 count_progress ++;
                 if (selectedValue === '4')
-                    res.push(event);
+                    res.push(createdata(event, 'Posted'));
             }
             return null;
         });
-        posted_events = this.getFilteredArray(res, this.state.searchText);
-        res = [];
         offered_events && offered_events.map((event) => {
             count_all ++;
             count_offered ++;
             if (selectedValue === '0' || selectedValue === '2')
-                res.push(event);
+                res.push(createdata(event, 'Offered'));
             if (event.event_state === "Finished") {
                 count_finished ++;
                 if (selectedValue === '3')
-                    res.push(event);
+                    res.push(createdata(event, 'Offered'));
             }
             if (event.event_state === "Progress") {
                 count_progress ++;
                 if (selectedValue === '4')
-                    res.push(event);
+                    res.push(createdata(event, 'Offered'));
             }
             return null;
         });
-        offered_events = this.getFilteredArray(res, this.state.searchText);
+        res = this.getFilteredArray(res, this.state.searchText);
+        res = stableSort(res, getSorting(order, orderBy));
 
         return (
             <div className="flex flex-col flex-1 md:pr-32">
@@ -212,41 +319,18 @@ class EventTab extends Component {
                     }}
                     >
                     <Table>
-                        <TableHead>
-                        <TableRow>
-                            <CustomTableCell align="center">Created At</CustomTableCell>
-                            <CustomTableCell align="center">Event Name</CustomTableCell>
-                            <CustomTableCell align="center">Event Type</CustomTableCell>
-                            <CustomTableCell align="center">Event State</CustomTableCell>
-                            <CustomTableCell align="center"></CustomTableCell>
-                        </TableRow>
-                        </TableHead>
+                        <EnhancedTableHead
+                        order={order}
+                        orderBy={orderBy}
+                        onRequestSort={this.handleRequestSort}
+                        // rowCount={data.length}
+                        />
                         <TableBody>
-                            {posted_events && selectedValue !== "2" && posted_events.map((activity) => (
+                            {res && res.map((activity) => ( activity.event_id !== '' && 
                                 <TableRow key={activity.event_id}>
                                     <CustomTableCell align="center">{activity.created_at}</CustomTableCell>
                                     <CustomTableCell align="center">{activity.event_name}</CustomTableCell>
-                                    <CustomTableCell align="center">Posted</CustomTableCell>
-                                    <CustomTableCell align="center">{activity.event_state}</CustomTableCell>
-                                    <CustomTableCell align="center">
-                                        <IconButton
-                                            onClick={(ev) => {
-                                                ev.stopPropagation();
-                                                if (window.confirm('Are you sure to delete it?')) {
-                                                    this.handleDeleteEvent(activity.event_id);
-                                                }
-                                            }}
-                                        >
-                                            <Icon>delete</Icon>
-                                        </IconButton>
-                                    </CustomTableCell>
-                                </TableRow>
-                            ))}
-                            {offered_events && selectedValue !== "1" && offered_events.map((activity) => (
-                                <TableRow key={activity.event_id}>
-                                    <CustomTableCell align="center">{activity.created_at}</CustomTableCell>
-                                    <CustomTableCell align="center">{activity.event_name}</CustomTableCell>
-                                    <CustomTableCell align="center">Offered</CustomTableCell>
+                                    <CustomTableCell align="center">{activity.event_type}</CustomTableCell>
                                     <CustomTableCell align="center">{activity.event_state}</CustomTableCell>
                                     <CustomTableCell align="center">
                                         <IconButton
@@ -264,15 +348,15 @@ class EventTab extends Component {
                             ))}
                         </TableBody>
                     </Table>
-                    {offered_events.length + posted_events.length === 0 && 
-                                <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
-                                    There are no events.
-                                </Typography>
-                            }
+                    {res.length === 0 && 
+                        <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
+                            There are no events.
+                        </Typography>
+                    }
                 </FuseAnimateGroup>
             </div>
         );
     }
 }
-
+  
 export default EventTab;

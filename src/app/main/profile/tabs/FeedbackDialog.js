@@ -105,7 +105,8 @@ export default class FormDialog extends React.Component {
   }
 
   render() {
-      const {person} = this.props;
+    const {person} = this.props;
+
     return (
       <div>
         <IconButton
@@ -150,7 +151,7 @@ export default class FormDialog extends React.Component {
               fullWidth
             />
             <div>
-            <TextField
+                <TextField
                     id="rating_quality"
                     label={person === false ? "Rating for quality" : "Rating for clarity"}
                     value={person === false ? this.state.row.rating_quality : this.state.row.rating_clarity}

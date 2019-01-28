@@ -131,7 +131,6 @@ class AboutTab extends Component {
 
         return (
             <div className="md:flex max-w-full">
-
 {this.state.profileData &&
                 <div className="flex flex-col md:w-400">
                     <FuseAnimateGroup
@@ -368,7 +367,6 @@ this.state.profileData &&
                     </FuseAnimateGroup>
                 </div>
 }
-
                 <div className="flex flex-col md:w-400">
                     <FuseAnimateGroup
                         enter={{
@@ -413,6 +411,8 @@ this.state.profileData &&
                                                             history.push('/profile/' + friend.friend_id);
                                                             window.location.reload();
                                                             }}>more_vert</Icon>
+                                                    </IconButton>
+                                                    <IconButton>
                                                         <Icon onClick={(ev) => {
                                                             ev.stopPropagation();
                                                             if (window.confirm('Are you sure to remove this friend?'))
@@ -431,7 +431,6 @@ this.state.profileData &&
                                 </List>
                             </CardContent>
                         </Card>
-
                         <div>
                             <Button variant="contained" color="secondary" className="m-32 min-w-76" onClick={this.handleSave}>
                                 Save
