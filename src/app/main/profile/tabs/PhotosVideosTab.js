@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {GridList, GridListTile, GridListTileBar, Icon, IconButton, Typography, ListSubheader, Button, withStyles, Avatar} from '@material-ui/core';
+import {FuseScrollbars} from '@fuse';
 import {FuseAnimateGroup} from '@fuse';
 import api from 'app/ApiConfig';
 import TextField from '@material-ui/core/TextField';
@@ -227,7 +228,8 @@ class PhotosVideosTab extends Component {
                                             <div className={classes.imageshow + ' bg-black'}>
                                                 <img src={"http://localhost:8888/uploads/" + this.state.edit_photo.photo_url} alt={period.title} className={classes.image} />
                                             </div>
-                                            <div className={classes.editshow}>
+                                            <FuseScrollbars className={classes.editshow}>
+                                            <div>
                                             <DialogContent>
                                                 <DialogContentText>
                                                 Please enter photo details here.
@@ -290,6 +292,7 @@ class PhotosVideosTab extends Component {
                                                 </Button>
                                             </DialogActions>
                                             </div>
+                                            </FuseScrollbars>
                                         </div>
                                     </Dialog>
                                     <GridListTileBar

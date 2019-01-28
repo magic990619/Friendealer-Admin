@@ -17,7 +17,7 @@ const newUserState = {
     account_status: '',
     start_time: Date(),
     end_time: Date(),
-    avatar  : '',
+    avatar  : 'assets/images/avatars/profile.jpg',
 };
 
 class UserDialog extends Component {

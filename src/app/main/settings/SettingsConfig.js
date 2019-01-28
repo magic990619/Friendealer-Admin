@@ -25,5 +25,11 @@ export const SettingsConfig = {
                 loader: () => import('./faq/Faq')
             })
         },
+        {
+            path     : '/settings/basedata',
+            component: FuseLoadable({
+                loader: () => import('./basedata/Basedata')
+            })
+        },
     ]
 };

@@ -36,6 +36,14 @@ const navigationConfig = [
                         'exact': true
                     },
                     {
+                        'id'   : 'basedata-management',
+                        'title': 'Basedata Management',
+                        'type' : 'item',
+                        'icon' : 'question_answer',
+                        'url'  : '/settings/basedata',
+                        'exact': true
+                    },
+                    {
                         'id'   : 'get-support',
                         'title': 'Get Support',
                         'type' : 'item',
