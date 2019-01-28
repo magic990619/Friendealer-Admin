@@ -169,13 +169,15 @@ class PhotosVideosTab extends Component {
     handleAddComment = (photo, comment) => {
         api.post('/photo/addComment', {
             photo, comment
-        });
-        const {user_id} = this.props;
-        api.post('/photo/getPhotosById', {
-            user_id
         }).then(res => {
             this.setState({ photos: res.data.doc });
         });
+        // const {user_id} = this.props;
+        // api.post('/photo/getPhotosById', {
+        //     user_id
+        // }).then(res => {
+        //     this.setState({ photos: res.data.doc });
+        // });
     }
 
     render()
