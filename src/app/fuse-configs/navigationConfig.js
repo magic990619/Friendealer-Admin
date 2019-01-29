@@ -66,7 +66,7 @@ const navigationConfig = [
                 'title': 'Event Management',
                 'type' : 'item',
                 'icon' : 'whatshot',
-                'url'  : '/events'
+                'url'  : '/events/events',
             },
         ]
     }

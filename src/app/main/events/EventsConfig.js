@@ -1,23 +1,27 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
 import {FuseLoadable} from '@fuse';
+import {Redirect} from 'react-router-dom';
 
 export const EventsConfig = {
     settings: {
-        layout: {
-            config: {}
-        }
+        layout: {}
     },
     routes  : [
         {
-            path     : '/events/:id',
+            path     : '/events/events/:eventId',
             component: FuseLoadable({
-                loader: () => import('./Events')
+                loader: () => import('./event/Event')
+            })
+        },
+        {
+            path     : '/events/events',
+            component: FuseLoadable({
+                loader: () => import('./events/Events')
             })
         },
         {
             path     : '/events',
-            component: () => <Redirect to="/events/all"/>
+            component: () => <Redirect to="/events/events"/>
         }
     ]
 };

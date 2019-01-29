@@ -327,7 +327,9 @@ class EventTab extends Component {
                         />
                         <TableBody>
                             {res && res.map((activity) => ( activity.event_id !== '' && 
-                                <TableRow key={activity.event_id}>
+                                <TableRow key={activity.event_id} onClick={(ev)=>{
+                                    alert(activity.event_id)
+                                    }}>
                                     <CustomTableCell align="center">{activity.created_at}</CustomTableCell>
                                     <CustomTableCell align="center">{activity.event_name}</CustomTableCell>
                                     <CustomTableCell align="center">{activity.event_type}</CustomTableCell>
