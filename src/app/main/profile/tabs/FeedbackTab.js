@@ -259,6 +259,7 @@ class FeedbackTab extends Component {
     render()
     {
         const {order, orderBy} = this.state;
+        const {event_id} = this.props;
         const {person} = this.state;
         const provide_feedback = this.state.profileData === null ? null : this.state.profileData.provide_feedback;
         const receive_feedback = this.state.profileData === null ? null : this.state.profileData.receive_feedback;
@@ -268,9 +269,11 @@ class FeedbackTab extends Component {
         if (feedbacks !== null) {
             feedbacks = this.getFilteredArray(feedbacks, this.state.searchText);
             feedbacks && feedbacks.map((row) => {
-                res.push(createdata(row, person === false ? ((row.rating_communication + row.rating_expertise + row.rating_quality
-                    + row.rating_professionalism + row.rating_hire_again) / 5) : ((row.rating_communication + row.rating_payment + row.rating_clarity
-                        + row.rating_professionalism + row.rating_work_again) / 5)));
+                if (event_id === undefined || parseInt(row.event_id) === parseInt(event_id)) {
+                    res.push(createdata(row, person === false ? ((row.rating_communication + row.rating_expertise + row.rating_quality
+                        + row.rating_professionalism + row.rating_hire_again) / 5) : ((row.rating_communication + row.rating_payment + row.rating_clarity
+                            + row.rating_professionalism + row.rating_work_again) / 5)));
+                }
                 return null;
             });
 

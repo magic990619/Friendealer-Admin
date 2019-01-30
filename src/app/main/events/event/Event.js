@@ -19,6 +19,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import GoogleMap from 'google-map-react';
+import FeedbackTab from '../../profile/tabs/FeedbackTab';
 
 function Marker({text})
 {
@@ -323,7 +324,7 @@ class Event extends Component {
 
                                         <TextField
                                             className="mt-8 mb-16 mx-4"
-                                            label="Name"
+                                            label="Email"
                                             id="employer_email"
                                             name="employer_email"
                                             value={form.employer_email}
@@ -727,6 +728,11 @@ class Event extends Component {
                                             />
                                         </GoogleMap>
                                     </div>
+                                </div>
+                            )}
+                            {tabValue === 4 && (
+                                <div className="w-full">
+                                    <FeedbackTab user_id={form.employer_id} event_id={form._id}/>
                                 </div>
                             )}
                         </div>
