@@ -61,7 +61,7 @@ const rows = [
     { id: 'event_name', numeric: true, disablePadding: false, label: 'Event Name' },
     { id: 'event_type', numeric: true, disablePadding: false, label: 'Event Type' },
     { id: 'event_state', numeric: true, disablePadding: false, label: 'Event State' },
-    { id: 'action', numeric: true, disablePadding: false, label: 'Action' },
+    // { id: 'action', numeric: true, disablePadding: false, label: 'Action' },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -172,14 +172,14 @@ class EventTab extends Component {
         var profile = this.state.profileData;
         var res = [];
         profile.posted_event.forEach(function(cursor, err) {
-            if (cursor.event_id.localeCompare(event_id) !== 0) {
+            if (cursor.event_id !== event_id) {
                 res.push(cursor);
             }
         });
         profile.posted_event = res;
         res = [];
         profile.offered_event.forEach(function(cursor, err) {
-            if (cursor.event_id.localeCompare(event_id) !== 0) {
+            if (cursor.event_id !== event_id) {
                 res.push(cursor);
             }
         });
@@ -335,7 +335,7 @@ class EventTab extends Component {
                                     <CustomTableCell align="center">{activity.event_name}</CustomTableCell>
                                     <CustomTableCell align="center">{activity.event_type}</CustomTableCell>
                                     <CustomTableCell align="center">{activity.event_state}</CustomTableCell>
-                                    <CustomTableCell align="center">
+                                    {/* <CustomTableCell align="center">
                                         <IconButton
                                             onClick={(ev) => {
                                                 ev.stopPropagation();
@@ -346,7 +346,7 @@ class EventTab extends Component {
                                         >
                                             <Icon>delete</Icon>
                                         </IconButton>
-                                    </CustomTableCell>
+                                    </CustomTableCell> */}
                                 </TableRow>
                             ))}
                         </TableBody>

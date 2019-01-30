@@ -1,5 +1,6 @@
 import api from 'app/ApiConfig'
 import {showMessage} from 'app/store/actions/fuse';
+// import {FuseUtils} from '@fuse';
 
 export const GET_EVENT = '[E-COMMERCE APP] GET EVENT';
 export const SAVE_EVENT = '[E-COMMERCE APP] SAVE EVENT';
@@ -55,6 +56,10 @@ export function addEvent(data)
 export function newEvent()
 {
     const data = {
+        // _id              : FuseUtils.generateGUID(),
+        employer_id     : 0,
+        employer_name   : '',
+        employer_email  : '',
         name            : '',
         description     : '',
         category        : [],
@@ -69,7 +74,7 @@ export function newEvent()
         language        : 'English',
         currency_type   : 'USD',
         quantity        : 0,
-        lst             : 0,
+        lat             : 0,
         lng             : 0,
         visitors        : 0,
         friend_offer    : [],

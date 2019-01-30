@@ -183,6 +183,27 @@ class Event extends Component {
         );
     }
 
+    updateEmployerProfile = (form, is_update) => {
+        if (is_update === true) {
+            api.post('/profile/updatePostedEvent', {
+                employer_email: form.employer_email,
+                event_id: form._id,
+                event_name: form.name,
+                event_state: form.event_state,
+                created_at: Date.now(),
+            })
+        }
+        else {
+            api.post('/profile/addPostedEvent', {
+                employer_email: form.employer_email,
+                event_id: form._id,
+                event_name: form.name,
+                event_state: form.event_state,
+                created_at: Date.now(),
+            })
+        }
+    }
+
     render()
     {
         const {classes, saveEvent, addEvent} = this.props;
@@ -234,7 +255,10 @@ class Event extends Component {
                                     className="whitespace-no-wrap"
                                     variant="contained"
                                     disabled={!this.canBeSubmitted()}
-                                    onClick={() => saveEvent(form)}
+                                    onClick={() => {
+                                        saveEvent(form);
+                                        this.updateEmployerProfile(form, true);
+                                    }}
                                 >
                                     Save
                                 </Button>
@@ -244,7 +268,10 @@ class Event extends Component {
                                     className="whitespace-no-wrap"
                                     variant="contained"
                                     disabled={!this.canBeSubmitted()}
-                                    onClick={() => addEvent(form)}
+                                    onClick={() => {
+                                        addEvent(form);
+                                        this.updateEmployerProfile(form, false);
+                                    }}
                                 >
                                     Add
                                 </Button>
@@ -268,6 +295,9 @@ class Event extends Component {
                         <Tab className="h-64 normal-case" label="Requirement"/>
                         <Tab className="h-64 normal-case" label="Friends"/>
                         <Tab className="h-64 normal-case" label="Location"/>
+                        {form && form.event_state === 'Finished' &&
+                            <Tab className="h-64 normal-case" label="Feedback"/>
+                        }
                     </Tabs>
                 }
                 content={
@@ -276,6 +306,32 @@ class Event extends Component {
                             {tabValue === 0 && 
                             (
                                 <div>
+
+                                    <div className="flex">
+                                        <TextField
+                                            className="mt-8 mb-16 mx-4"
+                                            error={form.name === ''}
+                                            required
+                                            label="Name"
+                                            id="employer_name"
+                                            name="employer_name"
+                                            value={form.employer_name}
+                                            onChange={this.handleChange}
+                                            variant="outlined"
+                                            fullWidth
+                                        />
+
+                                        <TextField
+                                            className="mt-8 mb-16 mx-4"
+                                            label="Name"
+                                            id="employer_email"
+                                            name="employer_email"
+                                            value={form.employer_email}
+                                            onChange={this.handleChange}
+                                            variant="outlined"
+                                            fullWidth
+                                        />
+                                    </div>
 
                                     <TextField
                                         className="mt-8 mb-16"

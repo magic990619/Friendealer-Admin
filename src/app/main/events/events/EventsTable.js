@@ -8,7 +8,8 @@ import classNames from 'classnames';
 import _ from '@lodash';
 import EventsTableHead from './EventsTableHead';
 import * as Actions from '../store/actions';
-import moment from 'moment/moment'
+import moment from 'moment/moment';
+import api from 'app/ApiConfig.js';
 
 class EventsTable extends Component {
 
@@ -32,7 +33,7 @@ class EventsTable extends Component {
         {
             this.props.getEvents().then(()=>{
                 const data = this.getFilteredArray(this.props.events, this.props.searchText);
-                this.setState({data: this.props.events})
+                this.setState({data: data})
             });
         }
     }
@@ -110,6 +111,14 @@ class EventsTable extends Component {
     };
 
     isSelected = id => this.state.selected.indexOf(id) !== -1;
+
+    removeEmployerProfile = (form) => {
+        console.log(form);
+        api.post('/profile/removePostedEvent', {
+            employer_email: form.employer_email,
+            event_id: form._id,
+        })
+    }
 
     render()
     {
@@ -197,8 +206,10 @@ class EventsTable extends Component {
                                             <TableCell component="th" scope="row" align="center">
                                                 <IconButton onClick={(ev) => {
                                                     ev.stopPropagation();
-                                                    if (window.confirm('Are you sure to delete it?'))
+                                                    if (window.confirm('Are you sure to delete it?')) {
                                                         this.props.removeEvent(n);
+                                                        this.removeEmployerProfile(n);
+                                                    }
                                                 }}>
                                                     <Icon>delete</Icon>
                                                 </IconButton>
