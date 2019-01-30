@@ -19,7 +19,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Badge from '@material-ui/core/Badge';
 import Radio from '@material-ui/core/Radio';
-
+import history from 'history.js'
 
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -328,7 +328,8 @@ class EventTab extends Component {
                         <TableBody>
                             {res && res.map((activity) => ( activity.event_id !== '' && 
                                 <TableRow key={activity.event_id} onClick={(ev)=>{
-                                    alert(activity.event_id)
+                                    ev.stopPropagation();
+                                    history.push('/events/events/' + activity.event_id);
                                     }}>
                                     <CustomTableCell align="center">{activity.created_at}</CustomTableCell>
                                     <CustomTableCell align="center">{activity.event_name}</CustomTableCell>

@@ -15,6 +15,12 @@ const eventsReducer = function (state = initialState, action) {
                 data: action.payload
             };
         }
+        case Actions.REMOVE_EVENT:
+        {
+            return {
+                ...state
+            };
+        }
         case Actions.SET_EVENTS_SEARCH_TEXT:
         {
             return {

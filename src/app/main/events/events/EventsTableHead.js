@@ -4,26 +4,17 @@ import {
     TableSortLabel,
     TableCell,
     TableRow,
-    Checkbox,
     Tooltip,
-    IconButton,
-    Icon,
-    Menu,
-    MenuList,
-    MenuItem,
-    ListItemIcon,
-    ListItemText,
     withStyles
 } from '@material-ui/core';
-import classNames from 'classnames';
 
 const rows = [
     {
-        id            : 'image',
+        id            : 'created_at',
         align         : 'left',
-        disablePadding: true,
-        label         : '',
-        sort          : false
+        disablePadding: false,
+        label         : 'Created At',
+        sort          : true
     },
     {
         id            : 'name',
@@ -66,7 +57,14 @@ const rows = [
         disablePadding: false,
         label         : 'State',
         sort          : true
-    }
+    },
+    {
+        id            : 'action',
+        align         : 'right',
+        disablePadding: false,
+        label         : 'Action',
+        sort          : false
+    },
 ];
 
 const styles = theme => ({
@@ -95,49 +93,11 @@ class EventsTableHead extends React.Component {
 
     render()
     {
-        const {onSelectAllClick, order, orderBy, numSelected, rowCount, classes} = this.props;
-        const {selectedEventsMenu} = this.state;
+        const {order, orderBy} = this.props;
 
         return (
             <TableHead>
                 <TableRow className="h-64">
-                    <TableCell padding="checkbox" className="relative pl-4 sm:pl-12">
-                        <Checkbox
-                            indeterminate={numSelected > 0 && numSelected < rowCount}
-                            checked={numSelected === rowCount}
-                            onChange={onSelectAllClick}
-                        />
-                        {numSelected > 0 && (
-                            <div className={classNames("flex items-center justify-center absolute w-64 pin-t pin-l ml-68 h-64 z-10", classes.actionsButtonWrapper)}>
-                                <IconButton
-                                    aria-owns={selectedEventsMenu ? 'selectedEventsMenu' : null}
-                                    aria-haspopup="true"
-                                    onClick={this.openSelectedEventsMenu}
-                                >
-                                    <Icon>more_horiz</Icon>
-                                </IconButton>
-                                <Menu
-                                    id="selectedEventsMenu"
-                                    anchorEl={selectedEventsMenu}
-                                    open={Boolean(selectedEventsMenu)}
-                                    onClose={this.closeSelectedEventsMenu}
-                                >
-                                    <MenuList>
-                                        <MenuItem
-                                            onClick={() => {
-                                                this.closeSelectedEventsMenu();
-                                            }}
-                                        >
-                                            <ListItemIcon className={classes.icon}>
-                                                <Icon>delete</Icon>
-                                            </ListItemIcon>
-                                            <ListItemText inset primary="Remove"/>
-                                        </MenuItem>
-                                    </MenuList>
-                                </Menu>
-                            </div>
-                        )}
-                    </TableCell>
                     {rows.map(row => {
                         return (
                             <TableCell

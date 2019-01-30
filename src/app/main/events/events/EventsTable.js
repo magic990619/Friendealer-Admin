@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Icon, Table, TableBody, TableCell, TablePagination, TableRow, Checkbox} from '@material-ui/core';
+import {Icon, Table, TableBody, TableCell, TablePagination, TableRow, IconButton} from '@material-ui/core';
 import {FuseScrollbars} from '@fuse';
 import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import _ from '@lodash';
 import EventsTableHead from './EventsTableHead';
 import * as Actions from '../store/actions';
+import moment from 'moment/moment'
 
 class EventsTable extends Component {
 
@@ -127,7 +128,7 @@ class EventsTable extends Component {
                             orderBy={orderBy}
                             onSelectAllClick={this.handleSelectAllClick}
                             onRequestSort={this.handleRequestSort}
-                            rowCount={data.length}
+                            rowCount={data && data.length}
                         />
 
                         <TableBody>
@@ -160,20 +161,8 @@ class EventsTable extends Component {
                                             selected={isSelected}
                                             onClick={event => this.handleClick(n)}
                                         >
-                                            <TableCell className="w-48 pl-4 sm:pl-12" padding="checkbox">
-                                                <Checkbox
-                                                    checked={isSelected}
-                                                    onClick={event => event.stopPropagation()}
-                                                    onChange={event => this.handleCheck(event, n._id)}
-                                                />
-                                            </TableCell>
-
-                                            <TableCell className="w-52" component="th" scope="row" padding="none">
-                                                {/* {n.images.length > 0 ? (
-                                                    <img className="w-full block rounded" src={_.find(n.images, {id: n.featuredImageId}).url} alt={n.name}/>
-                                                ) : (
-                                                    <img className="w-full block rounded" src="assets/images/ecommerce/product-image-placeholder.png" alt={n.name}/>
-                                                )} */}
+                                            <TableCell className="w-48 pl-4 sm:pl-12">
+                                                {moment(n.created_at).format('MMMM Do YYYY, h:mm:ss a')}
                                             </TableCell>
 
                                             <TableCell component="th" scope="row">
@@ -202,6 +191,16 @@ class EventsTable extends Component {
                                             <TableCell component="th" scope="row" align="right">
                                                 {n.event_state}
                                             </TableCell>
+
+                                            <TableCell component="th" scope="row" align="center">
+                                                <IconButton onClick={(ev) => {
+                                                    ev.stopPropagation();
+                                                    if (window.confirm('Are you sure to delete it?'))
+                                                        this.props.removeEvent(n);
+                                                }}>
+                                                    <Icon>delete</Icon>
+                                                </IconButton>
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -211,7 +210,7 @@ class EventsTable extends Component {
 
                 <TablePagination
                     component="div"
-                    count={data.length}
+                    count={data && data.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     backIconButtonProps={{
@@ -231,7 +230,8 @@ class EventsTable extends Component {
 function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
-        getEvents: Actions.getEvents
+        getEvents: Actions.getEvents,
+        removeEvent: Actions.removeEvent
     }, dispatch);
 }
 

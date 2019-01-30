@@ -14,6 +14,20 @@ const categoriesReducer = function (state = initialState, action) {
                 categories: action.payload
             };
         }
+        case Actions.UPDATE_CATEGORY:
+        {
+            return {
+                // ...state,
+                categories: action.payload
+            };
+        }
+        case Actions.ADD_CATEGORY:
+        {
+            return {
+                // ...state,
+                categories: action.payload
+            };
+        }
         default:
         {
             return state;

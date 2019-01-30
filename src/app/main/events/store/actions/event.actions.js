@@ -1,6 +1,4 @@
-import axios from 'axios';
 import api from 'app/ApiConfig'
-import {FuseUtils} from '@fuse';
 import {showMessage} from 'app/store/actions/fuse';
 
 export const GET_EVENT = '[E-COMMERCE APP] GET EVENT';

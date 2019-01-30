@@ -141,6 +141,7 @@ class Event extends Component {
         friend_offer.map((cursor) => {
             if (cursor._id !== row._id)
                 res.push(cursor);
+            return null;
         });
         this.setState({form: _.set({...this.state.form}, 'friend_offer', res)});
     }
@@ -152,6 +153,7 @@ class Event extends Component {
         friend_join.map((cursor) => {
             if (cursor._id !== row._id)
                 res.push(cursor);
+            return null;
         });
         this.setState({form: _.set({...this.state.form}, 'friend_join', res)});
     }
@@ -306,6 +308,10 @@ class Event extends Component {
                                             },
                                             variant        : 'outlined'
                                         }}
+                                        options={basedata && basedata.categories.map(item => ({
+                                            value: item,
+                                            label: item,
+                                        }))}
                                         isMulti
                                     />
 

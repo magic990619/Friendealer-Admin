@@ -1,8 +1,8 @@
-import axios from 'axios';
 import api from 'app/ApiConfig'
 
-export const GET_EVENTS = '[E-COMMERCE APP] GET EVENTS';
-export const SET_EVENTS_SEARCH_TEXT = '[E-COMMERCE APP] SET EVENTS SEARCH TEXT';
+export const GET_EVENTS = '[EVENT] GET EVENTS';
+export const REMOVE_EVENT = '[EVENT] GET EVENTS';
+export const SET_EVENTS_SEARCH_TEXT = '[EVENT] SET EVENTS SEARCH TEXT';
 
 export function getEvents()
 {
@@ -12,6 +12,19 @@ export function getEvents()
         request.then((response) =>
             dispatch({
                 type   : GET_EVENTS,
+                payload: response.data.doc
+            })
+        );
+}
+
+export function removeEvent(params)
+{
+    const request = api.post('/events/removeEventById', {_id: params._id});
+
+    return (dispatch) =>
+        request.then((response) =>
+            dispatch({
+                type   : REMOVE_EVENT,
                 payload: response.data.doc
             })
         );

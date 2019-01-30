@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-import api from 'app/ApiConfig'
 import {withStyles, Button, Tab, Tabs, Typography} from '@material-ui/core';
 import {FusePageSimple, FuseAnimate} from '@fuse';
 import CurrencyTab from './tabs/CurrencyTab';
 import EventTypeTab from './tabs/EventTypeTab';
 import EventStateTab from './tabs/EventStateTab';
-import _ from '@lodash';
 
 const styles = theme => ({
     layoutHeader : {
