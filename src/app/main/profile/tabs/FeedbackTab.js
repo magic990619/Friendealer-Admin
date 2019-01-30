@@ -291,7 +291,7 @@ class FeedbackTab extends Component {
                         size="large"
                     />
                     <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
-                        Employeer
+                        Employer
                     </Typography>
                     <div className="flex flex-1 items-center justify-center pr-8 sm:px-12">
                         <FuseAnimate animation="transition.slideLeftIn" delay={300}>

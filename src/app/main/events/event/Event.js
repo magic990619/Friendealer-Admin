@@ -185,7 +185,7 @@ class Event extends Component {
 
     render()
     {
-        const {classes, saveEvent} = this.props;
+        const {classes, saveEvent, addEvent} = this.props;
         const {tabValue, form, basedata} = this.state;
 
         return (
@@ -228,6 +228,8 @@ class Event extends Component {
                                 </div>
                             </div>
                             <FuseAnimate animation="transition.slideRightIn" delay={300}>
+                            <div>
+                            {this.props.match.params.eventId !== 'new' &&
                                 <Button
                                     className="whitespace-no-wrap"
                                     variant="contained"
@@ -236,6 +238,18 @@ class Event extends Component {
                                 >
                                     Save
                                 </Button>
+                            }
+                            {this.props.match.params.eventId === 'new' &&
+                                <Button
+                                    className="whitespace-no-wrap"
+                                    variant="contained"
+                                    disabled={!this.canBeSubmitted()}
+                                    onClick={() => addEvent(form)}
+                                >
+                                    Add
+                                </Button>
+                            }
+                            </div>
                             </FuseAnimate>
                         </div>
                     )
@@ -471,8 +485,8 @@ class Event extends Component {
                                     <TextField
                                         className="mt-8 mb-16"
                                         label="Min Price"
-                                        id="cost-min"
-                                        name="cost-min"
+                                        id="cost_min"
+                                        name="cost_min"
                                         value={form.cost_min}
                                         onChange={this.handleChange}
                                         InputProps={{
@@ -486,8 +500,8 @@ class Event extends Component {
                                     <TextField
                                         className="mt-8 mb-16"
                                         label="Max Price"
-                                        id="cost-max"
-                                        name="cost-max"
+                                        id="cost_max"
+                                        name="cost_max"
                                         value={form.cost_max}
                                         onChange={this.handleChange}
                                         InputProps={{
@@ -501,8 +515,8 @@ class Event extends Component {
                                     <TextField
                                         className="mt-8 mb-16"
                                         label="Min Age"
-                                        id="age-min"
-                                        name="age-min"
+                                        id="age_min"
+                                        name="age_min"
                                         value={form.age_min}
                                         onChange={this.handleChange}
                                         type="number"
@@ -513,8 +527,8 @@ class Event extends Component {
                                     <TextField
                                         className="mt-8 mb-16"
                                         label="Max Age"
-                                        id="age-max"
-                                        name="age-max"
+                                        id="age_max"
+                                        name="age_max"
                                         value={form.age_max}
                                         onChange={this.handleChange}
                                         type="number"
@@ -526,8 +540,8 @@ class Event extends Component {
                                     <TextField
                                         className="mt-8 mb-16"
                                         label="Start Time"
-                                        id="datetime-from"
-                                        name="datetime-from"
+                                        id="datetime_from"
+                                        name="datetime_from"
                                         value={form.datetime_from}
                                         onChange={this.handleChange}
                                         type=""
@@ -538,8 +552,8 @@ class Event extends Component {
                                     <TextField
                                         className="mt-8 mb-16"
                                         label="End Time"
-                                        id="datetime-to"
-                                        name="datetime-to"
+                                        id="datetime_to"
+                                        name="datetime_to"
                                         value={form.datetime_to}
                                         onChange={this.handleChange}
                                         type=""
@@ -673,7 +687,8 @@ function mapDispatchToProps(dispatch)
     return bindActionCreators({
         getEvent : Actions.getEvent,
         newEvent : Actions.newEvent,
-        saveEvent: Actions.saveEvent
+        saveEvent: Actions.saveEvent,
+        addEvent : Actions.addEvent,
     }, dispatch);
 }
 

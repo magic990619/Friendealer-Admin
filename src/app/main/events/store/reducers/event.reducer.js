@@ -21,6 +21,13 @@ const eventReducer = function (state = initialState, action) {
                 data: action.payload
             };
         }
+        case Actions.ADD_EVENT:
+        {
+            return {
+                ...state,
+                data: action.payload
+            };
+        }
         default:
         {
             return state;

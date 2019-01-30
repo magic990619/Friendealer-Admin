@@ -30,8 +30,10 @@ class EventsTable extends Component {
     {
         if ( !_.isEqual(this.props.events, prevProps.events) || !_.isEqual(this.props.searchText, prevProps.searchText) )
         {
-            const data = this.getFilteredArray(this.props.events, this.props.searchText);
-            this.setState({data})
+            this.props.getEvents().then(()=>{
+                const data = this.getFilteredArray(this.props.events, this.props.searchText);
+                this.setState({data: this.props.events})
+            });
         }
     }
 
@@ -170,7 +172,7 @@ class EventsTable extends Component {
                                             </TableCell>
 
                                             <TableCell className="truncate" component="th" scope="row">
-                                                {/* {n.categories.join(', ')} */}
+                                                {n.category.join(', ')}
                                             </TableCell>
 
                                             <TableCell component="th" scope="row" align="right">
