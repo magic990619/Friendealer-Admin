@@ -147,9 +147,9 @@ class EventsTable extends Component {
                                 (o) => {
                                     switch ( orderBy )
                                     {
-                                        case 'categories':
+                                        case 'category':
                                         {
-                                            return o.categories[0];
+                                            return o.category[0];
                                         }
                                         default:
                                         {

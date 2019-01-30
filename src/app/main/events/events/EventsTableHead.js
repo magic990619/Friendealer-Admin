@@ -24,7 +24,7 @@ const rows = [
         sort          : true
     },
     {
-        id            : 'categories',
+        id            : 'category',
         align         : 'left',
         disablePadding: false,
         label         : 'Category',
