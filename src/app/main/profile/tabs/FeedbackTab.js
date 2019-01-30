@@ -350,7 +350,7 @@ class FeedbackTab extends Component {
                             </Table>
                             {(res === null || res.length === 0) && 
                                 <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
-                                    There are no feedbacks.
+                                    No feedbacks found.
                                 </Typography>
                             }
                         </FuseAnimateGroup>

@@ -50,7 +50,7 @@ class UsersList extends Component {
             return (
                 <div className="flex items-center justify-center h-full">
                     <Typography color="textSecondary" variant="h5">
-                        There are no users!
+                        No users found
                     </Typography>
                 </div>
             );

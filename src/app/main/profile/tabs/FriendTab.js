@@ -342,7 +342,7 @@ class FriendTab extends Component {
                                     {/* {
                                         friends == null &&
                                         <Typography className="inline font-medium" color="primary" paragraph={false}>
-                                            There are no friends.
+                                            No friends found
                                        </Typography>
                                     } */}
                                 </List>

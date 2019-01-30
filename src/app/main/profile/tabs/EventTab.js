@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import ReactTable from "react-table";
 import {
     Icon,
     IconButton,
@@ -20,6 +21,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Badge from '@material-ui/core/Badge';
 import Radio from '@material-ui/core/Radio';
 import history from 'history.js'
+import moment from 'moment/moment';
 
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -34,7 +36,7 @@ function desc(a, b, orderBy) {
 function createdata(event, type) {
     return {
         event_id : event.event_id,
-        created_at: event.created_at,
+        created_at: moment(event.created_at).format('MMMM Do YYYY, h:mm:ss a'),
         event_name: event.event_name,
         event_type: type,
         event_state: event.event_state,
@@ -296,67 +298,66 @@ class EventTab extends Component {
                     </div>
                 </div>
                 <div className="flex flex-1 items-center justify-center pr-8 sm:px-12">
-                <FuseAnimate animation="transition.slideLeftIn" delay={300}>
-                    <Paper className="flex p-4 items-center w-full max-w-512 px-8 py-4" elevation={1}>
-                        <Icon className="mr-8" color="action">search</Icon>
-                        <Input
-                            placeholder="Search for anything"
-                            className="flex flex-1"
-                            disableUnderline
-                            fullWidth
-                            value={this.state.searchText}
-                            inputProps={{
-                                'aria-label': 'Search'
-                            }}
-                            onChange={this.setSearchText}
-                        />
-                    </Paper>
-                </FuseAnimate>
+                    <FuseAnimate animation="transition.slideLeftIn" delay={300}>
+                        <Paper className="flex p-4 items-center w-full max-w-512 px-8 py-4" elevation={1}>
+                            <Icon className="mr-8" color="action">search</Icon>
+                            <Input
+                                placeholder="Search for anything"
+                                className="flex flex-1"
+                                disableUnderline
+                                fullWidth
+                                value={this.state.searchText}
+                                inputProps={{
+                                    'aria-label': 'Search'
+                                }}
+                                onChange={this.setSearchText}
+                            />
+                        </Paper>
+                    </FuseAnimate>
                 </div>
-                <FuseAnimateGroup
-                    enter={{
-                        animation: "transition.slideUpBigIn"
-                    }}
-                    >
-                    <Table>
-                        <EnhancedTableHead
-                        order={order}
-                        orderBy={orderBy}
-                        onRequestSort={this.handleRequestSort}
-                        // rowCount={data.length}
-                        />
-                        <TableBody>
-                            {res && res.map((activity) => ( activity.event_id !== '' && 
-                                <TableRow key={activity.event_id} onClick={(ev)=>{
-                                    ev.stopPropagation();
-                                    history.push('/events/events/' + activity.event_id);
-                                    }}>
-                                    <CustomTableCell align="center">{activity.created_at}</CustomTableCell>
-                                    <CustomTableCell align="center">{activity.event_name}</CustomTableCell>
-                                    <CustomTableCell align="center">{activity.event_type}</CustomTableCell>
-                                    <CustomTableCell align="center">{activity.event_state}</CustomTableCell>
-                                    {/* <CustomTableCell align="center">
-                                        <IconButton
-                                            onClick={(ev) => {
-                                                ev.stopPropagation();
-                                                if (window.confirm('Are you sure to delete it?')) {
-                                                    this.handleDeleteEvent(activity.event_id);
-                                                }
-                                            }}
-                                        >
-                                            <Icon>delete</Icon>
-                                        </IconButton>
-                                    </CustomTableCell> */}
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                    {res.length === 0 && 
-                        <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
-                            There are no events.
-                        </Typography>
-                    }
-                </FuseAnimateGroup>
+                <FuseAnimate animation="transition.slideUpIn" delay={300}>
+                    <ReactTable
+                        className="-striped -highlight border-0"
+                        getTrProps={(state, rowInfo, column) => {
+                            return {
+                                className: "cursor-pointer",
+                                onClick  : (e, handleOriginal) => {
+                                    if ( rowInfo )
+                                    {
+                                        history.push('/events/events/' + rowInfo.original.event_id);
+                                    }
+                                }
+                            }
+                        }}
+                        data={res}
+                        columns={[
+                            {
+                                Header    : "Created At",
+                                accessor  : "created_at",
+                                filterable: true,
+                                className : "font-bold"
+                            },
+                            {
+                                Header    : "Event Name",
+                                accessor  : "event_name",
+                                filterable: true,
+                                className : "font-bold"
+                            },
+                            {
+                                Header    : "Event Type",
+                                accessor  : "event_type",
+                                filterable: true
+                            },
+                            {
+                                Header    : "Event State",
+                                accessor  : "event_state",
+                                filterable: true
+                            },
+                        ]}
+                        defaultPageSize={10}
+                        noDataText="No events found"
+                    />
+                </FuseAnimate>
             </div>
         );
     }

@@ -316,7 +316,7 @@ class PhotosVideosTab extends Component {
                                 {
                                     (photosVideos === null || photosVideos.length === 0) && 
                                     <div>
-                                        <Typography className="mr-16" variant="subtitle1">There are no photos.</Typography>
+                                        <Typography className="mr-16" variant="subtitle1">No photos found</Typography>
                                     </div>
                                 }
                             </GridList>
