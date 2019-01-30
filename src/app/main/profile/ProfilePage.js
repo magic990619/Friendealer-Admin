@@ -3,6 +3,7 @@ import api from 'app/ApiConfig'
 import {withStyles, Avatar, Button, Tab, Tabs, Typography} from '@material-ui/core';
 import {FusePageSimple, FuseAnimate} from '@fuse';
 import EventTab from './tabs/EventTab';
+import FriendTab from './tabs/FriendTab';
 import FeedbackTab from './tabs/FeedbackTab';
 import PhotosVideosTab from './tabs/PhotosVideosTab';
 import AboutTab from './tabs/AboutTab';
@@ -127,6 +128,10 @@ class ProfilePage extends Component {
                             classes={{
                                 root: "h-64"
                             }} label="Photos"/>
+                        <Tab
+                            classes={{
+                                root: "h-64"
+                            }} label="Friends"/>
                     </Tabs>
                 }
                 content={
@@ -142,6 +147,9 @@ class ProfilePage extends Component {
                         )}
                         {value === 3 && user_id !== undefined && (
                             <PhotosVideosTab user_id={user_id}/>
+                        )}
+                        {value === 4 && user_id !== undefined && (
+                            <FriendTab user_id={user_id}/>
                         )}
                     </div>
                 }

@@ -367,80 +367,20 @@ this.state.profileData &&
                     </FuseAnimateGroup>
                 </div>
 }
-                <div className="flex flex-col md:w-400">
+                <div className="">
                     <FuseAnimateGroup
                         enter={{
                             animation: "transition.slideUpBigIn"
                         }}
                     >
-                        <Card className="w-full mb-16 mr-24">
-                            <AppBar position="static" elevation={0}>
-                                <Toolbar className="pl-16 pr-8">
-                                    <Typography variant="subtitle1" color="inherit" className="flex-1">
-                                        Friends
-                                    </Typography>
-                                    {/* <Button className="normal-case" color="inherit" size="small">See 454 more</Button> */}
-                                </Toolbar>
-                            </AppBar>
-                            <CardContent className="p-0">
-                                <List className="p-8">
-                                    {friends && friends.map((friend) => (
-                                        // <img key={friend.friend_id} className="w-64 m-4" src={friend.avatar} alt={friend.name} />
-                                        <ListItem key={friend.friend_id}>
-                                        {friend.friend_id !== '' &&
-                                            <Avatar src={friend.avatar} alt={friends.name}>{friends.name}</Avatar>
-                                        }
-                                            <ListItemText
-                                                primary={(
-                                                    <div className="">
-                                                        <Typography className="inline font-medium" color="primary" paragraph={false}>
-                                                            {friend.name}
-                                                        </Typography>
-
-                                                        {/* <Typography className="inline ml-4" color="primary" paragraph={false}>
-                                                            {(friend.is_favourite == 0 ? "" : "favourite")}
-                                                        </Typography> */}
-                                                    </div>
-                                                )}
-                                                secondary={friend.is_favourite === true ? "favourite" : ""}
-                                            />
-                                            <ListItemSecondaryAction>
-                                                    <IconButton>
-                                                        <Icon onClick={(ev) => {
-                                                            ev.stopPropagation();
-                                                            history.push('/profile/' + friend.friend_id);
-                                                            window.location.reload();
-                                                            }}>more_vert</Icon>
-                                                    </IconButton>
-                                                    <IconButton>
-                                                        <Icon onClick={(ev) => {
-                                                            ev.stopPropagation();
-                                                            if (window.confirm('Are you sure to remove this friend?'))
-                                                                this.handleDeleteFriend(friend.friend_id);
-                                                            }}>delete</Icon>
-                                                    </IconButton>
-                                            </ListItemSecondaryAction>
-                                        </ListItem>
-                                    ))}
-                                    {
-                                        friends == null &&
-                                        <Typography className="inline font-medium" color="primary" paragraph={false}>
-                                            There are no friends.
-                                       </Typography>
-                                    }
-                                </List>
-                            </CardContent>
-                        </Card>
                         <div>
-                            <Button variant="contained" color="secondary" className="m-32 min-w-76" onClick={this.handleSave}>
+                            <Button variant="contained" color="secondary" className="m-12 min-w-76" onClick={this.handleSave}>
                                 Save
                             </Button>
-                            <Button variant="contained" color="secondary" className="m-32 min-w-76" onClick={this.handleClear}>
+                            <Button variant="contained" color="secondary" className="m-12 min-w-76" onClick={this.handleClear}>
                                 Clear
                             </Button>
                         </div>
-
-
                     </FuseAnimateGroup>
                 </div>
             </div>
