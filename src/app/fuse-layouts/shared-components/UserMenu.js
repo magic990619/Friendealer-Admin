@@ -84,11 +84,7 @@ class UserMenu extends Component {
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
-                            <MenuItem  onClick={(ev) => {
-                                                        ev.stopPropagation();
-                                                        history.push('/profile/' + user.userId);
-                                                        window.location.reload();
-                                                    }}>
+                            <MenuItem component={Link} to={'/profile/' + user.userId} onClick={this.userMenuClose}>
                                 <ListItemIcon>
                                     <Icon>account_circle</Icon>
                                 </ListItemIcon>

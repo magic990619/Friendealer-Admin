@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
 import history from 'history.js';
+import _ from '@lodash';
 
 const newProfile = {
     profileData: {
@@ -46,6 +47,15 @@ class AboutTab extends Component {
     {
         this.getUserProfile();
     }
+
+    componentDidUpdate(prevProps, prevState)
+    {
+        if ( !_.isEqual(this.props.location, prevProps.location) || this.props.user_id !== prevProps.user_id)
+        {
+            this.getUserProfile();
+        }
+    }
+
 
     getUserProfile = () => {
         const {user_id} = this.props;
