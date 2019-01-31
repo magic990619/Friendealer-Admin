@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import _ from '@lodash';
 import Select from '@material-ui/core/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import api from 'app/ApiConfig';
 
 const newUserState = {
     _id      : '',
@@ -18,6 +19,7 @@ const newUserState = {
     start_time: Date(),
     end_time: Date(),
     avatar  : 'assets/images/avatars/profile.jpg',
+    basedata: null,
 };
 
 class UserDialog extends Component {
@@ -52,6 +54,10 @@ class UserDialog extends Component {
                 this.setState({...newUserState});
             }
         }
+        api.post('/base/getBasedata', {})
+            .then(res => {
+                this.setState({basedata: res.data.doc});
+        });
     }
 
     handleChange = (event) => {
@@ -73,6 +79,7 @@ class UserDialog extends Component {
     render()
     {
         const {userDialog, addUser, updateUser, removeUser} = this.props;
+        const {basedata} = this.state;
 
         return (
             <Dialog
@@ -223,10 +230,11 @@ class UserDialog extends Component {
                             }
                             fullWidth
                         >
-                            <option value="Free">Free</option>
-                            <option value="Basic">Basic</option>
-                            <option value="Premium">Premium</option>
-                            <option value="Premium Pro">Premium Pro</option>
+                            {basedata && 
+                                basedata.membership.map((cursor) => (
+                                    <option value={cursor.name} key={cursor._id}>{cursor.name}</option>
+                                ))
+                            }
                         </Select>
                     </div>
 
