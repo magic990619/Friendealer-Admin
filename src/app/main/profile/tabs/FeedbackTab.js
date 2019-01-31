@@ -18,6 +18,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import FeedbackDialog from './FeedbackDialog';
+import moment from 'moment/moment';
 
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -333,7 +334,7 @@ class FeedbackTab extends Component {
                                         return (
                                         <TableRow key={row.event_id}>
                                             <CustomTableCell component="th" scope="row">
-                                            {row.created_at}
+                                            {moment(row.created_at).format('MMMM Do YYYY, h:mm:ss a')}
                                             </CustomTableCell>
                                             <CustomTableCell align="center">{row.event_name}</CustomTableCell>
                                             <CustomTableCell align="center">{row.feedback}</CustomTableCell>

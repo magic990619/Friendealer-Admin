@@ -48,23 +48,33 @@ export default class AvatarEditDialog extends React.Component {
   }
 
   render() {
+    const {type} = this.props;
     return (
       <div>
+        {type === 'avatar' &&
         <IconButton >
             <Icon onClick={(ev) => {
                 ev.stopPropagation();
                 this.handleClickOpen();
             }}>info</Icon>
         </IconButton>
+        }
+        {type === 'background' &&
+        <Button className="mr-8 normal-case" variant="contained" color="secondary" aria-label="Follow" onClick={(ev) => {
+          ev.stopPropagation();
+          this.handleClickOpen();
+          }}>Background</Button>
+        }
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Avatar</DialogTitle>
+        {type === 'avatar' && <DialogTitle id="form-dialog-title">Avatar</DialogTitle>}          
+        {type === 'background' && <DialogTitle id="form-dialog-title">Background</DialogTitle>}
           <DialogContent>
             <DialogContentText>
-              To edit this avatar, please enter upload here.
+              To edit this image, please enter upload here.
             </DialogContentText>
             <input type='file' id='photo_url' name='photo_url' onChange={this.handleselectedFile} />
           </DialogContent>

@@ -63,6 +63,15 @@ class ProfilePage extends Component {
         });
     }
 
+    handleSaveBackground = path => {
+        var user_id = this.state.accountData._id;
+        api.post('/auth/setAccountBackground', {
+            path, user_id,
+        }).then(res => {
+            this.setState({ accountData: res.data.doc });
+        });
+    }
+
     render()
     {
         const {value} = this.state;
@@ -93,7 +102,7 @@ class ProfilePage extends Component {
                         </div>
 
                         <div className="flex items-center justify-end">
-                            <Button className="mr-8 normal-case" variant="contained" color="secondary" aria-label="Follow">Follow</Button>
+                            <AvatarEditDialog type="background" onSave={this.handleSaveBackground} />
                             <Button className="normal-case" variant="contained" color="primary" aria-label="Send Message">Send Message</Button>
                         </div>
                     </div>

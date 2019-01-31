@@ -20,6 +20,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import GoogleMap from 'google-map-react';
 import FeedbackTab from '../../profile/tabs/FeedbackTab';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+import Grid from '@material-ui/core/Grid';
+import 'date-fns';
 
 function Marker({text})
 {
@@ -204,6 +208,14 @@ class Event extends Component {
             })
         }
     }
+
+    handleStartDateChange = date => {
+        this.setState({form: _.set({...this.state.form}, 'datetime_from', date)});
+    };
+
+    handleEndDateChange = date => {
+        this.setState({form: _.set({...this.state.form}, 'datetime_to', date)});
+    };
 
     render()
     {
@@ -594,29 +606,39 @@ class Event extends Component {
                                         // helperText="Add a compare price to show next to the real price"
                                     />
 
-                                    <TextField
-                                        className="mt-8 mb-16"
-                                        label="Start Time"
-                                        id="datetime_from"
-                                        name="datetime_from"
-                                        value={form.datetime_from}
-                                        onChange={this.handleChange}
-                                        type=""
-                                        variant="outlined"
-                                        fullWidth
-                                    />
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <Grid container className={classes.grid} justify="space-around">
+                                        <DatePicker
+                                            margin="normal"
+                                            label="Start Date"
+                                            value={form.datetime_from}
+                                            onChange={this.handleStartDateChange}
+                                        />
+                                        <TimePicker
+                                            margin="normal"
+                                            label="Time"
+                                            value={form.datetime_from}
+                                            onChange={this.handleStartDateChange}
+                                        />
+                                        </Grid>
+                                    </MuiPickersUtilsProvider>
 
-                                    <TextField
-                                        className="mt-8 mb-16"
-                                        label="End Time"
-                                        id="datetime_to"
-                                        name="datetime_to"
-                                        value={form.datetime_to}
-                                        onChange={this.handleChange}
-                                        type=""
-                                        variant="outlined"
-                                        fullWidth
-                                    />
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <Grid container className={classes.grid} justify="space-around">
+                                        <DatePicker
+                                            margin="normal"
+                                            label="End Date"
+                                            value={form.datetime_to}
+                                            onChange={this.handleEndDateChange}
+                                        />
+                                        <TimePicker
+                                            margin="normal"
+                                            label="Time"
+                                            value={form.datetime_to}
+                                            onChange={this.handleEndDateChange}
+                                        />
+                                        </Grid>
+                                    </MuiPickersUtilsProvider>
 
                                 </div>
                             )}

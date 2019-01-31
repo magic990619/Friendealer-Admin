@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {GridList, GridListTile, GridListTileBar, Icon, IconButton, Typography, ListSubheader, Button, withStyles, Avatar} from '@material-ui/core';
-import {FuseScrollbars} from '@fuse';
-import {FuseAnimateGroup} from '@fuse';
+import {FuseScrollbars, FuseAnimate, FuseAnimateGroup} from '@fuse';
 import api from 'app/ApiConfig';
 import TextField from '@material-ui/core/TextField';
 import PhotoAddDialog from './PhotoAddDialog.js'
@@ -43,7 +42,6 @@ const styles = theme => ({
             marginLeft: 12
         }
     },
-
 });
 class PhotosVideosTab extends Component {
 
@@ -182,11 +180,34 @@ class PhotosVideosTab extends Component {
         // });
     }
 
+    nextImage = (handle) => {
+        const {edit_photo, photos} = this.state;
+        var prv = null, res = null;
+        var flag = false;
+        if (handle === 1) {
+            photos.forEach(function(cursor, err) {
+                if (cursor._id === edit_photo._id) res = prv;
+                prv = cursor;
+            })
+        }
+        else {
+            photos.forEach(function(cursor, err) {
+                if (flag === true) {
+                    res = cursor;
+                }
+                if (cursor._id === edit_photo._id)
+                    flag = true;
+            })
+        }
+        if (res !== null) this.setState({edit_photo: res});
+    }
+
     render()
     {
         const {classes} = this.props;
+        const {edit_photo} = this.state;
         const photosVideos =  (this.state.photos === null || this.state.photos.user_id === '') ? null : this.state.photos;
-        const comments = this.state.edit_photo.comment;
+        const comments = edit_photo.comment;
 
         console.log(photosVideos);
 
@@ -225,9 +246,34 @@ class PhotosVideosTab extends Component {
                                         >
                                         {/* <DialogTitle id="form-dialog-title">Photo</DialogTitle> */}
                                         <div className={classes.form}>
-                                            <div className={classes.imageshow + ' bg-black'}>
-                                                <img src={"http://localhost:8888/uploads/" + this.state.edit_photo.photo_url} alt={period.title} className={classes.image} />
-                                            </div>
+                                            {photosVideos && photosVideos.map((cursor) => {
+                                                if (cursor.photo_url === edit_photo.photo_url) {
+                                                    return (
+                                                        <FuseAnimate animation="transition.slideLeftIn" delay={300} key={edit_photo.photo_url}>
+                                                        <div className={classes.imageshow + ' bg-black block'}>
+                                                            <img src={"http://localhost:8888/uploads/" + edit_photo.photo_url} alt={period.title} className={classes.image}/>
+                                                            <a className="cursor-pointer absolute p-16 font-bold text-18 text-grey-lighter select-none pin-l" onClick={(ev)=>{
+                                                                ev.stopPropagation();
+                                                                this.nextImage(1);
+                                                            }}>&#10094;</a>
+                                                            <a className="cursor-pointer absolute p-16 font-bold text-18 text-grey-lighter select-none pin-r" onClick={(ev)=>{
+                                                                ev.stopPropagation();
+                                                                this.nextImage(-1);
+                                                            }}>&#10095;</a>
+                                                        </div>
+                                                        </FuseAnimate>
+                                                    );
+                                                }
+                                                else {
+                                                    return (
+                                                        <FuseAnimate animation="transition.slideLeftIn" delay={300} key={cursor.photo_url}>
+                                                        <div className={classes.imageshow + ' bg-black hidden'}>
+                                                            <img src={"http://localhost:8888/uploads/" + cursor.photo_url} alt={period.title} className={classes.image}/>
+                                                        </div>
+                                                        </FuseAnimate>
+                                                    );
+                                                }
+                                            })}
                                             <FuseScrollbars className={classes.editshow}>
                                             <div>
                                             <DialogContent>
@@ -241,7 +287,7 @@ class PhotosVideosTab extends Component {
                                                     id="title"
                                                     name="title"
                                                     label="Title"
-                                                    value={this.state.edit_photo.title}
+                                                    value={edit_photo.title}
                                                     onChange={this.handleEditChange('title')}
                                                     fullWidth
                                                 />
@@ -251,7 +297,7 @@ class PhotosVideosTab extends Component {
                                                     id="description"
                                                     name="description"
                                                     label="Description"
-                                                    value={this.state.edit_photo.description}
+                                                    value={edit_photo.description}
                                                     onChange={this.handleEditChange('description')}
                                                     variant="outlined"
                                                     multiline
@@ -282,7 +328,7 @@ class PhotosVideosTab extends Component {
                                             <DialogActions>
                                                 <Button onClick={(ev) => {
                                                     ev.stopPropagation();
-                                                    this.handleSave(this.state.edit_photo);
+                                                    this.handleSave(edit_photo);
                                                     this.handleClose();
                                                 }} color="primary">
                                                     Save

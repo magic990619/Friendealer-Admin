@@ -169,7 +169,7 @@ class Categories extends Component {
                         {categories.map((category) => {
                             return (
                                 <div className="w-full pb-12 sm:w-1/3 lg:w-1/4 sm:p-16" key={category._id}>
-                                    <Card elevation={1} className="flex flex-col h-200">
+                                    <Card elevation={1} className="flex flex-col">
                                         <div
                                             className="flex flex-no-shrink items-center justify-between px-24 h-48"
                                         >

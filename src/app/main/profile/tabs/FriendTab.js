@@ -201,7 +201,7 @@ class FriendTab extends Component {
                         {friend_groups && friend_groups.map((group) => {
                             return (
                                 <div className="w-full pb-12 sm:w-1/3 lg:w-1/4 sm:p-16" key={group._id}>
-                                    <Card elevation={1} className="flex flex-col h-200" onClick={(ev) => {
+                                    <Card elevation={1} className="flex flex-col" onClick={(ev) => {
                                         this.handleSelect(group._id);
                                     }}>
                                         <div
