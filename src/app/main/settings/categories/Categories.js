@@ -4,25 +4,20 @@ import {
     Button,
     Card,
     CardContent,
-    // OutlinedInput,
     Icon,
     TextField,
     Typography,
     CardActions,
     Divider,
-    // Select,
-    // InputLabel,
-    // FormControl,
-    // MenuItem,
-    // LinearProgress
+    Input,
+    Paper,
 } from '@material-ui/core';
-import {FuseAnimate, FuseAnimateGroup, FuseChipSelect} from '@fuse';
+import {FuseAnimate, FuseAnimateGroup, FuseChipSelect, FuseUtils} from '@fuse';
 import withReducer from 'app/store/withReducer';
 import {bindActionCreators} from 'redux';
 import connect from 'react-redux/es/connect/connect';
 import classNames from 'classnames';
 import _ from '@lodash';
-// import {Link} from 'react-router-dom';
 import * as Actions from '../store/actions';
 import reducer from '../store/reducers';
 import Dialog from '@material-ui/core/Dialog';
@@ -53,6 +48,7 @@ class Categories extends Component {
     state = {
         open: false,
         categories: [],
+        searchText: '',
         is_add: false,
         edit_category: {
             name: '',
@@ -117,9 +113,24 @@ class Categories extends Component {
         this.setState({edit_category: _.set({...this.state.edit_category}, name, value.map(item => item.value))});
     };
 
+    setSearchText = event => {
+        this.setState({searchText: event.target.value});
+    }
+
+    getFilteredArray = (entities, searchText) => {
+        const arr = Object.keys(entities).map((id) => entities[id]);
+        if ( searchText.length === 0 )
+        {
+            return arr;
+        }
+        return FuseUtils.filterArrayByString(arr, searchText);
+    };
+
     render() {
-        const {categories, edit_category} = this.state;
+        const {edit_category} = this.state;
         const {classes} = this.props;
+        var categories = this.getFilteredArray(this.state.categories, this.state.searchText);
+
         return (
             <div className="w-full">
                 <div className={classNames(classes.header, "relative overflow-hidden flex flex-col items-center justify-center text-center p-16 sm:p-24 h-100 sm:h-188")}>
@@ -152,6 +163,24 @@ class Categories extends Component {
                     > Add Category </Button>
                 </div>
                 <div className="max-w-2xl w-full mx-auto px-8 sm:px-16 py-24">
+                  <div className="flex flex-1 items-center justify-center pr-8 sm:px-12">
+                        <FuseAnimate animation="transition.slideLeftIn" delay={300}>
+                            <Paper className="flex p-4 items-center w-full max-w-512 px-8 py-4" elevation={1}>
+                                <Icon className="mr-8" color="action">search</Icon>
+                                <Input
+                                    placeholder="Search for anything"
+                                    className="flex flex-1"
+                                    disableUnderline
+                                    fullWidth
+                                    value={this.state.searchText}
+                                    inputProps={{
+                                        'aria-label': 'Search'
+                                    }}
+                                    onChange={this.setSearchText}
+                                />
+                            </Paper>
+                        </FuseAnimate>
+                    </div>
                     <FuseAnimateGroup
                         enter={{
                             animation: "transition.slideUpBigIn"
