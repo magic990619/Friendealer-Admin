@@ -11,6 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import _ from '@lodash';
+import MembershipDialog from './MembershipDialog';
 
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -37,10 +38,14 @@ function getSorting(order, orderBy) {
 }
   
 const rows = [
-    { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
-    { id: 'subtitle', numeric: false, disablePadding: false, label: 'Subtitle' },
-    { id: 'description', numeric: false, disablePadding: false, label: 'Description' },
-    { id: 'action', numeric: false, disablePadding: false, label: 'Action' },
+    { id: 'name', numeric: false, disablePadding: true, label: 'Title' },
+    { id: 'yearly_rate', numeric: true, disablePadding: false, label: 'Annual Rate (USD)' },
+    { id: 'monthly_rate', numeric: true, disablePadding: false, label: 'Montly Rate (USD)' },
+    { id: 'photos_per_acts', numeric: true, disablePadding: false, label: 'Photos per activity' },
+    { id: 'free_list_cnt', numeric: true, disablePadding: false, label: 'Number of free listing per month' },
+    { id: 'insertion_list_fee', numeric: true, disablePadding: false, label: 'Insertion fees after free listing (USD)' },
+    { id: 'fee_paid_acts', numeric: true, disablePadding: false, label: 'Insertion fees for paid activity(%)' },
+    { id: 'action', numeric: false, disablePadding: false, label: '' },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -104,9 +109,62 @@ const styles = theme => ({
 class MembershipPage extends Component {
 
     state = {
-        order: '',
-        orderBy: '',
+        order: 'asc',
+        orderBy: 'monthly_rate',
+        rows: [],
     };
+
+    componentDidMount() {
+        api.post('/base/getAllMemberships', {})
+        .then(res => {
+            this.setState({rows: res.data.doc});
+        });
+    }
+
+    handleRequestSort = (event, property) => {
+        const orderBy = property;
+        let order = 'desc';
+    
+        if (this.state.orderBy === property && this.state.order === 'desc') {
+          order = 'asc';
+        }
+    
+        this.setState({ order, orderBy });
+    };
+
+    handleSave = (row, type) => {
+        var rows = this.state.rows;
+        var res = [];
+        console.log(row);
+        if (type === 'edit') {
+            api.post('/base/updateMembership', {membership: row});
+            rows.forEach(function(cur, err) {
+                if (cur._id !== row._id)
+                    res.push(cur);
+                else res.push(row);
+            });
+        }
+        else {
+            api.post('/base/addNewMembership', {membership: row}).then(res=>row._id=res.data.doc._id);
+            res = rows;
+            res.push(row);
+        }
+        console.log(res);
+        this.setState({rows: res});
+    }
+
+    handleRemove = (row) => {
+        var rows = this.state.rows;
+        var res = [];
+
+        api.post('/base/removeMembershipById', {_id: row._id});
+
+        rows.forEach(function(cur, err) {
+            if (cur._id !== row._id)
+                res.push(cur);
+        });
+        this.setState({rows: res});
+    }
 
     render()
     {
@@ -134,6 +192,15 @@ class MembershipPage extends Component {
                         </div>
 
                         <div className="flex items-center justify-end">
+                            <MembershipDialog type='add' onSave={this.handleSave} onRemove={this.handleRemove} row={{
+                                name: '',
+                                yearly_rate: '',
+                                monthly_rate: '',
+                                photos_per_acts: '',
+                                free_list_cnt: '',
+                                insertion_list_fee: '',
+                                fee_paid_acts: '',
+                            }}/>
                             <Button className="normal-case" variant="contained" color="primary" aria-label="Send Message">Send Message</Button>
                         </div>
                     </div>
@@ -151,12 +218,16 @@ class MembershipPage extends Component {
                                 {data.map(row => (
                                     <TableRow key={row._id}>
                                         <TableCell component="th" scope="row">
-                                            {row.title}
+                                            {row.name}
                                         </TableCell>
-                                        <TableCell align="left">{row.subtitle}</TableCell>
-                                        <TableCell align="left">{row.description}</TableCell>
+                                        <TableCell align="center">{row.yearly_rate}</TableCell>
+                                        <TableCell align="center">{row.monthly_rate}</TableCell>
+                                        <TableCell align="center">{row.photos_per_acts}</TableCell>
+                                        <TableCell align="center">{row.free_list_cnt}</TableCell>
+                                        <TableCell align="center">{row.insertion_list_fee}</TableCell>
+                                        <TableCell align="center">{row.fee_paid_acts}</TableCell>
                                         <TableCell align="center">
-                                            {/* <FaqDialog type='edit' onSave={this.handleSave} onRemove={this.handleRemove} row={row}/> */}
+                                            <MembershipDialog type='edit' onSave={this.handleSave} onRemove={this.handleRemove} row={row}/>
                                         </TableCell>
                                     </TableRow>
                                 ))}
