@@ -738,7 +738,7 @@ class Event extends Component {
                                     <div className="w-full h-512">
                                         <GoogleMap
                                             bootstrapURLKeys={{
-                                                key: process.env.REACT_APP_MAP_KEY
+                                                key: "AIzaSyC_00O1qHUSLjYTtu4_sK298g_Aev_eZB4"//process.env.REACT_APP_MAP_KEY
                                             }}
                                             defaultZoom={12}
                                             defaultCenter={[form.lat, form.lng]}

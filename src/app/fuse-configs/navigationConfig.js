@@ -68,6 +68,13 @@ const navigationConfig = [
                 'icon' : 'whatshot',
                 'url'  : '/events/events',
             },
+            {
+                'id'   : 'membership-component',
+                'title': 'Membership',
+                'type' : 'item',
+                'icon' : 'whatshot',
+                'url'  : '/membership',
+            },
         ]
     }
 ];

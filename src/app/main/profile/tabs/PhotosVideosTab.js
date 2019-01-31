@@ -42,6 +42,10 @@ const styles = theme => ({
             marginLeft: 12
         }
     },
+    '&:hover'               : {
+        boxShadow                    : theme.shadows[5],
+        opacity: 1
+    },
 });
 class PhotosVideosTab extends Component {
 
@@ -252,11 +256,11 @@ class PhotosVideosTab extends Component {
                                                         <FuseAnimate animation="transition.slideLeftIn" delay={300} key={edit_photo.photo_url}>
                                                         <div className={classes.imageshow + ' bg-black block'}>
                                                             <img src={"http://localhost:8888/uploads/" + edit_photo.photo_url} alt={period.title} className={classes.image}/>
-                                                            <a className="cursor-pointer absolute p-16 font-bold text-18 text-grey-lighter select-none pin-l" onClick={(ev)=>{
+                                                            <a className="hover cursor-pointer absolute p-16 font-bold text-18 text-grey-lighter select-none pin-l opacity-75" onClick={(ev)=>{
                                                                 ev.stopPropagation();
                                                                 this.nextImage(1);
                                                             }}>&#10094;</a>
-                                                            <a className="cursor-pointer absolute p-16 font-bold text-18 text-grey-lighter select-none pin-r" onClick={(ev)=>{
+                                                            <a className="hover cursor-pointer absolute p-16 font-bold text-18 text-grey-lighter select-none pin-r opacity-75" onClick={(ev)=>{
                                                                 ev.stopPropagation();
                                                                 this.nextImage(-1);
                                                             }}>&#10095;</a>

@@ -10,7 +10,7 @@ import api from 'app/ApiConfig'
 import {
     Icon, IconButton,
 } from '@material-ui/core';
-
+import _ from '@lodash';
 export default class FormDialog extends React.Component {
   state = {
     open: false,
@@ -27,6 +27,7 @@ export default class FormDialog extends React.Component {
         rating_professionalism: '',
         rating_work_again: '',
         rating_hire_again: '',
+        photo: [''],
         feedback: '',
         created_at: '',
     }
@@ -34,6 +35,7 @@ export default class FormDialog extends React.Component {
 
   componentDidMount()
   {
+      console.log(this.props.row);
     this.setState( { row: this.props.row } );
   }
 
@@ -72,6 +74,7 @@ export default class FormDialog extends React.Component {
                 cursor.rating_payment = parseInt(row.rating_payment);
                 cursor.rating_work_again = parseInt(row.rating_work_again);
             }
+            cursor.photo = row.photo;
         }
     });
     // if (person == 0)
@@ -104,8 +107,41 @@ export default class FormDialog extends React.Component {
     this.props.onRefresh();
   }
 
+  handleselectedFile = num => e => {
+    let file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('file',file)
+    console.log(file);
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+    console.log('photo' + num);
+    return api.post("/upload", formData, config)
+        .then(res => {
+            var photo = this.state.row.photo;
+            var resT = [];
+            photo.map((cur, i) => {
+                if (i == num) resT.push(res.data.file.filename);
+                else resT.push(cur);
+            })
+            photo = resT;
+            this.setState({row: _.set({...this.state.row}, 'photo', photo)})
+        }
+    );
+  }
+
+  handleAddPhoto = () => {
+    var photo = this.state.row.photo;
+    if (photo === undefined) photo = [''];
+    else photo.push('');
+    this.setState({row: _.set({...this.state.row}, 'photo', photo)})
+}
+
   render() {
     const {person} = this.props;
+    const {row} = this.state;
 
     return (
       <div>
@@ -206,6 +242,21 @@ export default class FormDialog extends React.Component {
                     }}
                     margin="normal"
                 />
+            </div>
+            <div>
+                {row.photo && row.photo.length === 0 && <span>No photos found</span>}
+                {(!row.photo || row.photo.length < 5) &&
+                    <Button onClick={this.handleAddPhoto} color="primary">
+                        Add photo
+                    </Button>
+                }
+                {row.photo && row.photo.length !== 0 && row.photo.map((cursor, i) => (
+                    <div key={i}>
+                        <span>Photo {i + 1}:   </span>
+                        <input type='file' id='photo' name='photo' onChange={this.handleselectedFile(i)} />
+                    </div>
+                ))
+                }
             </div>
           </DialogContent>
           <DialogActions>

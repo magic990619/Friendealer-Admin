@@ -44,6 +44,7 @@ function createdata(event, overall_rating) {
         rating_professionalism: event.rating_professionalism,
         rating_hire_again: event.rating_hire_again,
         rating_work_again: event.rating_work_again,
+        photo: event.photo,
         overall_rating: overall_rating,
     }
 }
@@ -150,6 +151,7 @@ class FeedbackTab extends Component {
             rating_professionalism: '',
             rating_work_again: '',
             rating_hire_again: '',
+            photo: [],
             feedback: '',
             created_at: '',
         },
@@ -164,6 +166,7 @@ class FeedbackTab extends Component {
                 rating_expertise: '',
                 rating_professionalism: '',
                 rating_hire_again: '',
+                photo: [],
                 feedback: '',
                 created_at: '',        
             }],
@@ -176,6 +179,7 @@ class FeedbackTab extends Component {
                 rating_payment: '',
                 rating_professionalism: '',
                 rating_work_again: '',
+                photo: [],
                 feedback: '',
                 created_at: '',      
             }],
@@ -273,7 +277,7 @@ class FeedbackTab extends Component {
                 if (event_id === undefined || parseInt(row.event_id) === parseInt(event_id)) {
                     res.push(createdata(row, person === false ? ((row.rating_communication + row.rating_expertise + row.rating_quality
                         + row.rating_professionalism + row.rating_hire_again) / 5) : ((row.rating_communication + row.rating_payment + row.rating_clarity
-                            + row.rating_professionalism + row.rating_work_again) / 5)));
+                        + row.rating_professionalism + row.rating_work_again) / 5)));
                 }
                 return null;
             });

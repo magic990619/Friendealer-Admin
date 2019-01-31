@@ -9,6 +9,7 @@ import {LogoutConfig} from 'app/main/logout/LogoutConfig';
 import {ProfilePageConfig} from 'app/main/profile/ProfilePageConfig'
 import {SettingsConfig} from 'app/main/settings/SettingsConfig'
 import {EventsConfig} from 'app/main/events/EventsConfig'
+import {MembershipConfig} from 'app/main/membership/MembershipConfig'
 
 const routeConfigs = [
     UsersAppConfig,
@@ -17,7 +18,8 @@ const routeConfigs = [
     LogoutConfig,
     ProfilePageConfig,
     SettingsConfig,
-    EventsConfig
+    EventsConfig,
+    MembershipConfig
 ];
 
  const routes = [
