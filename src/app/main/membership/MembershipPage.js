@@ -1,9 +1,95 @@
 import React, {Component} from 'react';
 import api from 'app/ApiConfig'
-import {withStyles, Button, Typography, Icon, IconButton, } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import {withStyles, Button, Typography, Icon, IconButton, Tooltip } from '@material-ui/core';
 import {FusePageSimple, FuseAnimate} from '@fuse';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 import _ from '@lodash';
 
+function desc(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+}
+
+function stableSort(array, cmp) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+        const order = cmp(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+    });
+    return stabilizedThis.map(el => el[0]);
+}
+
+function getSorting(order, orderBy) {
+    return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+}
+  
+const rows = [
+    { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
+    { id: 'subtitle', numeric: false, disablePadding: false, label: 'Subtitle' },
+    { id: 'description', numeric: false, disablePadding: false, label: 'Description' },
+    { id: 'action', numeric: false, disablePadding: false, label: 'Action' },
+];
+
+class EnhancedTableHead extends React.Component {
+    createSortHandler = property => event => {
+        this.props.onRequestSort(event, property);
+    };
+
+    render() {
+        const { order, orderBy } = this.props;
+
+        return (
+        <TableHead>
+            <TableRow>
+            {rows.map(row => {
+                return (
+                <TableCell
+                    key={row.id}
+                    align="center"
+                    padding={row.disablePadding ? 'none' : 'default'}
+                    sortDirection={orderBy === row.id ? order : false}
+                >
+                    <Tooltip
+                    title="Sort"
+                    placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                    enterDelay={300}
+                    >
+                    <TableSortLabel
+                        active={orderBy === row.id}
+                        direction={order}
+                        onClick={this.createSortHandler(row.id)}
+                    >
+                        {row.label}
+                    </TableSortLabel>
+                    </Tooltip>
+                </TableCell>
+                );
+            }, this)}
+            </TableRow>
+        </TableHead>
+        );
+    }
+}
+
+EnhancedTableHead.propTypes = {
+    onRequestSort: PropTypes.func.isRequired,
+    order: PropTypes.string.isRequired,
+    orderBy: PropTypes.string.isRequired,
+};
+  
 const styles = theme => ({
     layoutHeader : {
         height                        : 320,
@@ -18,11 +104,16 @@ const styles = theme => ({
 class MembershipPage extends Component {
 
     state = {
+        order: '',
+        orderBy: '',
     };
-
 
     render()
     {
+        const { classes } = this.props;
+        const {order, orderBy} = this.state;
+        var data = stableSort(this.state.rows, getSorting(order, orderBy));
+
         return (
             <FusePageSimple
                 classes={{
@@ -49,7 +140,37 @@ class MembershipPage extends Component {
                 }
                 content={
                     <div>
-
+                        <Paper className={classes.root}>
+                            <Table className={classes.table}>
+                                <EnhancedTableHead
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onRequestSort={this.handleRequestSort}
+                                    />
+                                <TableBody>
+                                {data.map(row => (
+                                    <TableRow key={row._id}>
+                                        <TableCell component="th" scope="row">
+                                            {row.title}
+                                        </TableCell>
+                                        <TableCell align="left">{row.subtitle}</TableCell>
+                                        <TableCell align="left">{row.description}</TableCell>
+                                        <TableCell align="center">
+                                            {/* <FaqDialog type='edit' onSave={this.handleSave} onRemove={this.handleRemove} row={row}/> */}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                                {
+                                    data.length === 0 && 
+                                    <TableRow>
+                                    <TableCell align="center">
+                                    'No memberships found.'
+                                    </TableCell>
+                                    </TableRow>
+                                }
+                                </TableBody>
+                            </Table>
+                        </Paper>
                     </div>
                 }
             />
