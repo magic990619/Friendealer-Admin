@@ -348,7 +348,7 @@ class FeedbackTab extends Component {
                                         return (
                                         <TableRow key={row.event_id}>
                                             <CustomTableCell component="th" scope="row">
-                                            {moment(row.created_at).format('MMMM Do YYYY, h:mm:ss a')}
+                                            {moment(row.created_at).format('YYYY/MM/DD hh:mm:ss A')}
                                             </CustomTableCell>
                                             <CustomTableCell align="center">{row.event_name}</CustomTableCell>
                                             <CustomTableCell align="center">{row.feedback}</CustomTableCell>

@@ -615,7 +615,7 @@ class Event extends Component {
                                     />
 
                                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <Grid container className={classes.grid} justify="space-around">
+                                        <Grid container className={classes.grid} justify="center">
                                         <DatePicker
                                             margin="normal"
                                             label="Start Date"
@@ -632,7 +632,7 @@ class Event extends Component {
                                     </MuiPickersUtilsProvider>
 
                                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <Grid container className={classes.grid} justify="space-around">
+                                        <Grid container className={classes.grid} justify="center">
                                         <DatePicker
                                             margin="normal"
                                             label="End Date"

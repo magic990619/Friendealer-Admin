@@ -173,7 +173,7 @@ class EventsTable extends Component {
                                             onClick={event => this.handleClick(n)}
                                         >
                                             <TableCell className="w-48 pl-4 sm:pl-12">
-                                                {moment(n.created_at).format('MMMM Do YYYY, h:mm:ss a')}
+                                                {moment(n.created_at).format('YYYY/MM/DD hh:mm:ss A')}
                                             </TableCell>
 
                                             <TableCell component="th" scope="row">

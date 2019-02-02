@@ -46,7 +46,7 @@ const navigationConfig = [
                         'id'   : 'basedata-management',
                         'title': 'Basedata Management',
                         'type' : 'item',
-                        'icon' : 'question_answer',
+                        'icon' : 'settings_cells',
                         'url'  : '/settings/basedata',
                         'exact': true
                     },
@@ -54,7 +54,7 @@ const navigationConfig = [
                         'id'   : 'get-support',
                         'title': 'Get Support',
                         'type' : 'item',
-                        'icon' : 'question_answer',
+                        'icon' : 'contact_support',
                         'url'  : '/settings/support',
                         'exact': true
                     },
@@ -72,14 +72,14 @@ const navigationConfig = [
                 'id'   : 'events-component',
                 'title': 'Event Management',
                 'type' : 'item',
-                'icon' : 'whatshot',
+                'icon' : 'event_note',
                 'url'  : '/events/events',
             },
             {
                 'id'   : 'membership-component',
                 'title': 'Membership',
                 'type' : 'item',
-                'icon' : 'whatshot',
+                'icon' : 'card_membership',
                 'url'  : '/membership',
             },
             {

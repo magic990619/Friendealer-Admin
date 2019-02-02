@@ -32,7 +32,7 @@ function desc(a, b, orderBy) {
 function createdata(event, type) {
     return {
         event_id : event.event_id,
-        created_at: moment(event.created_at).format('MMMM Do YYYY, h:mm:ss a'),
+        created_at: moment(event.created_at).format('YYYY/MM/DD hh:mm:ss A'),
         event_name: event.event_name,
         event_type: type,
         event_state: event.event_state,
