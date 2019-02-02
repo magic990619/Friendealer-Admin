@@ -1,0 +1,41 @@
+import axios from 'axios';
+import api from 'app/ApiConfig';
+import {setselectedEventId} from './events.actions';
+import {closeMobileChatsSidebar} from './sidebars.actions';
+
+export const GET_CONTACTS = '[CHAT APP] GET CONTACTS';
+export const SET_SELECTED_CONTACT_ID = '[CHAT APP] SET SELECTED CONTACT ID';
+export const REMOVE_SELECTED_CONTACT_ID = '[CHAT APP] REMOVE SELECTED CONTACT ID';
+
+export function getContacts(event_id)
+{
+    const request = api.post('/chat/getContacts', {event_id});
+
+    // console.log(event_id);
+
+    return (dispatch) =>
+        request.then((response) => {
+            dispatch(setselectedEventId(event_id));
+            dispatch(closeMobileChatsSidebar());
+            dispatch(removeSelectedContactId());
+            return dispatch({
+                type   : GET_CONTACTS,
+                payload: response.data.doc
+            });
+        });
+}
+
+export function setselectedContactId(contactId)
+{
+    return {
+        type   : SET_SELECTED_CONTACT_ID,
+        payload: contactId
+    }
+}
+
+export function removeSelectedContactId()
+{
+    return {
+        type: REMOVE_SELECTED_CONTACT_ID
+    }
+}

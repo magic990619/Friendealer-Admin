@@ -10,8 +10,11 @@ import {ProfilePageConfig} from 'app/main/profile/ProfilePageConfig'
 import {SettingsConfig} from 'app/main/settings/SettingsConfig'
 import {EventsConfig} from 'app/main/events/EventsConfig'
 import {MembershipConfig} from 'app/main/membership/MembershipConfig'
+import {ChatAppConfig} from 'app/main/chat/ChatAppConfig'
+import {DashboardAppConfig} from 'app/main/dashboard/DashboardAppConfig'
 
 const routeConfigs = [
+    DashboardAppConfig,
     UsersAppConfig,
     LoginConfig,
     RegisterConfig,
@@ -19,14 +22,15 @@ const routeConfigs = [
     ProfilePageConfig,
     SettingsConfig,
     EventsConfig,
-    MembershipConfig
+    MembershipConfig,
+    ChatAppConfig
 ];
 
  const routes = [
     ...FuseUtils.generateRoutesFromConfigs(routeConfigs),
     {
         path        : '/',
-        component   : () => <Redirect to="/users/all"/>
+        component   : () => <Redirect to="/dashboard"/>
     }
 ];
 

@@ -6,6 +6,13 @@ const navigationConfig = [
         'icon'    : 'apps',
         'children': [
             {
+                'id'   : 'dashboard-component',
+                'title': 'Dashboard',
+                'type' : 'item',
+                'icon' : 'dashboard',
+                'url'  : '/dashboard',
+            },
+            {
                 'id'   : 'users-component',
                 'title': 'User Management',
                 'type' : 'item',
@@ -74,6 +81,13 @@ const navigationConfig = [
                 'type' : 'item',
                 'icon' : 'whatshot',
                 'url'  : '/membership',
+            },
+            {
+                'id'   : 'chat-component',
+                'title': 'Chat',
+                'type' : 'item',
+                'icon' : 'chat',
+                'url'  : '/chat',
             },
         ]
     }

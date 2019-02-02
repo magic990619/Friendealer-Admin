@@ -5,6 +5,8 @@ import * as authActions from 'app/auth/store/actions';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
 import history from 'history.js';
+import socket from 'app/SocketConfig.js';
+
 class UserMenu extends Component {
 
     state = {
@@ -98,7 +100,9 @@ class UserMenu extends Component {
                             </MenuItem>
                             <MenuItem
                                 onClick={() => {
+                                    socket.emit('disconnect', user);
                                     logout();
+                                    console.log(user);
                                     this.userMenuClose();
                                 }}
                             >

@@ -26,6 +26,13 @@ class UserDialog extends Component {
 
     state = {...newUserState};
 
+    componentDidMount() {
+        api.post('/base/getBasedata', {})
+        .then(res => {
+            this.setState({basedata: res.data.doc});
+        });
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot)
     {
         /**
@@ -54,10 +61,6 @@ class UserDialog extends Component {
                 this.setState({...newUserState});
             }
         }
-        api.post('/base/getBasedata', {})
-            .then(res => {
-                this.setState({basedata: res.data.doc});
-        });
     }
 
     handleChange = (event) => {
