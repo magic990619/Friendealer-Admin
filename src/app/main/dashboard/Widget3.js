@@ -1,8 +1,7 @@
 import React from 'react';
 import {withStyles, Card, Icon, Typography} from '@material-ui/core';
-import {Bar} from 'react-chartjs-2';
 
-const Widget2 = ({data, theme}) => {
+const Widget3 = ({data, theme}) => {
 
     return (
         <Card className="w-full rounded-8 shadow-none border-1 bg-pink-lighter">
@@ -34,4 +33,4 @@ const Widget2 = ({data, theme}) => {
     );
 };
 
-export default withStyles(null, {withTheme: true})(Widget2);
+export default withStyles(null, {withTheme: true})(Widget3);

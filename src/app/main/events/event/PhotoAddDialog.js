@@ -57,7 +57,7 @@ class PhotoAddDialog extends React.Component {
   handleSave = () => {
     this.handleClose();
     this.props.onSave({
-      user_id: this.props.user_id,
+      event_id: this.props.event_id,
       photo_url: this.state.photo_url,
       title: this.state.title,
       description: this.state.description,

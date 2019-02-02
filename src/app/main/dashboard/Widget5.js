@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {withStyles, Select, Button, Card, Divider, FormControl, Icon, MenuItem, Typography} from '@material-ui/core';
+import {withStyles, Card, Typography} from '@material-ui/core';
 import {HorizontalBar} from 'react-chartjs-2';
-import _ from '@lodash';
 
-class Widget7 extends Component {
+class Widget5 extends Component {
 
     state = {
     };
@@ -52,4 +51,4 @@ class Widget7 extends Component {
     }
 }
 
-export default withStyles(null, {withTheme: true})(Widget7);
+export default withStyles(null, {withTheme: true})(Widget5);

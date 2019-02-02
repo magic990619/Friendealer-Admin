@@ -99,7 +99,7 @@ class Categories extends Component {
         return api.post("/upload", formData, config)
             .then(res => {
                 console.log(res.data.file);
-                edit['icon'] = res.data.file.filename;
+                edit['icon'] = "http://localhost:8888/uploads/" + res.data.file.filename;
                 this.setState({
                 edit_category: edit,
             })});
@@ -209,7 +209,7 @@ class Categories extends Component {
                                             </div>
                                         </div>
                                         <CardContent className="flex flex-col flex-auto items-center justify-center">
-                                            <img className="w-64" src={'http://localhost:8888/uploads/' + category.icon} alt="icon"/>
+                                            <img className="w-64" src={category.icon} alt="icon"/>
                                             <Typography className="text-center text-16 font-800">{category.name}</Typography>
                                         </CardContent>
                                         <Divider/>

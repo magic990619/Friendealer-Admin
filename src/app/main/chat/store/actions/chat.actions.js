@@ -1,4 +1,3 @@
-import axios from 'axios';
 import api from 'app/ApiConfig'
 import {setselectedContactId} from './contacts.actions';
 import {closeMobileChatsSidebar} from './sidebars.actions';
@@ -12,7 +11,6 @@ export function getChat(contactId)
 {
     console.log(contactId);
     return (dispatch, getState) => {
-        const {id} = getState().chatApp.user;
         const request = api.post('/chat/getChat', {
             event_id: getState().chatApp.events.selectedEventId,
             contactId,

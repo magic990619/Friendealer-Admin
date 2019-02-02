@@ -1,4 +1,3 @@
-import axios from 'axios';
 import api from 'app/ApiConfig';
 import {setselectedEventId} from './events.actions';
 import {closeMobileChatsSidebar} from './sidebars.actions';

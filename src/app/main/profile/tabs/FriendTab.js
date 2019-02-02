@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
 import {    Divider,
     CardActions,
-    Avatar, AppBar, Button, Card, CardContent, Icon, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Toolbar, Typography, Input} from '@material-ui/core';
+    Avatar, AppBar, Button, Card, CardContent, Icon, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Toolbar, Typography} from '@material-ui/core';
 import {FuseAnimateGroup} from '@fuse';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import api from 'app/ApiConfig';
-import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import Chip from '@material-ui/core/Chip';
 import history from 'history.js';
 import _ from '@lodash';
 
@@ -147,7 +144,7 @@ class FriendTab extends Component {
         return api.post("/upload", formData, config)
             .then(res => {
                 console.log(res.data.file);
-                edit['image'] = res.data.file.filename;
+                edit['image'] = "http://localhost:8888/uploads/" + res.data.file.filename;
                 this.setState({
                 edit_group: edit,
             })});
@@ -219,7 +216,7 @@ class FriendTab extends Component {
                                             </div>
                                         </div>
                                         <CardContent className="flex flex-col flex-auto items-center justify-center">
-                                            <img className="w-64" src={'http://localhost:8888/uploads/' + group.image} alt="image"/>
+                                            <img className="w-64" src={group.image} alt="group_image"/>
                                             <Typography className="text-center text-16 font-800">{group.name}</Typography>
                                         </CardContent>
                                         <Divider/>

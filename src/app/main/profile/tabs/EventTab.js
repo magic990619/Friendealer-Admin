@@ -3,18 +3,14 @@ import PropTypes from 'prop-types';
 import ReactTable from "react-table";
 import {
     Icon,
-    IconButton,
     Typography,
     Input,
     Paper,
     Tooltip,
 } from '@material-ui/core';
-import {FuseUtils, FuseAnimateGroup, FuseAnimate} from '@fuse';
+import {FuseUtils, FuseAnimate} from '@fuse';
 import api from 'app/ApiConfig';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -113,15 +109,6 @@ EnhancedTableHead.propTypes = {
     orderBy: PropTypes.string.isRequired,
 };
   
-const CustomTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
 class EventTab extends Component {
 
     state = {

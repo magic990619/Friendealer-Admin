@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import api from 'app/ApiConfig'
 import PropTypes from 'prop-types';
-import {withStyles, Button, Typography, Icon, IconButton, Tooltip } from '@material-ui/core';
+import {withStyles, Button, Typography, Icon, Tooltip } from '@material-ui/core';
 import {FusePageSimple, FuseAnimate} from '@fuse';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,7 +10,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import _ from '@lodash';
 import MembershipDialog from './MembershipDialog';
 
 function desc(a, b, orderBy) {

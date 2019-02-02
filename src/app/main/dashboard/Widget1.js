@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {withStyles, Button, MuiThemeProvider, Typography} from '@material-ui/core';
+import {withStyles, Button, Typography} from '@material-ui/core';
 import {FuseAnimate} from '@fuse';
 import {Bar} from 'react-chartjs-2';
-import _ from '@lodash';
 
 const styles = theme => ({
     root: {
@@ -25,6 +24,7 @@ class Widget1 extends Component {
             data.map((cursor) => {
                 years.push(cursor.year);
                 dataset = cursor.year;
+                return null;
             })
         }
         this.setState({years: years, dataset: dataset});
@@ -44,6 +44,7 @@ class Widget1 extends Component {
                 var res = [];
                 cursor.data.map((cur) => {
                     res.push(cur.visitors);
+                    return null;
                 });
                 dataWithColors = {
                     label: 'accounts',
@@ -56,6 +57,7 @@ class Widget1 extends Component {
                     pointHoverBorderColor    : theme.palette.secondary.contrastText
                 };
             }
+            return null;
         });
 
         console.log(dataWithColors);

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {withStyles, Select, Button, Card, Divider, FormControl, Icon, MenuItem, Typography} from '@material-ui/core';
+import {withStyles, Card, Icon, Typography} from '@material-ui/core';
 import {Doughnut} from 'react-chartjs-2';
-import _ from '@lodash';
 
 class Widget7 extends Component {
 

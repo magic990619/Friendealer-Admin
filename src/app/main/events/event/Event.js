@@ -20,6 +20,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import GoogleMap from 'google-map-react';
 import FeedbackTab from '../../profile/tabs/FeedbackTab';
+import PhotosTab from './PhotosTab.js';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
 import Grid from '@material-ui/core/Grid';
@@ -141,26 +142,28 @@ class Event extends Component {
 
     handleDeleteFriendOffer = (row) => {
         var {form} = this.state;
-        var {friend_offer} = form;
+        var {friend_offer, friend_join} = form;
         var res = [];
         friend_offer.map((cursor) => {
             if (cursor._id !== row._id)
                 res.push(cursor);
             return null;
         });
-        this.setState({form: _.set({...this.state.form}, 'friend_offer', res)});
+        friend_join.push(row);
+        this.setState({form: _.set({...this.state.form}, 'friend_offer', res, 'friend_join', friend_join)});
     }
 
     handleDeleteFriendJoin = (row) => {
         var {form} = this.state;
-        var {friend_join} = form;
+        var {friend_join, friend_offer} = form;
         var res = [];
         friend_join.map((cursor) => {
             if (cursor._id !== row._id)
                 res.push(cursor);
             return null;
         });
-        this.setState({form: _.set({...this.state.form}, 'friend_join', res)});
+        friend_offer.push(row);
+        this.setState({form: _.set({...this.state.form}, 'friend_join', res, 'friend_offer', friend_offer)});
     }
 
     handleChangeTab = (event, tabValue) => {
@@ -221,6 +224,8 @@ class Event extends Component {
     {
         const {classes, saveEvent, addEvent} = this.props;
         const {tabValue, form, basedata} = this.state;
+        const params = this.props.match.params;
+        const {eventId} = params;
 
         return (
             <FusePageCarded
@@ -308,6 +313,9 @@ class Event extends Component {
                         <Tab className="h-64 normal-case" label="Requirement"/>
                         <Tab className="h-64 normal-case" label="Friends"/>
                         <Tab className="h-64 normal-case" label="Location"/>
+                        { eventId !== 'new' &&
+                        <Tab className="h-64 normal-case" label="Photos"/>
+                        }
                         {form && form.event_state === 'Finished' &&
                             <Tab className="h-64 normal-case" label="Feedback"/>
                         }
@@ -316,7 +324,7 @@ class Event extends Component {
                 content={
                     form && (
                         <div className="p-16 sm:p-24 max-w-2xl">
-                            {tabValue === 0 && 
+                            {tabValue === 0 &&
                             (
                                 <div>
 
@@ -673,7 +681,7 @@ class Event extends Component {
                                                     <IconButton onClick={(ev) => {
                                                         this.handleDeleteFriendJoin(row);
                                                     }}>
-                                                        <Icon>delete</Icon>
+                                                        <Icon>remove_circle_outline</Icon>
                                                     </IconButton>
                                                 </CustomTableCell>
                                                 </TableRow>
@@ -716,7 +724,7 @@ class Event extends Component {
                                                     <IconButton onClick={(ev) => {
                                                         this.handleDeleteFriendOffer(row);
                                                     }}>
-                                                        <Icon>delete</Icon>
+                                                        <Icon>add_to_queue</Icon>
                                                     </IconButton>
                                                 </CustomTableCell>
                                                 </TableRow>
@@ -752,7 +760,12 @@ class Event extends Component {
                                     </div>
                                 </div>
                             )}
-                            {tabValue === 4 && (
+                            {tabValue === 4 &&
+                                <div className="w-full">
+                                    <PhotosTab event_id={form._id}/>
+                                </div>
+                            }
+                            {tabValue === 5 && (
                                 <div className="w-full">
                                     <FeedbackTab user_id={form.employer_id} event_id={form._id}/>
                                 </div>

@@ -11,6 +11,12 @@ import {
     Icon, IconButton,
 } from '@material-ui/core';
 import _ from '@lodash';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
 export default class FormDialog extends React.Component {
   state = {
     open: false,
@@ -19,6 +25,8 @@ export default class FormDialog extends React.Component {
         employeer_email: '',
         event_id: '',
         event_name: '',
+        delivered_budget: 'Yes',
+        delivered_time: 'Yes',
         rating_clarity: '',
         rating_quality: '',
         rating_communication: '',
@@ -49,6 +57,7 @@ export default class FormDialog extends React.Component {
 
   handleChange = name => event => {
       var cursor = this.state.row;
+      console.log(event.target);
       cursor[name] = event.target.value;
       this.setState({row: cursor});
   }
@@ -123,8 +132,9 @@ export default class FormDialog extends React.Component {
             var photo = this.state.row.photo;
             var resT = [];
             photo.map((cur, i) => {
-                if (i == num) resT.push(res.data.file.filename);
+                if (i === parseInt(num)) resT.push("http://localhost:8888/uploads/" + res.data.file.filename);
                 else resT.push(cur);
+                return null;
             })
             photo = resT;
             this.setState({row: _.set({...this.state.row}, 'photo', photo)})
@@ -173,6 +183,36 @@ export default class FormDialog extends React.Component {
             <DialogContentText>
               To edit to this feedback, please enter description here.
             </DialogContentText>
+            <div className="mt-16">
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">Was this delivered on budget?</FormLabel>
+                    <RadioGroup
+                        className="flex flex-row"
+                        aria-label="Gender"
+                        name="gender1"
+                        value={this.state.row.delivered_budget}
+                        onChange={this.handleChange('delivered_budget')}
+                    >
+                        <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+                        <FormControlLabel value="No" control={<Radio />} label="No" />
+                    </RadioGroup>
+                </FormControl>
+            </div>
+            <div>
+                <FormControl component="fieldset">
+                    <FormLabel component="legend">Was this delivered on time?</FormLabel>
+                    <RadioGroup
+                        className="flex flex-row"
+                        aria-label="Gender"
+                        name="gender1"
+                        value={this.state.row.delivered_time}
+                        onChange={this.handleChange('delivered_time')}
+                    >
+                        <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+                        <FormControlLabel value="No" control={<Radio />} label="No" />
+                    </RadioGroup>
+                </FormControl>
+            </div>
             <TextField
               autoFocus
               margin="dense"
@@ -246,7 +286,7 @@ export default class FormDialog extends React.Component {
             <div>
                 {row.photo && row.photo.length === 0 && <span>No photos found</span>}
                 {(!row.photo || row.photo.length < 5) &&
-                    <Button onClick={this.handleAddPhoto} color="primary">
+                    <Button onClick={this.handleAddPhoto} color="secondary">
                         Add photo
                     </Button>
                 }

@@ -6,7 +6,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
-import history from 'history.js';
+import moment from 'moment/moment';
 import _ from '@lodash';
 
 const newProfile = {
@@ -29,6 +29,12 @@ const newProfile = {
         language: '',
         language_browse: [ {
             language: '',
+        }],
+        block_list: [ {
+            user_id: '',
+            name: '',
+            avatar: '',
+            created_at: '',
         }],
         friends: [ {
             friend_id: '',
@@ -126,6 +132,19 @@ class AboutTab extends Component {
         this.setState({ profileData: profile });
     }
 
+    handleDeleteBlock = user_id => {
+        var profile = this.state.profileData;
+        var block_list = this.state.profileData.block_list;
+        var res = [];
+        block_list.forEach(function(cursor, err) {
+            if (cursor.user_id !== user_id) {
+                res.push(cursor);
+            }
+        });
+        profile.block_list = res;
+        this.setState({ profileData: profile });
+    }
+
     handleClear = () => {
         this.setState(newProfile);
     }
@@ -135,9 +154,9 @@ class AboutTab extends Component {
         // console.log(this.state.profileData);
 
         var languages = this.state.profileData.language_browse;
-        var friends = this.state.profileData.user_id === '' ? null : this.state.profileData.friends;
+        var block_list = this.state.profileData.user_id === '' ? null : this.state.profileData.block_list;
 
-        console.log(friends);
+        // console.log(friends);
 
         return (
             <div className="md:flex max-w-full">
@@ -377,13 +396,59 @@ this.state.profileData &&
                     </FuseAnimateGroup>
                 </div>
 }
-                <div className="">
+                <div className="mr-60">
                     <FuseAnimateGroup
                         enter={{
                             animation: "transition.slideUpBigIn"
                         }}
                     >
-                        <div>
+                    <Card className="w-full mb-16 mr-24 min-w-360">
+                            <AppBar position="static" elevation={0}>
+                                <Toolbar className="pl-16 pr-8">
+                                    <Typography variant="subtitle1" color="inherit" className="flex-1">
+                                        Block List
+                                    </Typography>
+                                    {/* <Button className="normal-case" color="inherit" size="small">See 454 more</Button> */}
+                                </Toolbar>
+                            </AppBar>
+                            <CardContent className="p-0">
+                                <List className="p-8">
+                                    {block_list && block_list.map((block) => (
+                                        <ListItem key={block._id} >
+                                        {block.user_id !== '' && 
+                                            <Avatar src={block.avatar} alt={block.name} >{block.name}</Avatar>
+                                        }
+                                            <ListItemText
+                                                primary={(
+                                                    <div className="">
+                                                        <Typography className="inline font-medium" color="primary" paragraph={false}>
+                                                            {block.name}
+                                                        </Typography>
+                                                    </div>
+                                                ) }
+                                                secondary={moment(block.created_at).format('MMMM Do YYYY, h:mm:ss a') 
+                                            }
+                                            />
+                                            <ListItemSecondaryAction>
+                                                <IconButton>
+                                                    <Icon onClick={(ev) => {
+                                                        ev.stopPropagation();
+                                                        this.handleDeleteBlock(block.user_id);
+                                                        }}>delete</Icon>
+                                                </IconButton>
+                                            </ListItemSecondaryAction>
+                                        </ListItem>
+                                    ))}
+                                    {
+                                        (block_list === null || block_list.length === 0) &&
+                                        <Typography className="inline font-medium" color="primary" paragraph={false}>
+                                            No block users found.
+                                       </Typography>
+                                    }
+                                </List>
+                            </CardContent>
+                        </Card>
+                        <div className="flex">
                             <Button variant="contained" color="secondary" className="m-12 min-w-76" onClick={this.handleSave}>
                                 Save
                             </Button>

@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import * as authActions from 'app/auth/store/actions';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
-import history from 'history.js';
 import socket from 'app/SocketConfig.js';
 
 class UserMenu extends Component {

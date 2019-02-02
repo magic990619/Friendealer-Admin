@@ -36,6 +36,8 @@ function createdata(event, overall_rating) {
         created_at: event.created_at,
         event_name: event.event_name,
         feedback: event.feedback,
+        delivered_budget: event.delivered_budget,
+        delivered_time: event.delivered_time,
         rating_clarity: event.rating_clarity,
         rating_quality: event.rating_quality,
         rating_communication: event.rating_communication,
@@ -66,7 +68,9 @@ function getSorting(order, orderBy) {
 const rows = [
     { id: 'create_at', numeric: false, disablePadding: true, label: 'Created At' },
     { id: 'event_name', numeric: true, disablePadding: false, label: 'Event Name' },
-    { id: 'feedback', numeric: true, disablePadding: false, label: 'Feedback' },
+    { id: 'feedback', numeric: false, disablePadding: false, label: 'Feedback' },
+    { id: 'delivered_budget', numeric: false, disablePadding: false, label: 'Delivered on budget' },
+    { id: 'delivered_time', numeric: false, disablePadding: false, label: 'Delivered on time' },
     { id: 'overall_rating', numeric: true, disablePadding: false, label: 'Overall Rating' },
     { id: 'action', numeric: true, disablePadding: false, label: 'Action' },
 ];
@@ -143,6 +147,8 @@ class FeedbackTab extends Component {
             employeer_email: '',
             event_id: '',
             event_name: '',
+            delivered_budget: 'Yes',
+            delivered_time: 'Yes',
             rating_clarity: '',
             rating_quality: '',
             rating_communication: '',
@@ -161,6 +167,8 @@ class FeedbackTab extends Component {
                 joiner_email: '',
                 event_id: '',
                 event_name: '',
+                delivered_budget: 'Yes',
+                delivered_time: 'Yes',
                 rating_quality: '',
                 rating_communication: '',
                 rating_expertise: '',
@@ -174,6 +182,8 @@ class FeedbackTab extends Component {
                 employeer_email: '',
                 event_id: '',
                 event_name: '',
+                delivered_budget: 'Yes',
+                delivered_time: 'Yes',
                 rating_clarity: '',
                 rating_communication: '',
                 rating_payment: '',
@@ -342,6 +352,8 @@ class FeedbackTab extends Component {
                                             </CustomTableCell>
                                             <CustomTableCell align="center">{row.event_name}</CustomTableCell>
                                             <CustomTableCell align="center">{row.feedback}</CustomTableCell>
+                                            <CustomTableCell align="center">{row.delivered_budget}</CustomTableCell>
+                                            <CustomTableCell align="center">{row.delivered_time}</CustomTableCell>
                                             <CustomTableCell align="center">{person === false ? ((row.rating_communication + row.rating_expertise + row.rating_quality
                                                 + row.rating_professionalism + row.rating_hire_again) / 5) : ((row.rating_communication + row.rating_payment + row.rating_clarity
                                                     + row.rating_professionalism + row.rating_work_again) / 5)}</CustomTableCell>

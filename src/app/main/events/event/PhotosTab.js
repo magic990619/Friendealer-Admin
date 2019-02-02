@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
-import {GridList, GridListTile, GridListTileBar, Icon, IconButton, Typography, ListSubheader, Button, withStyles, Avatar} from '@material-ui/core';
+import {GridList, GridListTile, GridListTileBar, Icon, IconButton, Typography, ListSubheader, Button, withStyles} from '@material-ui/core';
 import {FuseScrollbars, FuseAnimate, FuseAnimateGroup} from '@fuse';
 import api from 'app/ApiConfig';
 import TextField from '@material-ui/core/TextField';
 import PhotoAddDialog from './PhotoAddDialog.js'
-import PhotoAddComment from './PhotoAddComment.js'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import moment from 'moment/moment';
+// import moment from 'moment/moment';
 
 const styles = theme => ({
     form: {
@@ -47,50 +46,37 @@ const styles = theme => ({
         opacity: 1
     },
 });
-class PhotosVideosTab extends Component {
+class PhotosTab extends Component {
 
     state = {
         open: false,
+        count: 0,
         photo_url: '',
         photos: [{
             _id: '',
-            user_id: '',
+            event_id: '',
             photo_url: '',
             title: '',
             description: '',
-            comment: [{
-                user_id: '',
-                name: '',
-                avatar: '',
-                message: '',
-                created_at: '',
-            }],
             created_at: '',
         }],
         edit_photo: {
             _id: '',
-            user_id: '',
+            event_id: '',
             photo_url: '',
             title: '',
             description: '',
-            comment: [{
-                user_id: '',
-                name: '',
-                avatar: '',
-                message: '',
-                created_at: '',
-            }],
             created_at: '',
         },
     };
 
     componentDidMount()
     {
-        const {user_id} = this.props;
-        api.post('/photo/getPhotosById', {
-            user_id
+        const {event_id} = this.props;
+        api.post('/eventphoto/getPhotosById', {
+            event_id
         }).then(res => {
-            this.setState({ photos: res.data.doc });
+            this.setState({ photos: res.data.doc, count: res.data.count });
         });
     }
 
@@ -103,7 +89,7 @@ class PhotosVideosTab extends Component {
     };
     
     handleSave = (photo) => {
-        api.post('/photo/updatePhotoById', {
+        api.post('/eventphoto/updatePhotoById', {
             photo
         });
     }
@@ -117,7 +103,7 @@ class PhotosVideosTab extends Component {
             }
         });
         this.setState({photos: res});
-        api.post('/photo/removePhoto', {
+        api.post('/eventphoto/removePhoto', {
             photo
         });
     }
@@ -127,7 +113,7 @@ class PhotosVideosTab extends Component {
         photos.push(photo);
         console.log(photo);
         this.setState({photos: photos});
-        api.post('/photo/addPhoto', {
+        api.post('/eventphoto/addPhoto', {
             photo
         });
     }
@@ -158,32 +144,6 @@ class PhotosVideosTab extends Component {
             })});
     }
 
-    handleDeleteComment = comment => {
-        var photo = this.state.edit_photo;
-        var comments = photo.comment;
-        var res = [];
-        comments.forEach(function(cursor, err) {
-            if (cursor !== comment)
-                res.push(cursor);
-        });
-        photo.comment = res;
-        this.setState({edit_photo: photo});
-    }
-
-    handleAddComment = (photo, comment) => {
-        api.post('/photo/addComment', {
-            photo, comment
-        }).then(res => {
-            this.setState({ photos: res.data.doc });
-        });
-        // const {user_id} = this.props;
-        // api.post('/photo/getPhotosById', {
-        //     user_id
-        // }).then(res => {
-        //     this.setState({ photos: res.data.doc });
-        // });
-    }
-
     nextImage = (handle) => {
         const {edit_photo, photos} = this.state;
         var prv = null, res = null;
@@ -209,11 +169,8 @@ class PhotosVideosTab extends Component {
     render()
     {
         const {classes} = this.props;
-        const {edit_photo} = this.state;
-        const photosVideos =  (this.state.photos === null || this.state.photos.user_id === '') ? null : this.state.photos;
-        const comments = edit_photo.comment;
-
-        console.log(photosVideos);
+        const {edit_photo, count} = this.state;
+        const photosVideos =  (this.state.photos === null || this.state.photos.event_id === '') ? null : this.state.photos;
 
         return (
             <div className="md:flex max-w-2xl">
@@ -225,7 +182,9 @@ class PhotosVideosTab extends Component {
                     >
                         <ListSubheader component="div" className="flex items-center pl-0 mb-24">
                             <Typography className="mr-16" variant="h6">Portfolio</Typography>
-                            <PhotoAddDialog onSave={this.handleAdd} user_id={this.props.user_id}/>
+                            {photosVideos && photosVideos.length < count &&
+                            <PhotoAddDialog onSave={this.handleAdd} event_id={this.props.event_id}/>
+                            }
                         </ListSubheader>
                         <div className="mb-48">
                             <GridList className="" spacing={8} cols={0} children="">
@@ -308,26 +267,6 @@ class PhotosVideosTab extends Component {
                                                     rows="3"
                                                     fullWidth
                                                 />
-                                                {comments && comments.map((comment) => (
-                                                    <div className="flex flex-row" key={comment.name+comment.created_at}>
-                                                        <div>
-                                                            <Avatar src={comment.avatar}/>
-                                                        </div>
-                                                        <div className="bubble items-center justify-center p-12 max-w-full">
-                                                            <div className="flex leading-tight whitespace-pre-wrap">{comment.name}
-                                                            <Typography className="time w-full text-11 mx-4"
-                                                                        color="textSecondary">{moment(comment.created_at).format('MMMM Do YYYY, h:mm:ss a')}</Typography>
-                                                            </div>
-                                                            <div className="m-4 leading-tight whitespace-pre-wrap">{comment.message}</div>
-                                                        </div>
-                                                        <div><IconButton>
-                                                            <Icon onClick={(ev) => {
-                                                                ev.stopPropagation();
-                                                                this.handleDeleteComment(comment);
-                                                            }}>delete</Icon>
-                                                        </IconButton></div>
-                                                    </div>
-                                                ))}
                                             </DialogContent>
                                             <DialogActions>
                                                 <Button onClick={(ev) => {
@@ -349,7 +288,6 @@ class PhotosVideosTab extends Component {
                                         title={period.title}
                                         actionIcon={
                                             <div className="flex min-w-32">
-                                                <PhotoAddComment photo={period} onAddComment={this.handleAddComment}/>
                                                 <IconButton>
                                                     <Icon className="text-white opacity-75" onClick={(ev) => {
                                                         ev.stopPropagation();
@@ -378,4 +316,4 @@ class PhotosVideosTab extends Component {
     }
 }
 
-export default withStyles(styles, {withTheme: true})(PhotosVideosTab);
+export default withStyles(styles, {withTheme: true})(PhotosTab);

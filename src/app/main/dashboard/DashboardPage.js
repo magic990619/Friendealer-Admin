@@ -1,16 +1,7 @@
 import React, {Component} from 'react';
-import api from 'app/ApiConfig'
-import PropTypes from 'prop-types';
-import {withStyles, Button, Typography, Icon, IconButton, Tooltip } from '@material-ui/core';
+import api from 'app/ApiConfig';
+import {withStyles, Typography } from '@material-ui/core';
 import {FusePageSimple, FuseAnimate} from '@fuse';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import _ from '@lodash';
 import Widget1 from './Widget1';
 import Widget2 from './Widget2';
 import Widget3 from './Widget3';

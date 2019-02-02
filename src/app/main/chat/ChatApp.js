@@ -9,13 +9,10 @@ import withReducer from 'app/store/withReducer';
 import * as Actions from "./store/actions";
 import Chat from "./Chat";
 import ChatsSidebar from "./ChatsSidebar";
-import StatusIcon from "./StatusIcon";
-import ContactSidebar from './ContactSidebar';
 import UserSidebar from './UserSidebar';
 import reducer from './store/reducers';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import socket from "app/SocketConfig.js";
 
@@ -138,7 +135,7 @@ class ChatApp extends React.Component {
     render()
     {
         const {searchText, page, rowsPerPage} = this.state;
-        const {classes, chat, getContacts, getUserData, selectedContactId, contacts, selectedEventId, events, setselectedEventId, mobileChatsSidebarOpen, openMobileChatsSidebar, closeMobileChatsSidebar, userSidebarOpen, closeUserSidebar, contactSidebarOpen, openContactSidebar, closeContactSidebar} = this.props;
+        const {classes, chat, getContacts, getUserData, selectedContactId, contacts, events, mobileChatsSidebarOpen, openMobileChatsSidebar, closeMobileChatsSidebar, userSidebarOpen, closeUserSidebar, openContactSidebar} = this.props;
         const selectedContact = contacts.find(_contact => (_contact.id === selectedContactId));
 
         const eventArray = this.getFilteredArray(events, searchText);

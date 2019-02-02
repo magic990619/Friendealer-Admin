@@ -3,7 +3,6 @@ import _ from '@lodash';
 import store from 'app/store';
 import * as Actions from 'app/store/actions';
 import jwtService from 'app/services/jwtService';
-import socket from 'app/SocketConfig.js';
 
 export const SET_USER_DATA = '[USER] SET DATA';
 export const REMOVE_USER_DATA = '[USER] REMOVE DATA';
@@ -84,7 +83,7 @@ export function logoutUser()
 {
 
     return (dispatch, getState) => {
-        const user = getState().auth.user;
+        // const user = getState().auth.user;
 
         // if ( user.role === 'guest' )
         // {

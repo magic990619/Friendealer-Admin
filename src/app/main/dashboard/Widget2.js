@@ -1,6 +1,5 @@
 import React from 'react';
 import {withStyles, Card, Icon, Typography} from '@material-ui/core';
-import {Bar} from 'react-chartjs-2';
 
 const Widget2 = ({data, theme}) => {
 

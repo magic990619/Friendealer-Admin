@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStyles, Button, Card, Divider, Icon, IconButton, Typography} from '@material-ui/core';
+import {withStyles, Button, Card, Divider, Typography} from '@material-ui/core';
 import {Link} from 'react-router-dom';
 
 const Widget6 = ({data}) => {

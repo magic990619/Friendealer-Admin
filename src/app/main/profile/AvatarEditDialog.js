@@ -37,7 +37,7 @@ export default class AvatarEditDialog extends React.Component {
     }
     return api.post("/upload", formData, config)
         .then(res => this.setState({
-            photo_url: res.data.file.path,
+            photo_url: "http://localhost:8888/uploads/" + res.data.file.filename,
             prev_url: prev_url
         }));
   }

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import api from 'app/ApiConfig';
 
 export const GET_EVENTS = '[CHAT APP] GET EVENTS';
