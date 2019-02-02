@@ -16,6 +16,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import StarRatingComponent from 'react-star-rating-component';
 
 export default class FormDialog extends React.Component {
   state = {
@@ -27,14 +28,14 @@ export default class FormDialog extends React.Component {
         event_name: '',
         delivered_budget: 'Yes',
         delivered_time: 'Yes',
-        rating_clarity: '',
-        rating_quality: '',
-        rating_communication: '',
-        rating_payment: '',
-        rating_expertise: '',
-        rating_professionalism: '',
-        rating_work_again: '',
-        rating_hire_again: '',
+        rating_clarity: 0,
+        rating_quality: 0,
+        rating_communication: 0,
+        rating_payment: 0,
+        rating_expertise: 0,
+        rating_professionalism: 0,
+        rating_work_again: 0,
+        rating_hire_again: 0,
         photo: [''],
         feedback: '',
         created_at: '',
@@ -54,6 +55,10 @@ export default class FormDialog extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+
+  onStarClick(nextValue, prevValue, name) {
+    this.setState({row: _.set({...this.state.row}, name, nextValue)});
+  }
 
   handleChange = name => event => {
       var cursor = this.state.row;
@@ -227,61 +232,51 @@ export default class FormDialog extends React.Component {
               fullWidth
             />
             <div>
-                <TextField
-                    id="rating_quality"
-                    label={person === false ? "Rating for quality" : "Rating for clarity"}
-                    value={person === false ? this.state.row.rating_quality : this.state.row.rating_clarity}
-                    onChange={person === false ? this.handleChange('rating_quality') : this.handleChange('rating_clarity')}
-                    type="number"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    margin="normal"
-                />
-                <TextField
-                    id="rating_communication"
-                    label="Rating for communication"
-                    value={this.state.row.rating_communication}
-                    onChange={this.handleChange('rating_communication')}
-                    type="number"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    margin="normal"
-                />
-                <TextField
-                    id="rating_expertise"
-                    label={person === false ? "Rating for expertise" : "Rating for payment"}
-                    value={person === false ? this.state.row.rating_expertise : this.state.row.rating_payment}
-                    onChange={person === false ? this.handleChange('rating_expertise') : this.handleChange('rating_payment')}
-                    type="number"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    margin="normal"
-                />
-                <TextField
-                    id="rating_professionalism"
-                    label="Rating for professionalism"
-                    value={this.state.row.rating_professionalism}
-                    onChange={this.handleChange('rating_professionalism')}
-                    type="number"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    margin="normal"
-                />
-                <TextField
-                    id="rating_hire_again"
-                    label={person === false ? "Rating for hire again" : "Rating for work again"}
-                    value={person === false ? this.state.row.rating_hire_again : this.state.row.rating_work_again}
-                    onChange={person === false ? this.handleChange('rating_hire_again') : this.handleChange('rating_work_again')}
-                    type="number"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    margin="normal"
-                />
+                <div className="flex items-center">
+                    <h3 className="min-w-160">{person === false ? "Quality" : "Clarity"} </h3>
+                    <StarRatingComponent className="text-32"
+                        name={person === false ? "rating_quality" : "rating_clarity"}
+                        starCount={5}
+                        value={person === false ? this.state.row.rating_quality : this.state.row.rating_clarity}
+                        onStarClick={this.onStarClick.bind(this)}
+                    />
+                </div>
+                <div className="flex items-center">
+                    <h3 className="min-w-160">Communication </h3>
+                    <StarRatingComponent className="text-32"
+                        name="rating_communication" 
+                        starCount={5}
+                        value={this.state.row.rating_communication}
+                        onStarClick={this.onStarClick.bind(this)}
+                    />
+                </div>
+                <div className="flex items-center">
+                    <h3 className="min-w-160">{person === false ? "Expertise" : "Payment"} </h3>
+                    <StarRatingComponent className="text-32"
+                        name={person === false ? "rating_expertise" : "rating_payment"}
+                        starCount={5}
+                        value={person === false ? this.state.row.rating_expertise : this.state.row.rating_payment}
+                        onStarClick={this.onStarClick.bind(this)}
+                    />
+                </div>
+                <div className="flex items-center">
+                    <h3 className="min-w-160">Professionalism</h3>
+                    <StarRatingComponent className="text-32"
+                        name="rating_professionalism" 
+                        starCount={5}
+                        value={this.state.row.rating_professionalism}
+                        onStarClick={this.onStarClick.bind(this)}
+                    />
+                </div>
+                <div className="flex items-center">
+                    <h3 className="min-w-160">{person === false ? "Hire again" : "Work again"} </h3>
+                    <StarRatingComponent className="text-32"
+                        name={person === false ? "rating_hire_again" : "rating_work_again"}
+                        starCount={5}
+                        value={person === false ? this.state.row.rating_hire_again : this.state.row.rating_work_again}
+                        onStarClick={this.onStarClick.bind(this)}
+                    />
+                </div>
             </div>
             <div>
                 {row.photo && row.photo.length === 0 && <span>No photos found</span>}

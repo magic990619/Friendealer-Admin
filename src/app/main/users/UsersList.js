@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux';
 import ReactTable from "react-table";
 import * as Actions from './store/actions';
 import api from 'app/ApiConfig'
+import StarRatingComponent from 'react-star-rating-component';
 
 class UsersList extends Component {
 
@@ -178,6 +179,19 @@ class UsersList extends Component {
                             Header    : "Account Status",
                             accessor  : "account_status",
                             filterable: true
+                        },
+                        {
+                            Header: "Overall Rating",
+                            Cell : row => (
+                                <div>
+                                    <StarRatingComponent className="text-24"
+                                        name="overall_rating" 
+                                        starCount={5}
+                                        value={row.original.rating}
+                                        editing={false}
+                                    />
+                                </div>
+                            )
                         },
                         {
                             Header: "",
