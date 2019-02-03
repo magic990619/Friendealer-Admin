@@ -205,7 +205,7 @@ class MembershipPage extends Component {
                     </div>
                 }
                 content={
-                    <div>
+                    <div className="p-16 sm:p-24">
                         <Paper className={classes.root}>
                             <Table className={classes.table}>
                                 <EnhancedTableHead

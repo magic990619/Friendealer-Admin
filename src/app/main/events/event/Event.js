@@ -688,9 +688,13 @@ class Event extends Component {
                                             ))}
                                             {
                                                 form.friend_join.length === 0 &&
-                                                <Typography variant="subtitle1" color="inherit" className="min-w-80 pt-20">
-                                                        No joined friends
-                                                </Typography>
+                                                <TableRow>
+                                                    <CustomTableCell>
+                                                    <Typography variant="subtitle1" color="inherit" className="min-w-80 pt-20">
+                                                            No joined friends
+                                                    </Typography>
+                                                    </CustomTableCell>
+                                                </TableRow>
                                             }
                                             </TableBody>
                                         </Table>
@@ -731,9 +735,13 @@ class Event extends Component {
                                             ))}
                                             {
                                                 form.friend_offer.length === 0 &&
+                                                <TableRow>
+                                                    <CustomTableCell>
                                                 <Typography variant="subtitle1" color="inherit" className="min-w-80 pt-20">
                                                         No offered friends
                                                 </Typography>
+                                                </CustomTableCell>
+                                                </TableRow>
                                             }
                                             </TableBody>
                                         </Table>

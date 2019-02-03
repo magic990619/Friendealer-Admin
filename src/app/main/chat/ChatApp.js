@@ -48,7 +48,7 @@ const styles = theme => ({
     contentCardWrapper: {
         position                      : 'relative',
         padding                       : 24,
-        maxWidth                      : 1400,
+        maxWidth                      : 1800,
         display                       : 'flex',
         flexDirection                 : 'column',
         flex                          : '1 0 auto',
