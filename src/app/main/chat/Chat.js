@@ -203,7 +203,7 @@ class Chat extends Component {
                 </FuseScrollbars>
                 {chat && (
                     <form onSubmit={this.onMessageSubmit} className="absolute pin-b pin-r pin-l py-16 px-8">
-                        <Paper className="flex items-center relative rounded-24" elevation={1}>
+                        <Paper className="flex items-center relative rounded-4" elevation={1}>
                             <TextField
                                 autoFocus={false}
                                 id="message-input"

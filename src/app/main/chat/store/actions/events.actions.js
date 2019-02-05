@@ -4,9 +4,13 @@ export const GET_EVENTS = '[CHAT APP] GET EVENTS';
 export const SET_SELECTED_EVENT_ID = '[CHAT APP] SET SELECTED EVENT ID';
 export const REMOVE_SELECTED_EVENT_ID = '[CHAT APP] REMOVE SELECTED EVENT ID';
 
-export function getEvents()
+export function getEvents(param)
 {
-    const request = api.post('/events/getAllEvents');
+    var request;
+    if (param === 'All')
+        request = api.post('/events/getAllEvents');
+    else
+        request = api.post('/events/getEventsByState', {event_state: param});
     return (dispatch) =>
         request.then((response) =>
             dispatch({

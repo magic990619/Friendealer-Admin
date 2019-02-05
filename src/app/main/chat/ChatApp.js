@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStyles, Drawer, AppBar, Toolbar, Typography, IconButton, Hidden, Avatar, Icon, Paper, Button, Input, TablePagination} from '@material-ui/core';
+import {withStyles, Drawer, AppBar, Toolbar, Typography, IconButton, Hidden, Avatar, Icon, Paper, Button, Input, TablePagination, Divider} from '@material-ui/core';
 import {fade} from '@material-ui/core/styles/colorManipulator';
 import {FuseUtils, FuseScrollbars} from '@fuse';
 import classNames from 'classnames';
@@ -68,7 +68,6 @@ const styles = theme => ({
         position       : 'relative',
         flex           : '1 1 100%',
         flexDirection  : 'row',
-        backgroundImage: 'url("/assets/images/patterns/rain-grey.png")',
         backgroundColor: theme.palette.background.paper,
         boxShadow      : theme.shadows[1],
         borderRadius   : 8,
@@ -108,7 +107,7 @@ class ChatApp extends React.Component {
 
     componentDidMount()
     {
-        this.props.getEvents();
+        this.props.getEvents("All");
     }
 
     getFilteredArray = (arr, searchText) => {
@@ -155,14 +154,14 @@ class ChatApp extends React.Component {
                 <div className={classNames(classes.contentCardWrapper, 'container')}>
 
                     <div className={classes.contentCard}>
-                        <div className={classes.list}>
+                        <div className={classes.list + " border-grey border-2"}>
                             <AppBar
                                 className={classes.contentToolbar}
                                 position="static"
                                 color="default"
                                 elevation={1}
                             >
-                                <Typography variant="h6" className="my-16 text-center">Events</Typography>
+                                <Typography variant="h6" className="my-16 text-left pl-20">List of Events</Typography>
                                 <Toolbar className="px-16">
                                     <Paper className="flex p-4 items-center w-full px-8 py-4 rounded-8" elevation={1}>
 
@@ -181,20 +180,30 @@ class ChatApp extends React.Component {
                                         />
                                     </Paper>
                                 </Toolbar>
+                                <div className="flex">
+                                    <Button className="normal-case" color="secondary" onClick={(ev)=>(this.props.getEvents('All'))}>All</Button>
+                                    <Button className="normal-case" color="secondary" onClick={(ev)=>(this.props.getEvents('New'))}>New</Button>
+                                    <Button className="normal-case" color="secondary" onClick={(ev)=>(this.props.getEvents('Progress'))}>Progress</Button>
+                                    <Button className="normal-case" color="secondary" onClick={(ev)=>(this.props.getEvents('Finished'))}>Finished</Button>
+                                    <Button className="normal-case" color="secondary" onClick={(ev)=>(this.props.getEvents('Closed'))}>Closed</Button>
+                                </div>
                             </AppBar>
                             <FuseScrollbars className="flex-grow overflow-x-auto">
 
                             <List component="nav">
                             {eventArray && eventArray.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((event) => (
+                                <div key={event._id}>
                                 <ListItem button onClick={(ev) => {
                                     getUserData(event._id);
                                     getContacts(event._id);
-                                }} key={event._id}>
+                                }}>
                                     <ListItemText primary={event.name} />
                                 </ListItem>
+                                <Divider />
+                                </div>
                             ))}
                             {!eventArray &&
-                                <Typography variant="subtitle1" className="my-24 text-center">No Events</Typography>
+                                <Typography variant="subtitle1" className="my-24 text-center">No events found</Typography>
                             }
                             </List>
                             </FuseScrollbars>
@@ -214,41 +223,43 @@ class ChatApp extends React.Component {
                                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
                             />
                         </div>
-                        <Hidden mdUp>
-                            <Drawer
-                                className="h-full absolute z-20"
-                                variant="temporary"
-                                anchor="left"
-                                open={mobileChatsSidebarOpen}
-                                onClose={closeMobileChatsSidebar}
-                                classes={{
-                                    paper: classNames(classes.drawerPaper, "absolute pin-l")
-                                }}
-                                ModalProps={{
-                                    keepMounted  : true,
-                                    disablePortal: true,
-                                    BackdropProps: {
-                                        classes: {
-                                            root: "absolute"
+                        <div className="mx-20 border-grey border-2">
+                            <Hidden mdUp>
+                                <Drawer
+                                    className="h-full absolute z-20"
+                                    variant="temporary"
+                                    anchor="left"
+                                    open={mobileChatsSidebarOpen}
+                                    onClose={closeMobileChatsSidebar}
+                                    classes={{
+                                        paper: classNames(classes.drawerPaper, "absolute pin-l")
+                                    }}
+                                    ModalProps={{
+                                        keepMounted  : true,
+                                        disablePortal: true,
+                                        BackdropProps: {
+                                            classes: {
+                                                root: "absolute"
+                                            }
                                         }
-                                    }
-                                }}
-                            >
-                                <ChatsSidebar/>
-                            </Drawer>
-                        </Hidden>
-                        <Hidden smDown>
-                            <Drawer
-                                className="h-full z-20"
-                                variant="permanent"
-                                open
-                                classes={{
-                                    paper: classes.drawerPaper
-                                }}
-                            >
-                                <ChatsSidebar/>
-                            </Drawer>
-                        </Hidden>
+                                    }}
+                                >
+                                    <ChatsSidebar/>
+                                </Drawer>
+                            </Hidden>
+                            <Hidden smDown>
+                                <Drawer
+                                    className="h-full z-20"
+                                    variant="permanent"
+                                    open
+                                    classes={{
+                                        paper: classes.drawerPaper
+                                    }}
+                                >
+                                    <ChatsSidebar/>
+                                </Drawer>
+                            </Hidden>
+                        </div>
                         <Drawer
                             className="h-full absolute z-30"
                             variant="temporary"
@@ -271,14 +282,14 @@ class ChatApp extends React.Component {
                             <UserSidebar/>
                         </Drawer>
 
-                        <main className={classNames(classes.contentWrapper, "z-10")}>
+                        <main className={classNames(classes.contentWrapper, "z-10 border-grey border-2")}>
                             {!chat ?
                                 (
                                     <div className="flex flex-col flex-1 items-center justify-center p-24">
                                         <Paper className="rounded-full p-48">
                                             <Icon className="block text-64" color="secondary">chat</Icon>
                                         </Paper>
-                                        <Typography variant="h6" className="my-24">Chat App</Typography>
+                                        <Typography variant="h6" className="my-24">Chat</Typography>
                                         <Typography className="hidden md:flex px-16 pb-24 mt-24 text-center" color="textSecondary">
                                             Select a contact to start a conversation!..
                                         </Typography>

@@ -121,17 +121,14 @@ class ChatsSidebar extends Component {
                         secondary={contact.mood}
                     />
 
-                    {contact.chatId && (
+                    {contact && (
                         <div className="flex flex-col justify-center items-end">
                             {contact.lastMessageTime && (
                                 <Typography className="whitespace-no-wrap mb-8">
                                     {moment(contact.lastMessageTime).format('ll')}
                                 </Typography>
                             )}
-                            {contact.unread && (
-                                <div
-                                    className={classNames(classes.unreadBadge, "flex items-center justify-center min-w-24 h-24 rounded-full text-14 text-center")}>{contact.unread}</div>
-                            )}
+                            <Icon>contact_mail</Icon>
                         </div>
                     )}
                 </ListItem>
@@ -147,6 +144,9 @@ class ChatsSidebar extends Component {
                     elevation={1}
                 >
                     <Toolbar className="flex justify-between items-center px-16 pr-4">
+                        <Typography variant="h6" color="primary" className="m-6">
+                            Refine Results
+                        </Typography>
 
                         {user && (
                             <div className="flex">
@@ -155,8 +155,6 @@ class ChatsSidebar extends Component {
                                     <Avatar src={user.avatar} alt={user.name} className="w-40 h-40">
                                         {(!user.avatar || user.avatar === '') ? user.name[0] : ''}
                                     </Avatar>
-
-
 
                                     <div
                                         className="absolute pin-r pin-b -m-4 z-10 cursor-pointer"
@@ -188,25 +186,6 @@ class ChatsSidebar extends Component {
                                 </Typography>
                             </div>
                         )}
-
-                        <div>
-                            <IconButton
-                                aria-owns={chatsMoreMenuEl ? 'chats-more-menu' : null}
-                                aria-haspopup="true"
-                                onClick={this.chatsMoreMenuClick}
-                            >
-                                <Icon>more_vert</Icon>
-                            </IconButton>
-                            <Menu
-                                id="chats-more-menu"
-                                anchorEl={chatsMoreMenuEl}
-                                open={Boolean(chatsMoreMenuEl)}
-                                onClose={this.chatsMoreMenuClose}
-                            >
-                                <MenuItem onClick={this.chatsMoreMenuClose}>Profile</MenuItem>
-                                <MenuItem onClick={this.chatsMoreMenuClose}>Logout</MenuItem>
-                            </Menu>
-                        </div>
                     </Toolbar>
                     <Toolbar className="px-16">
                         <Paper className="flex p-4 items-center w-full px-8 py-4 rounded-8" elevation={1}>

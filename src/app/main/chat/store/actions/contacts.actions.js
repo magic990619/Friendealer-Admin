@@ -1,6 +1,6 @@
 import api from 'app/ApiConfig';
 import {setselectedEventId} from './events.actions';
-import {closeMobileChatsSidebar} from './sidebars.actions';
+import {removeChat} from './chat.actions';
 
 export const GET_CONTACTS = '[CHAT APP] GET CONTACTS';
 export const SET_SELECTED_CONTACT_ID = '[CHAT APP] SET SELECTED CONTACT ID';
@@ -15,8 +15,8 @@ export function getContacts(event_id)
     return (dispatch) =>
         request.then((response) => {
             dispatch(setselectedEventId(event_id));
-            dispatch(closeMobileChatsSidebar());
             dispatch(removeSelectedContactId());
+            dispatch(removeChat());
             return dispatch({
                 type   : GET_CONTACTS,
                 payload: response.data.doc

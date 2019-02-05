@@ -33,9 +33,11 @@ const newProfile = {
         image: '',
         count: 0,
     },
-    select_group: 0,
+    select_group: null,
     is_add: false,
     open: false,
+    friend_open: false,
+    add_user_email: '',
 };
 class FriendTab extends Component {
 
@@ -89,6 +91,36 @@ class FriendTab extends Component {
     handleClickOpen = (group, is_add) => {
         this.setState({ open: true, edit_group: group, is_add: is_add, select_group: group._id});
     };
+
+    handleFriendAddOpen = () => {
+        this.setState({friend_open: true});
+    }
+
+    handleFriendAddClose = () => {
+        this.setState({friend_open: false});
+    };
+
+    handleAddUserEmail = (event) => {
+        this.setState({add_user_email: event.target.value});
+    }
+
+    handleAddUser = () => {
+        api.post('/auth/getAccountDataByEmail', {email: this.state.add_user_email})
+            .then(res => {
+                if (res.data.doc != null) {
+                    var profileData = this.state.profileData;
+                    profileData.friends.push({
+                        friend_id: res.data.doc._id,
+                        name: res.data.doc.user_name,
+                        avatar: res.data.doc.avatar,
+                        is_favourite: this.state.select_group,
+                        created_at: Date.now(),
+                    });
+                    this.setState({profileData: profileData, friend_open: false});
+                    this.handleSave();
+                }
+            });
+    }
 
     handleSaveGroup = () => {
         var profile = this.state.profileData;
@@ -161,7 +193,7 @@ class FriendTab extends Component {
 
     render()
     {
-        const {edit_group, select_group} = this.state;
+        const {edit_group, select_group, add_user_email} = this.state;
         // console.log(this.state.profileData);
         var friends = this.state.profileData.user_id === '' ? null : this.state.profileData.friends;
         var friend_groups = this.state.profileData.user_id === '' ? null : this.state.profileData.friend_groups;
@@ -206,6 +238,7 @@ class FriendTab extends Component {
                                         >
                                             <Typography className="font-medium truncate" color="inherit">[{group.count}] friendealers</Typography>
                                             <div className="flex items-center justify-center opacity-75">
+                                            {group.name !== "Blocked" &&
                                                 <IconButton onClick={(ev) => {
                                                     ev.stopPropagation();
                                                     if (window.confirm('Are you sure to delete this group?'))
@@ -213,14 +246,21 @@ class FriendTab extends Component {
                                                 }}>
                                                     <Icon>delete</Icon>
                                                 </IconButton>
+                                            }
                                             </div>
                                         </div>
                                         <CardContent className="flex flex-col flex-auto items-center justify-center">
-                                            <img className="w-64" src={group.image} alt="group_image"/>
+                                        {group.name !== "Blocked" &&
+                                            <img className="w-64 h-64" src={group.image} alt="group_image"/>
+                                        }
+                                        {group.name === "Blocked" &&
+                                            <img className="w-64 h-64" src="assets/images/blocked.png" alt="group_image"/>
+                                        }
                                             <Typography className="text-center text-16 font-800">{group.name}</Typography>
                                         </CardContent>
                                         <Divider/>
                                         <CardActions className="justify-center">
+                                        {group.name !== "Blocked" &&
                                             <Button
                                                 className="justify-center px-10"
                                                 color="secondary"
@@ -229,6 +269,18 @@ class FriendTab extends Component {
                                                     this.handleClickOpen(group, false);
                                                 }}
                                             > Edit </Button>
+                                            }
+                                        {group.name === "Blocked" &&
+                                            <Button
+                                                className="justify-center px-10"
+                                                color="secondary"
+                                                onClick={(ev) => {
+                                                    ev.stopPropagation();
+                                                    this.handleClickOpen(group, false);
+                                                }}
+                                                disabled
+                                            > Edit </Button>
+                                            }
                                             <Dialog
                                                 open={this.state.open}
                                                 onClose={this.handleClose}
@@ -293,7 +345,51 @@ class FriendTab extends Component {
                                     <Typography variant="subtitle1" color="inherit" className="flex-1">
                                         Friends
                                     </Typography>
-                                    {/* <Button className="normal-case" color="inherit" size="small">See 454 more</Button> */}
+                                    {select_group !== null &&
+                                        <div>
+                                            <IconButton onClick={(ev) => {
+                                                ev.stopPropagation();
+                                                this.handleFriendAddOpen();
+                                            }}>
+                                                <Icon className="text-white">person_add</Icon>
+                                            </IconButton>
+                                            <Dialog
+                                                open={this.state.friend_open}
+                                                onClose={this.handleFriendAddClose}
+                                                aria-labelledby="form-dialog-title"
+                                                >
+                                                <div>
+                                                    <DialogContent>
+                                                        <DialogContentText>
+                                                        Please enter user email address here.
+                                                        </DialogContentText>
+                                                        <TextField
+                                                            autoFocus
+                                                            className="m-4"
+                                                            id="email"
+                                                            name="email"
+                                                            label="Email"
+                                                            type="email"
+                                                            value={add_user_email}
+                                                            onChange={this.handleAddUserEmail}
+                                                            fullWidth
+                                                        />
+                                                    </DialogContent>
+                                                    <DialogActions>
+                                                        <Button onClick={(ev) => {
+                                                            ev.stopPropagation();
+                                                            this.handleAddUser();
+                                                        }} color="primary">
+                                                            Add
+                                                        </Button>
+                                                        <Button onClick={this.handleFriendAddClose} color="primary">
+                                                            Cancel
+                                                        </Button>
+                                                    </DialogActions>
+                                                </div>
+                                            </Dialog>
+                                        </div>
+                                    }
                                 </Toolbar>
                             </AppBar>
                             <CardContent className="p-0">

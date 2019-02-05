@@ -183,13 +183,32 @@ class UsersList extends Component {
                         {
                             Header: "Overall Rating",
                             Cell : row => (
-                                <div>
-                                    <StarRatingComponent className="text-24"
+                                <div className="flex">
+                                    <div className="flex bg-blue mt-6 rounded-2 w-24 h-24 justify-center">
+                                        <p className="text-white p-4">{row.original.rating.toFixed(1)}</p>
+                                    </div>
+                                    <StarRatingComponent className="text-18 my-auto ml-6"
                                         name="overall_rating" 
                                         starCount={5}
                                         value={row.original.rating}
                                         editing={false}
-                                    />
+                                        starColor="#ffb400"
+                                        emptyStarColor="#ffb400"
+                                        renderStarIcon={(index, value) => {
+                                            return (
+                                              <span>
+                                                <i className={index <= value ? 'fas fa-star' : 'far fa-star'} />
+                                              </span>
+                                            );
+                                          }}
+                                          renderStarIconHalf={() => {
+                                            return (
+                                              <span>
+                                                <span style={{position: 'absolute'}}><i className="far fa-star" /></span>
+                                                <span><i className="fas fa-star-half" /></span>
+                                              </span>
+                                            );
+                                          }}                                    />
                                 </div>
                             )
                         },
