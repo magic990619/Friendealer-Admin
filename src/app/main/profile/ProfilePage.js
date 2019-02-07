@@ -78,91 +78,92 @@ class ProfilePage extends Component {
         var user_id = this.state.accountData._id;
 
         return (
-            <FusePageSimple
-                classes={{
-                    // header : classes.layoutHeader,
-                    toolbar: "px-16 sm:px-24"
-                }}
-                header={
-                    <div className="p-24 flex flex-1 flex-col items-center justify-center md:flex-row md:items-center">
-                        <div className="flex flex-1 flex-col items-center justify-center md:flex-row md:items-center md:justify-start">
-                            <FuseAnimate animation="transition.expandIn" delay={300}>
-                                <Avatar
-                                    className="w-96 h-96"
-                                    alt="user photo"
-                                    src={this.state.accountData.avatar && this.state.accountData.avatar !== '' ? this.state.accountData.avatar : "assets/images/avatars/profile.jpg"}
-                                />
-                            </FuseAnimate>
-                            <div className="align-bottom">
-                            <AvatarEditDialog type="avatar" onSave={this.handleSaveAvatar} />
+            <div>
+                <FusePageSimple
+                    classes={{
+                        toolbar: "px-16 sm:px-24",
+                    }}
+                    header={
+                        <div className="p-24 flex flex-1 flex-col items-center justify-center md:flex-row md:items-center">
+                            <div className="flex flex-1 flex-col items-center justify-center md:flex-row md:items-center md:justify-start">
+                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                    <Avatar
+                                        className="w-96 h-96"
+                                        alt="user photo"
+                                        src={this.state.accountData.avatar && this.state.accountData.avatar !== '' ? this.state.accountData.avatar : "assets/images/avatars/profile.jpg"}
+                                    />
+                                </FuseAnimate>
+                                <div className="align-bottom">
+                                <AvatarEditDialog type="avatar" onSave={this.handleSaveAvatar} />
+                                </div>
+                                <FuseAnimate animation="transition.slideLeftIn" delay={300}>
+                                    <Typography className="md:ml-24" variant="h4" color="inherit">{this.state.accountData.user_name}</Typography>
+                                </FuseAnimate>
                             </div>
-                            <FuseAnimate animation="transition.slideLeftIn" delay={300}>
-                                <Typography className="md:ml-24" variant="h4" color="inherit">{this.state.accountData.user_name}</Typography>
-                            </FuseAnimate>
-                        </div>
 
-                        <div className="flex items-center justify-end">
-                            <AvatarEditDialog type="background" onSave={this.handleSaveBackground} />
-                            <Button className="normal-case" variant="contained" color="primary" aria-label="Send Message">Send Message</Button>
+                            <div className="flex items-center justify-end">
+                                <AvatarEditDialog type="background" onSave={this.handleSaveBackground} />
+                                <Button className="normal-case" variant="contained" color="primary" aria-label="Send Message">Send Message</Button>
+                            </div>
                         </div>
-                    </div>
-                }
-                contentToolbar={
-                    <Tabs
-                        value={value}
-                        onChange={this.handleChange}
-                        indicatorColor="secondary"
-                        textColor="secondary"
-                        variant="scrollable"
-                        scrollButtons="off"
-                        classes={{
-                            root: "h-64 w-full border-b-1"
-                        }}
-                    >
-                        <Tab
+                    }
+                    contentToolbar={
+                        <Tabs
+                            value={value}
+                            onChange={this.handleChange}
+                            indicatorColor="secondary"
+                            textColor="secondary"
+                            variant="scrollable"
+                            scrollButtons="off"
                             classes={{
-                                root: "h-64"
-                            }} label="About"/>
-                        <Tab
-                            classes={{
-                                root: "h-64"
+                                root: "h-64 w-full border-b-1"
                             }}
-                            label="Event"/>
-                        <Tab
-                            classes={{
-                                root: "h-64"
-                            }}
-                            label="Feedback"/>
-                        <Tab
-                            classes={{
-                                root: "h-64"
-                            }} label="Photos"/>
-                        <Tab
-                            classes={{
-                                root: "h-64"
-                            }} label="Friends"/>
-                    </Tabs>
-                }
-                content={
-                    <div className="p-16 sm:p-24">
-                        {value === 0 && user_id !== undefined && (
-                            <AboutTab user_id={user_id} />
-                        )}
-                        {value === 1 && user_id !== undefined && (
-                            <EventTab user_id={user_id}/>
-                        )}
-                        {value === 2 && user_id !== undefined && (
-                            <FeedbackTab user_id={user_id}/>
-                        )}
-                        {value === 3 && user_id !== undefined && (
-                            <PhotosVideosTab user_id={user_id}/>
-                        )}
-                        {value === 4 && user_id !== undefined && (
-                            <FriendTab user_id={user_id}/>
-                        )}
-                    </div>
-                }
-            />
+                        >
+                            <Tab
+                                classes={{
+                                    root: "h-64"
+                                }} label="About"/>
+                            <Tab
+                                classes={{
+                                    root: "h-64"
+                                }}
+                                label="Event"/>
+                            <Tab
+                                classes={{
+                                    root: "h-64"
+                                }}
+                                label="Feedback"/>
+                            <Tab
+                                classes={{
+                                    root: "h-64"
+                                }} label="Photos"/>
+                            <Tab
+                                classes={{
+                                    root: "h-64"
+                                }} label="Friends"/>
+                        </Tabs>
+                    }
+                    content={
+                        <div className="p-16 sm:p-24 min-w-full">
+                            {value === 0 && user_id !== undefined && (
+                                <AboutTab user_id={user_id} />
+                            )}
+                            {value === 1 && user_id !== undefined && (
+                                <EventTab user_id={user_id}/>
+                            )}
+                            {value === 2 && user_id !== undefined && (
+                                <FeedbackTab user_id={user_id}/>
+                            )}
+                            {value === 3 && user_id !== undefined && (
+                                <PhotosVideosTab user_id={user_id}/>
+                            )}
+                            {value === 4 && user_id !== undefined && (
+                                <FriendTab user_id={user_id}/>
+                            )}
+                        </div>
+                    }
+                />
+            </div>
         )
     };
 }

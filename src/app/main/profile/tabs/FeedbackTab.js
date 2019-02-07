@@ -19,6 +19,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import FeedbackDialog from './FeedbackDialog';
 import moment from 'moment/moment';
+import StarRatingComponent from 'react-star-rating-component';
 
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -296,8 +297,8 @@ class FeedbackTab extends Component {
         }
 
         return (
-            <div>
-                <div className="flex max-w-full">
+            <div className="min-w-full">
+                <div className="flex min-w-full">
                     <Typography className="inline font-medium mr-4" color="primary" paragraph={false} variant="h6">
                         Joiner
                     </Typography>
@@ -354,9 +355,40 @@ class FeedbackTab extends Component {
                                             <CustomTableCell align="center">{row.feedback}</CustomTableCell>
                                             <CustomTableCell align="center">{row.delivered_budget}</CustomTableCell>
                                             <CustomTableCell align="center">{row.delivered_time}</CustomTableCell>
-                                            <CustomTableCell align="center">{person === false ? ((row.rating_communication + row.rating_expertise + row.rating_quality
+                                            <CustomTableCell align="center">
+                                                <div className="flex">
+                                                    <div className="flex bg-blue mt-6 rounded-2 w-24 h-24 justify-center">
+                                                        <p className="text-white p-4">{(person === false ? ((row.rating_communication + row.rating_expertise + row.rating_quality
                                                 + row.rating_professionalism + row.rating_hire_again) / 5) : ((row.rating_communication + row.rating_payment + row.rating_clarity
-                                                    + row.rating_professionalism + row.rating_work_again) / 5)}</CustomTableCell>
+                                                    + row.rating_professionalism + row.rating_work_again) / 5)).toFixed(1)}</p>
+                                                    </div>
+                                                    <StarRatingComponent className="text-18 my-auto ml-6"
+                                                        name="overall_rating" 
+                                                        starCount={5}
+                                                        value={person === false ? ((row.rating_communication + row.rating_expertise + row.rating_quality
+                                                            + row.rating_professionalism + row.rating_hire_again) / 5) : ((row.rating_communication + row.rating_payment + row.rating_clarity
+                                                                + row.rating_professionalism + row.rating_work_again) / 5)}
+                                                        editing={false}
+                                                        starColor="#ffb400"
+                                                        emptyStarColor="#ffb400"
+                                                        renderStarIcon={(index, value) => {
+                                                            return (
+                                                            <span>
+                                                                <i className={index <= value ? 'fas fa-star' : 'far fa-star'} />
+                                                            </span>
+                                                            );
+                                                        }}
+                                                        renderStarIconHalf={() => {
+                                                            return (
+                                                            <span>
+                                                                <span style={{position: 'absolute'}}><i className="far fa-star" /></span>
+                                                                <span><i className="fas fa-star-half" /></span>
+                                                            </span>
+                                                            );
+                                                        }}
+                                                    />
+                                                </div>
+                                            </CustomTableCell>
                                             <CustomTableCell align="center">
                                                 <FeedbackDialog person={person} row={row} profileData={this.state.profileData} onRefresh={this.handleRefresh}/>
                                             </CustomTableCell>

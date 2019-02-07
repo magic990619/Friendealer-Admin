@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import Dropzone from 'react-dropzone'
 // import moment from 'moment/moment';
 
 const styles = theme => ({
@@ -45,6 +46,11 @@ const styles = theme => ({
         boxShadow                    : theme.shadows[5],
         opacity: 1
     },
+    grid_img: {
+        objectFit: 'scale-down',
+        width: '100%',
+        height: '80%',
+    }
 });
 class PhotosTab extends Component {
 
@@ -144,6 +150,30 @@ class PhotosTab extends Component {
             })});
     }
 
+    handleDrop = (acceptedFiles, rejectedFiles) => {
+        const {event_id} = this.props;
+        console.log(acceptedFiles);
+        let file = acceptedFiles[0];
+        const formData = new FormData();
+        var edit = this.state.edit_photo;
+        formData.append('file',file)
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        return api.post("/upload", formData, config)
+            .then(res => {
+                var photo_url = "http://localhost:8888/uploads/" + res.data.file.filename;
+                this.handleAdd({
+                    event_id: event_id,
+                    photo_url: photo_url,
+                    title: 'untitled',
+                    description: '',
+                  });
+            });
+    }
+
     nextImage = (handle) => {
         const {edit_photo, photos} = this.state;
         var prv = null, res = null;
@@ -171,6 +201,11 @@ class PhotosTab extends Component {
         const {classes} = this.props;
         const {edit_photo, count} = this.state;
         const photosVideos =  (this.state.photos === null || this.state.photos.event_id === '') ? null : this.state.photos;
+        var indents = [];
+
+        for (var index = photosVideos.length ; index < count ; index ++) {
+            indents.push(index);
+        }
 
         return (
             <div className="md:flex max-w-2xl">
@@ -180,23 +215,23 @@ class PhotosTab extends Component {
                             animation: "transition.slideUpBigIn"
                         }}
                     >
-                        <ListSubheader component="div" className="flex items-center pl-0 mb-24">
+                        <div className="flex items-center pl-0 mb-24">
                             <Typography className="mr-16" variant="h6">Portfolio</Typography>
                             {photosVideos && photosVideos.length < count &&
                             <PhotoAddDialog onSave={this.handleAdd} event_id={this.props.event_id}/>
                             }
-                        </ListSubheader>
+                        </div>
                         <div className="mb-48">
-                            <GridList className="" spacing={8} cols={0} children="">
-                            {photosVideos && photosVideos.map((period) => (
+                            <GridList className="" spacing={12} cols={0}>
+                                {photosVideos && photosVideos.map((period) => (
                                 <GridListTile
                                     classes={{
-                                        root: "w-1 sm:w-1/2 md:w-1/4",
-                                        tile: "rounded-8"
+                                        root: "w-128 border-black",
+                                        tile: "rounded-4 border-2"
                                     }}
                                     key={period._id}
                                 >
-                                    <img src={period.photo_url} alt={period.title} onClick={(ev) => {
+                                    <img className={classes.grid_img} src={period.photo_url} alt={period.title} onClick={(ev) => {
                                         ev.stopPropagation();
                                         this.handleClickOpen(period);
                                     }}/>
@@ -284,23 +319,51 @@ class PhotosTab extends Component {
                                             </FuseScrollbars>
                                         </div>
                                     </Dialog>
-                                    <GridListTileBar
-                                        title={period.title}
-                                        actionIcon={
-                                            <div className="flex min-w-32">
-                                                <IconButton>
-                                                    <Icon className="text-white opacity-75" onClick={(ev) => {
-                                                        ev.stopPropagation();
-                                                        if (window.confirm("Are you sure to delete it?")) {
-                                                            this.handleDelete(period);
-                                                        }
-                                                    }}>delete</Icon>
-                                                </IconButton>
-                                            </div>
-                                        }
-                                    />
+                                    <div className="absolute pin-b flex justify-center w-full border-t-2">
+                                        <IconButton onClick={(ev) => {
+                                                ev.stopPropagation();
+                                                if (window.confirm("Are you sure to delete it?")) {
+                                                    this.handleDelete(period);
+                                                }
+                                            }}>
+                                            <Icon className="text-blue">delete</Icon>
+                                        </IconButton>
+                                    </div>
                                 </GridListTile>
                                 ))}
+                                {photosVideos && indents.map((cursor) => (
+                                    <GridListTile
+                                        classes={{
+                                            root: "w-128 border-black",
+                                            tile: "rounded-4 border-2"
+                                            }}
+                                        key={cursor}>
+                                        <Dropzone onDrop={this.handleDrop}>
+                                            {({getRootProps, getInputProps, isDragActive}) => {
+                                            return (
+                                                <div
+                                                {...getRootProps()}
+                                                >
+                                                <input {...getInputProps()} />
+                                                {
+                                                    isDragActive ?
+                                                    <div className="w-full h-full bg-white">
+                                                        <i className="mt-40 fa fa-plus text-blue text-40 align-middle"></i>
+                                                        <p className="text-14 mt-12">Drop here...</p>
+                                                    </div> :
+                                                    <div>
+                                                        <i className="mt-40 fa fa-plus text-grey text-40 align-middle"></i>
+                                                        <div className="absolute pin-b flex justify-center w-full border-t-2 h-52">
+                                                        </div>
+                                                    </div>
+                                                }
+                                                </div>
+                                            )
+                                            }}
+                                        </Dropzone>
+                                    </GridListTile>
+                                ))
+                                }
                                 {
                                     (photosVideos === null || photosVideos.length === 0) && 
                                     <div>

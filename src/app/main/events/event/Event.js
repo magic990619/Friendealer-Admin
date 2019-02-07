@@ -334,10 +334,10 @@ class Event extends Component {
                 }
                 content={
                     form && (
-                        <div className="p-16 sm:p-24 max-w-2xl">
+                        <div className="p-16 sm:p-24 max-w-full">
                             {tabValue === 0 &&
                             (
-                                <div>
+                                <div className="max-w-2xl">
 
                                     <div className="flex">
                                         <TextField
@@ -517,7 +517,7 @@ class Event extends Component {
                                 </div>
                             )}
                             {tabValue === 1 && (
-                                <div>
+                                <div className="max-w-2xl">
 
                                     <div className="flex">
                                         <div className="flex w-full m-4">
@@ -662,7 +662,7 @@ class Event extends Component {
                                 </div>
                             )}
                             {tabValue === 2 && (
-                                <div>
+                                <div className="max-w-2xl">
                                     <Typography variant="h6" color="inherit">
                                             Joined Friends
                                     </Typography>

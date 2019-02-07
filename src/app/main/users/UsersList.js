@@ -208,7 +208,8 @@ class UsersList extends Component {
                                                 <span><i className="fas fa-star-half" /></span>
                                               </span>
                                             );
-                                          }}                                    />
+                                        }}
+                                    />
                                 </div>
                             )
                         },
