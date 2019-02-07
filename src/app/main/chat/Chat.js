@@ -7,6 +7,22 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from '@lodash';
 import * as Actions from './store/actions';
+import StatusIcon from "./StatusIcon";
+import EmojiPicker from 'emoji-picker-react';
+import 'emoji-picker-react/dist/universal/style.scss';
+import JSEMOJI from 'emoji-js';
+import api from 'app/ApiConfig.js';
+
+let jsemoji = new JSEMOJI();
+// set the style to emojione (default - apple)
+jsemoji.img_set = 'emojione';
+// set the storage location for all emojis
+jsemoji.img_sets.emojione.path = 'https://cdn.jsdelivr.net/emojione/assets/3.0/png/32/';
+ 
+// some more settings...
+jsemoji.supports_css = false;
+jsemoji.allow_native = false;
+jsemoji.replace_mode = 'unified';
 
 const styles = theme => ({
     messageRow: {
@@ -91,7 +107,10 @@ const styles = theme => ({
 class Chat extends Component {
 
     state = {
-        messageText: ''
+        messageText: '',
+        text: '',
+        emoji: false,
+        url: '',
     };
 
     componentDidMount(prevProps)
@@ -126,18 +145,18 @@ class Chat extends Component {
     };
 
     onInputChange = (ev) => {
-        this.setState({messageText: ev.target.value});
+        this.setState({messageText: ev.target.value, text: ev.target.value});
     };
 
     onMessageSubmit = (ev) => {
         ev.preventDefault();
-        if ( this.state.messageText === '' )
+        if ( this.state.text === '' )
         {
             return;
         }
-        this.props.sendMessage(this.state.messageText, this.props.chat.id, this.props.user.id)
+        this.props.sendMessage(this.state.text, this.props.chat.id, this.props.user.id, 'text')
             .then(() => {
-                this.setState({messageText: ''});
+                this.setState({messageText: '', text: ''});
                 this.scrollToBottom();
             });
     };
@@ -146,10 +165,47 @@ class Chat extends Component {
         this.chatScroll.scrollTop = this.chatScroll.scrollHeight;
     };
 
+    showEmojiPicker = () => {
+        this.setState({emoji: !this.state.emoji});
+    }
+
+    handleEmojiClick = (code, emoji) => {
+        // console.log(String.fromCodePoint(parseInt(emoji.unified, 16)));
+        // console.log(emoji);
+        let emojiPic = jsemoji.replace_colons(`:${emoji.name}`);
+        let emojiText = jsemoji.replace_colons(`&#x${emoji.unified}`);
+        this.setState({messageText: this.state.messageText + emojiPic, emoji: false,
+            text: this.state.text + String.fromCodePoint(parseInt(emoji.unified, 16))});
+    }
+
+    handleselectedFile = e => {
+        let file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('file',file)
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        console.log(file);
+        return api.post("/upload", formData, config)
+            .then(res => {
+                var url = "http://localhost:8888/uploads/" + res.data.file.filename;
+                var type = 'file';
+                if(file.type.includes('image') === true)
+                    type = 'image';
+                this.props.sendMessage(url, this.props.chat.id, this.props.user.id, type, file.name)
+                .then(() => {
+                    this.setState({url: url});
+                    this.scrollToBottom();
+                });    
+            });
+    }
+
     render()
     {
         const {classes, chat, contacts, user, className} = this.props;
-        const {messageText} = this.state;
+        const {messageText, emoji} = this.state;
         return (
             <div className={classNames("flex flex-col relative", className)}>
                 <FuseScrollbars
@@ -177,10 +233,28 @@ class Chat extends Component {
                                             )}
                                         >
                                             {this.shouldShowContactAvatar(item, i) && (
-                                                <Avatar className="avatar absolute pin-l m-0 -ml-32" src={contact.avatar}/>
+                                                <Avatar className="avatar absolute pin-l m-0 -ml-32" src={contact.avatar} />
+                                            )}
+                                            {this.shouldShowContactAvatar(item, i) && (
+                                            <div className="absolute pin-l z-10">
+                                                <StatusIcon status={contact.status}/>
+                                            </div>                                            
                                             )}
                                             <div className="bubble flex relative items-center justify-center p-12 max-w-full">
-                                                <div className="leading-tight whitespace-pre-wrap">{item.message}</div>
+                                                {item.message_type === 'text' &&
+                                                    <div className="leading-tight whitespace-pre-wrap"><p>{item.message}</p></div>
+                                                }
+                                                {item.message_type === 'file' &&
+                                                    <div className="leading-tight whitespace-pre-wrap">
+                                                        <a className="flex cursor-pointer"><Icon>insert_drive_file</Icon><p className="mt-4">{item.filename}</p></a>
+                                                    </div>
+                                                }
+                                                {item.message_type === 'image' &&
+                                                    <div className="leading-tight whitespace-pre-wrap flex flex-col justify-center">
+                                                        <img src={item.message} />
+                                                        <a>{item.filename}</a>
+                                                    </div>
+                                                }
                                                 <Typography className="time absolute hidden w-full text-11 mt-8 -mb-24 pin-l pin-b whitespace-no-wrap"
                                                             color="textSecondary">{moment(item.time).format('MMMM Do YYYY, h:mm:ss a')}</Typography>
                                             </div>
@@ -205,7 +279,7 @@ class Chat extends Component {
                     <form onSubmit={this.onMessageSubmit} className="absolute pin-b pin-r pin-l py-16 px-8">
                         <Paper className="flex items-center relative rounded-4" elevation={1}>
                             <TextField
-                                autoFocus={false}
+                                autoFocus={true}
                                 id="message-input"
                                 className="flex-1"
                                 InputProps={{
@@ -223,7 +297,21 @@ class Chat extends Component {
                                 onChange={this.onInputChange}
                                 value={messageText}
                             />
-                            <IconButton className="absolute pin-r pin-t" type="submit">
+                            {emoji === true &&
+                                <div className="absolute pin-r pin-b mb-40">
+                                    <EmojiPicker onEmojiClick={this.handleEmojiClick} emojiResolution={128}/>
+                                </div>
+                            }
+                            <input className="hidden" type='file' id='file' name='file' onChange={this.handleselectedFile} />
+                            <IconButton className="" onClick={(ev) => (this.showEmojiPicker())}>
+                                <Icon className="text-24" color="action">insert_emoticon</Icon>
+                            </IconButton>
+                            <IconButton className=""  onClick={(ev) => (
+                                                            document.getElementById('file').click()
+                                                        )}>
+                                <Icon className="text-24" color="action">attach_file</Icon>
+                            </IconButton>
+                            <IconButton className="" type="submit">
                                 <Icon className="text-24" color="action">send</Icon>
                             </IconButton>
                         </Paper>

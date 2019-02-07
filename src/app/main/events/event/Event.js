@@ -24,6 +24,7 @@ import PhotosTab from './PhotosTab.js';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
 import Grid from '@material-ui/core/Grid';
+import Geocode from 'react-geocode';
 import 'date-fns';
 
 function Marker({text})
@@ -95,6 +96,7 @@ class Event extends Component {
         tabValue: 0,
         form    : null,
         basedata: null,
+        address: '',
     };
 
     componentDidMount()
@@ -123,6 +125,18 @@ class Event extends Component {
     }
 
     updateFormState = () => {
+        Geocode.setApiKey("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        Geocode.enableDebug();
+        Geocode.fromLatLng(this.props.event.data.lat, this.props.event.data.lng).then(
+            response => {
+              const address = response.results[0].formatted_address;
+              console.log(address);
+              
+            },
+            error => {
+              console.error(error);
+            }
+          );
         this.setState({form: this.props.event.data})
     };
 
@@ -182,6 +196,22 @@ class Event extends Component {
         this.setState({form: _.set({...this.state.form}, 'featuredImageId', id)});
     };
 
+    addressToLatLng = () => {
+        const address = document.getElementById('address').value;
+        Geocode.setApiKey("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        Geocode.enableDebug();
+        Geocode.fromAddress(address).then(
+            response => {
+              const { lat, lng } = response.results[0].geometry.location;
+              console.log(lat, lng);
+              this.setState({form: _.set({...this.state.form}, 'lat', lat, 'lng', lng)});
+            },
+            error => {
+              console.error(error);
+            }
+        );
+    }
+
     canBeSubmitted()
     {
         const {name} = this.state.form;
@@ -223,7 +253,7 @@ class Event extends Component {
     render()
     {
         const {classes, saveEvent, addEvent} = this.props;
-        const {tabValue, form, basedata} = this.state;
+        const {tabValue, form, basedata, address} = this.state;
         const params = this.props.match.params;
         const {eventId} = params;
 
@@ -751,6 +781,20 @@ class Event extends Component {
                             {tabValue === 3 && (
                                 <div className="w-full">
                                     <Typography className="h2 mb-16">Location</Typography>
+                                    <div className="m-20 align-middle">
+                                        <label>Postal code or street address</label><br />
+                                        <input type="text" 
+                                            className="p-6 input-lg text-20 border-2 rounded-4 w-512"
+                                            id="address" 
+                                            placeholder="London" 
+                                            variant="outlined"
+                                            required /> 
+                                        <Button className="ml-16" variant="contained" color="secondary" onClick={(ev)=>(
+                                            this.addressToLatLng()
+                                        )}>Change</Button>
+                                        <br/>
+                                        <label>Type in postal code or street address and select it form suggested map.</label>
+                                    </div>
                                     <div className="w-full h-512">
                                         <GoogleMap
                                             bootstrapURLKeys={{

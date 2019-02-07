@@ -85,6 +85,8 @@ form label {
     z-index: 99;
 }
 
+@import 'style.scss';
+
 @import 'print.css';
 
 @import 'tables.css';

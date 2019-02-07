@@ -134,7 +134,7 @@ class ChatApp extends React.Component {
     render()
     {
         const {searchText, page, rowsPerPage} = this.state;
-        const {classes, chat, getContacts, getUserData, selectedContactId, contacts, events, mobileChatsSidebarOpen, openMobileChatsSidebar, closeMobileChatsSidebar, userSidebarOpen, closeUserSidebar, openContactSidebar} = this.props;
+        const {classes, chat, getContacts, getUserData, selectedContactId, selectedEventId, contacts, events, mobileChatsSidebarOpen, openMobileChatsSidebar, closeMobileChatsSidebar, userSidebarOpen, closeUserSidebar, openContactSidebar} = this.props;
         const selectedContact = contacts.find(_contact => (_contact.id === selectedContactId));
 
         const eventArray = this.getFilteredArray(events, searchText);
@@ -142,7 +142,7 @@ class ChatApp extends React.Component {
         socket.on("receive:message", data => {
             console.log(data);
             this.props.getUserData(data.event_id);
-            this.props.getContacts(data.event_id);
+            this.props.getContacts(data.event_id, "Inbox");
             this.props.getChat(data.contactId);
         });
 
@@ -195,7 +195,7 @@ class ChatApp extends React.Component {
                                 <div key={event._id}>
                                 <ListItem button onClick={(ev) => {
                                     getUserData(event._id);
-                                    getContacts(event._id);
+                                    getContacts(event._id, "Inbox");
                                 }}>
                                     <ListItemText primary={event.name} />
                                 </ListItem>
@@ -310,17 +310,28 @@ class ChatApp extends React.Component {
                                                     <Icon>chat</Icon>
                                                 </IconButton>
                                                 {selectedContact &&
-                                                <div className="flex items-center cursor-pointer" onClick={openContactSidebar}>
-                                                    <div className="relative ml-8 mr-12">
-                                                        <div className="absolute pin-r pin-b -m-4 z-10">
-                                                            {/* <StatusIcon status={selectedContact.status}/> */}
-                                                        </div>
+                                                <div>
+                                                    <div className="flex items-center cursor-pointer" onClick={openContactSidebar}>
+                                                        <div className="relative ml-8 mr-12">
+                                                            <div className="absolute pin-r pin-b -m-4 z-10">
+                                                                {/* <StatusIcon status={selectedContact.status}/> */}
+                                                            </div>
 
-                                                        <Avatar src={selectedContact.avatar} alt={selectedContact.name}>
-                                                            {!selectedContact.avatar || selectedContact.avatar === '' ? selectedContact.name[0] : ''}
-                                                        </Avatar>
+                                                            <Avatar src={selectedContact.avatar} alt={selectedContact.name}>
+                                                                {!selectedContact.avatar || selectedContact.avatar === '' ? selectedContact.name[0] : ''}
+                                                            </Avatar>
+                                                        </div>
+                                                        <Typography color="inherit" className="text-18 font-600">{selectedContact.name}</Typography>
                                                     </div>
-                                                    <Typography color="inherit" className="text-18 font-600">{selectedContact.name}</Typography>
+                                                    {
+                                                        eventArray && eventArray.map((cursor) => {
+                                                            if (cursor._id === selectedEventId) {
+                                                                return (
+                                                                    <span key={cursor._id}>{"Event: " + cursor.name}</span>
+                                                                );
+                                                            }
+                                                        })
+                                                    }
                                                 </div>
                                                 }
                                             </Toolbar>
@@ -384,7 +395,7 @@ function mapStateToProps({chatApp})
 {
     return {
         events                : chatApp.events.entities,
-        selectedEventId     : chatApp.contacts.selectedEventId,
+        selectedEventId       : chatApp.events.selectedEventId,
         chat                  : chatApp.chat,
         contacts              : chatApp.contacts.entities,
         selectedContactId     : chatApp.contacts.selectedContactId,

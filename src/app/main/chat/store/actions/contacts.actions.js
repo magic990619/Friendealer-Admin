@@ -6,9 +6,9 @@ export const GET_CONTACTS = '[CHAT APP] GET CONTACTS';
 export const SET_SELECTED_CONTACT_ID = '[CHAT APP] SET SELECTED CONTACT ID';
 export const REMOVE_SELECTED_CONTACT_ID = '[CHAT APP] REMOVE SELECTED CONTACT ID';
 
-export function getContacts(event_id)
+export function getContacts(event_id, contactFilter)
 {
-    const request = api.post('/chat/getContacts', {event_id});
+    const request = api.post('/chat/getContacts', {event_id, filter: contactFilter});
 
     // console.log(event_id);
 

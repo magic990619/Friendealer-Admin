@@ -9,7 +9,6 @@ export const SEND_MESSAGE = '[CHAT APP] SEND MESSAGE';
 
 export function getChat(contactId)
 {
-    console.log(contactId);
     return (dispatch, getState) => {
         const request = api.post('/chat/getChat', {
             event_id: getState().chatApp.events.selectedEventId,
@@ -42,7 +41,7 @@ export function removeChat()
     };
 }
 
-export function sendMessage(messageText, chatId, userId)
+export function sendMessage(messageText, chatId, userId, messageType, filename)
 {
     return (dispatch, getState) => {
         const message = {
@@ -50,7 +49,8 @@ export function sendMessage(messageText, chatId, userId)
             'contactId' : getState().chatApp.contacts.selectedContactId,
             'who'    : userId,
             'message': messageText,
-            'message_type' : 'text',
+            'message_type' : messageType,
+            'filename': filename,
             'time'   : new Date()
         };
 

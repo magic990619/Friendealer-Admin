@@ -1,5 +1,5 @@
 import {FuseScrollbars, FuseAnimateGroup, FuseUtils} from '@fuse';
-import {withStyles, AppBar, Avatar, ListItemIcon, List, ListItem, ListItemText, Menu, MenuItem, Typography, Toolbar, Icon, IconButton, Input, Paper} from '@material-ui/core';
+import {withStyles, AppBar, Avatar, ListItemIcon, List, ListItem, ListItemText, Menu, MenuItem, Typography, Toolbar, Icon, IconButton, Input, Paper, Button} from '@material-ui/core';
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -88,11 +88,11 @@ class ChatsSidebar extends Component {
 
     render()
     {
-        const {classes, contacts, user, selectedContactId, openUserSidebar} = this.props;
+        const {classes, contacts, user, selectedContactId, openUserSidebar, getContacts, selectedEventId} = this.props;
         const {statusSwitchEl, chatsMoreMenuEl, searchText} = this.state;
 
-        const contactsArr = this.getFilteredArray([...contacts], searchText);
 
+        const contactsArr = this.getFilteredArray([...contacts], searchText);
 
         const ContactListItem = ({contact}) => {
             return (
@@ -107,6 +107,9 @@ class ChatsSidebar extends Component {
                             <StatusIcon status={contact.status}/>
                         </div>
 
+                        {contact.unread !== undefined && contact.unread !== 0 && (
+                                <div className={classNames(classes.unreadBadge, "flex items-center justify-center w-20 h-20 rounded-full text-12 text-center -mb-4 -ml-4 z-999 absolute")}>{contact.unread}</div>
+                            )}
                         <Avatar src={contact.avatar} alt={contact.name}>
                             {!contact.avatar || contact.avatar === '' ? contact.name[0] : ''}
                         </Avatar>
@@ -150,7 +153,8 @@ class ChatsSidebar extends Component {
 
                         {user && (
                             <div className="flex">
-                                <IconButton className="relative w-40 h-40 p-0" onClick={openUserSidebar}>
+                                {/* <IconButton className="relative w-40 h-40 p-0" onClick={openUserSidebar}> */}
+                                <IconButton className="relative w-40 h-40 p-0">
 
                                     <Avatar src={user.avatar} alt={user.name} className="w-40 h-40">
                                         {(!user.avatar || user.avatar === '') ? user.name[0] : ''}
@@ -205,6 +209,12 @@ class ChatsSidebar extends Component {
                             />
                         </Paper>
                     </Toolbar>
+                    <div className="flex justify-center">
+                        <Button className="normal-case" color="secondary" onClick={(ev)=>(this.props.getContacts(selectedEventId, 'Inbox'))}>Inbox</Button>
+                        <Button className="normal-case" color="secondary" onClick={(ev)=>(this.props.getContacts(selectedEventId, 'Unread'))}>Unread</Button>
+                        <Button className="normal-case" color="secondary" onClick={(ev)=>(this.props.getContacts(selectedEventId, 'Archived'))}>Archived</Button>
+                        <Button className="normal-case" color="secondary" onClick={(ev)=>(this.props.getContacts(selectedEventId, 'All'))}>All</Button>
+                    </div>
                 </AppBar>
                 <FuseScrollbars className="overflow-y-auto flex-1">
                     <List className="w-full">
@@ -243,7 +253,8 @@ function mapDispatchToProps(dispatch)
 {
     return bindActionCreators({
         getChat        : Actions.getChat,
-        openUserSidebar: Actions.openUserSidebar
+        openUserSidebar: Actions.openUserSidebar,
+        getContacts            : Actions.getContacts,
     }, dispatch);
 }
 
@@ -252,6 +263,7 @@ function mapStateToProps({chatApp})
     return {
         contacts         : chatApp.contacts.entities,
         selectedContactId: chatApp.contacts.selectedContactId,
+        selectedEventId       : chatApp.events.selectedEventId,
         user             : chatApp.user
     }
 }
