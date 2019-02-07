@@ -58,6 +58,7 @@ const styles = theme => ({
             },
             '& .bubble'       : {
                 marginLeft             : 'auto',
+                marginRight            : '30px',
                 backgroundColor        : theme.palette.grey[300],
                 color                  : theme.palette.getContrastText(theme.palette.grey[300]),
                 borderTopLeftRadius    : 20,
@@ -133,6 +134,13 @@ class Chat extends Component {
         return (
             item.who === this.props.selectedContactId &&
             ((this.props.chat.dialog[i + 1] && this.props.chat.dialog[i + 1].who !== this.props.selectedContactId) || !this.props.chat.dialog[i + 1])
+        );
+    };
+
+    shouldShowUserAvatar = (item, i) => {
+        return (
+            item.who === this.props.user.id &&
+            ((this.props.chat.dialog[i + 1] && this.props.chat.dialog[i + 1].who !== this.props.user.id) || !this.props.chat.dialog[i + 1])
         );
     };
 
@@ -240,19 +248,29 @@ class Chat extends Component {
                                                 <StatusIcon status={contact.status}/>
                                             </div>                                            
                                             )}
+                                            {this.shouldShowUserAvatar(item, i) && (
+                                                <Avatar className="avatar absolute pin-r m-0 -mr-32" src={user.avatar} />
+                                            )}
+                                            {this.shouldShowUserAvatar(item, i) && (
+                                                <div className="absolute pin-r z-10">
+                                                    <StatusIcon status={user.status}/>
+                                                </div>                                            
+                                            )}
                                             <div className="bubble flex relative items-center justify-center p-12 max-w-full">
                                                 {item.message_type === 'text' &&
                                                     <div className="leading-tight whitespace-pre-wrap"><p>{item.message}</p></div>
                                                 }
                                                 {item.message_type === 'file' &&
                                                     <div className="leading-tight whitespace-pre-wrap">
-                                                        <a className="flex cursor-pointer"><Icon>insert_drive_file</Icon><p className="mt-4">{item.filename}</p></a>
+                                                        <a className="flex cursor-pointer" href={item.message} download><Icon>insert_drive_file</Icon><p className="mt-4">{item.filename}</p></a>
                                                     </div>
                                                 }
                                                 {item.message_type === 'image' &&
                                                     <div className="leading-tight whitespace-pre-wrap flex flex-col justify-center">
-                                                        <img src={item.message} />
-                                                        <a>{item.filename}</a>
+                                                        <a href={item.message} download>
+                                                            <img src={item.message} />
+                                                            <p>{item.filename}</p>
+                                                        </a>
                                                     </div>
                                                 }
                                                 <Typography className="time absolute hidden w-full text-11 mt-8 -mb-24 pin-l pin-b whitespace-no-wrap"

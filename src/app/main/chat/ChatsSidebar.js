@@ -88,7 +88,7 @@ class ChatsSidebar extends Component {
 
     render()
     {
-        const {classes, contacts, user, selectedContactId, openUserSidebar, getContacts, selectedEventId} = this.props;
+        const {classes, contacts, user, selectedContactId, openUserSidebar, getContacts, selectedEventId, setArchived} = this.props;
         const {statusSwitchEl, chatsMoreMenuEl, searchText} = this.state;
 
 
@@ -131,7 +131,13 @@ class ChatsSidebar extends Component {
                                     {moment(contact.lastMessageTime).format('ll')}
                                 </Typography>
                             )}
-                            <Icon>contact_mail</Icon>
+                            <IconButton onClick={(ev) => {
+                                ev.stopPropagation();
+                                console.log(contact);
+                                setArchived(selectedEventId, contact.id)
+                            }}>
+                                <Icon>archive</Icon>
+                            </IconButton>
                         </div>
                     )}
                 </ListItem>
@@ -255,6 +261,7 @@ function mapDispatchToProps(dispatch)
         getChat        : Actions.getChat,
         openUserSidebar: Actions.openUserSidebar,
         getContacts            : Actions.getContacts,
+        setArchived            : Actions.setArchived,
     }, dispatch);
 }
 

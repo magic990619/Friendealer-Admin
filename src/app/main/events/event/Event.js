@@ -25,6 +25,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
 import Grid from '@material-ui/core/Grid';
 import Geocode from 'react-geocode';
+import SearchBar from './components/SearchBar';
 import 'date-fns';
 
 function Marker({text})
@@ -97,6 +98,7 @@ class Event extends Component {
         form    : null,
         basedata: null,
         address: '',
+        location: null,
     };
 
     componentDidMount()
@@ -125,19 +127,9 @@ class Event extends Component {
     }
 
     updateFormState = () => {
-        Geocode.setApiKey("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        Geocode.enableDebug();
-        Geocode.fromLatLng(this.props.event.data.lat, this.props.event.data.lng).then(
-            response => {
-              const address = response.results[0].formatted_address;
-              console.log(address);
-              
-            },
-            error => {
-              console.error(error);
-            }
-          );
-        this.setState({form: this.props.event.data})
+        this.setState({form: this.props.event.data, location: {
+            lat: this.props.event.data.lat,
+            lng: this.props.event.data.lng}})
     };
 
     updateEventState = () => {
@@ -196,22 +188,6 @@ class Event extends Component {
         this.setState({form: _.set({...this.state.form}, 'featuredImageId', id)});
     };
 
-    addressToLatLng = () => {
-        const address = document.getElementById('address').value;
-        Geocode.setApiKey("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        Geocode.enableDebug();
-        Geocode.fromAddress(address).then(
-            response => {
-              const { lat, lng } = response.results[0].geometry.location;
-              console.log(lat, lng);
-              this.setState({form: _.set({...this.state.form}, 'lat', lat, 'lng', lng)});
-            },
-            error => {
-              console.error(error);
-            }
-        );
-    }
-
     canBeSubmitted()
     {
         const {name} = this.state.form;
@@ -249,11 +225,16 @@ class Event extends Component {
     handleEndDateChange = date => {
         this.setState({form: _.set({...this.state.form}, 'datetime_to', date)});
     };
+    
+    handleChangeMarker = (location) => {
+        console.log(location);
+        this.setState({form: _.set({...this.state.form}, 'lng', location.lng, 'lat', location.lat), location: location});
+    }
 
     render()
     {
         const {classes, saveEvent, addEvent} = this.props;
-        const {tabValue, form, basedata, address} = this.state;
+        const {tabValue, form, basedata, address, location} = this.state;
         const params = this.props.match.params;
         const {eventId} = params;
 
@@ -780,33 +761,20 @@ class Event extends Component {
                             )}
                             {tabValue === 3 && (
                                 <div className="w-full">
-                                    <Typography className="h2 mb-16">Location</Typography>
-                                    <div className="m-20 align-middle">
-                                        <label>Postal code or street address</label><br />
-                                        <input type="text" 
-                                            className="p-6 input-lg text-20 border-2 rounded-4 w-512"
-                                            id="address" 
-                                            placeholder="London" 
-                                            variant="outlined"
-                                            required /> 
-                                        <Button className="ml-16" variant="contained" color="secondary" onClick={(ev)=>(
-                                            this.addressToLatLng()
-                                        )}>Change</Button>
-                                        <br/>
-                                        <label>Type in postal code or street address and select it form suggested map.</label>
-                                    </div>
+                                    <SearchBar onChangeMarker={this.handleChangeMarker}/>
                                     <div className="w-full h-512">
                                         <GoogleMap
                                             bootstrapURLKeys={{
-                                                key: process.env.REACT_APP_MAP_KEY
+                                                key: "AIzaSyC_00O1qHUSLjYTtu4_sK298g_Aev_eZB4"
                                             }}
                                             defaultZoom={12}
-                                            defaultCenter={[form.lat, form.lng]}
+                                            defaultCenter={[0, 0]}
+                                            center={location}
                                         >
                                             <Marker
-                                                text="Marker Text"
-                                                lat={form.lat}
-                                                lng={form.lng}
+                                                text="Event location"
+                                                lat={location.lat}
+                                                lng={location.lng}
                                             />
                                         </GoogleMap>
                                     </div>

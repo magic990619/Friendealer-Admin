@@ -136,8 +136,18 @@ class ChatApp extends React.Component {
         const {searchText, page, rowsPerPage} = this.state;
         const {classes, chat, getContacts, getUserData, selectedContactId, selectedEventId, contacts, events, mobileChatsSidebarOpen, openMobileChatsSidebar, closeMobileChatsSidebar, userSidebarOpen, closeUserSidebar, openContactSidebar} = this.props;
         const selectedContact = contacts.find(_contact => (_contact.id === selectedContactId));
+        var selectedEvent = null;
 
         const eventArray = this.getFilteredArray(events, searchText);
+
+        {
+            eventArray && eventArray.map((cursor) => {
+                if (cursor._id === selectedEventId) {
+                    selectedEvent = cursor;
+                }
+            })
+        }
+
 
         socket.on("receive:message", data => {
             console.log(data);
@@ -310,27 +320,26 @@ class ChatApp extends React.Component {
                                                     <Icon>chat</Icon>
                                                 </IconButton>
                                                 {selectedContact &&
-                                                <div>
-                                                    <div className="flex items-center cursor-pointer" onClick={openContactSidebar}>
-                                                        <div className="relative ml-8 mr-12">
-                                                            <div className="absolute pin-r pin-b -m-4 z-10">
-                                                                {/* <StatusIcon status={selectedContact.status}/> */}
-                                                            </div>
+                                                <div className="flex w-full">
+                                                    <div>
+                                                        <div className="flex items-center cursor-pointer" onClick={openContactSidebar}>
+                                                            <div className="relative ml-8 mr-12">
+                                                                <div className="absolute pin-r pin-b -m-4 z-10">
+                                                                    {/* <StatusIcon status={selectedContact.status}/> */}
+                                                                </div>
 
-                                                            <Avatar src={selectedContact.avatar} alt={selectedContact.name}>
-                                                                {!selectedContact.avatar || selectedContact.avatar === '' ? selectedContact.name[0] : ''}
-                                                            </Avatar>
+                                                                <Avatar src={selectedContact.avatar} alt={selectedContact.name}>
+                                                                    {!selectedContact.avatar || selectedContact.avatar === '' ? selectedContact.name[0] : ''}
+                                                                </Avatar>
+                                                            </div>
+                                                            <Typography color="inherit" className="text-20 font-600">{selectedContact.name}</Typography>
                                                         </div>
-                                                        <Typography color="inherit" className="text-18 font-600">{selectedContact.name}</Typography>
                                                     </div>
-                                                    {
-                                                        eventArray && eventArray.map((cursor) => {
-                                                            if (cursor._id === selectedEventId) {
-                                                                return (
-                                                                    <span key={cursor._id}>{"Event: " + cursor.name}</span>
-                                                                );
-                                                            }
-                                                        })
+                                                    {selectedEvent && 
+                                                        <div className="absolute flex flex-col float-right items-right pin-r mr-20">
+                                                            <span className="text-18 text-right">{"Event: " + selectedEvent.name}</span>
+                                                            <span className="text-14 text-right">{selectedEvent.cost_min + " - " + selectedEvent.cost_max + " " + selectedEvent.currency_type}</span>
+                                                        </div>
                                                     }
                                                 </div>
                                                 }

@@ -87,6 +87,8 @@ form label {
 
 @import 'style.scss';
 
+@import 'map.css';
+
 @import 'print.css';
 
 @import 'tables.css';

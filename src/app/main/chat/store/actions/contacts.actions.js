@@ -24,6 +24,21 @@ export function getContacts(event_id, contactFilter)
         });
 }
 
+export function setArchived(event_id, contact_id) {
+    const request = api.post('/chat/setArchived', {event_id, filter: "Archived", contact_id});
+
+    return (dispatch) =>
+        request.then((response) => {
+            dispatch(setselectedEventId(event_id));
+            dispatch(removeSelectedContactId());
+            dispatch(removeChat());
+            return dispatch({
+                type   : GET_CONTACTS,
+                payload: response.data.doc
+            });
+        });
+}
+
 export function setselectedContactId(contactId)
 {
     return {
