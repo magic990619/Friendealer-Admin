@@ -35,14 +35,14 @@ class UserMenu extends Component {
                         :
                         (
                             <Avatar className="">
-                                {user.userName[0]}
+                                {user.user_name[0]}
                             </Avatar>
                         )
                     }
 
                     <div className="hidden md:flex flex-col ml-12 items-start">
                         <Typography component="span" className="normal-case font-600 flex">
-                            {user.userName}
+                            {user.user_name}
                         </Typography>
                         <Typography className="text-11 capitalize" color="textSecondary">
                             {user.role}

@@ -55,10 +55,10 @@ class jwtService extends FuseUtils.EventEmitter {
         return new Promise((resolve, reject) => {
             api.post('/auth/register', data)
                 .then(response => {
-                    if ( response.data.user )
+                    if ( response.data.doc )
                     {
                         this.setSession(response.data.access_token);
-                        resolve(response.data.user);
+                        resolve(response.data.doc);
                     }
                     else
                     {

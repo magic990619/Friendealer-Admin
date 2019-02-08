@@ -2,6 +2,7 @@ import 'babel-polyfill'
 import 'typeface-muli';
 import './react-table-defaults';
 import './styles/index.css';
+import './styles/style.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';

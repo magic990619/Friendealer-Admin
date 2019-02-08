@@ -5,11 +5,11 @@ import jwtService from 'app/services/jwtService';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 
-export function submitRegister({userName, password, email})
+export function submitRegister({user_name, password, email})
 {
     return (dispatch) =>
         jwtService.createUser({
-            userName,
+            user_name,
             password,
             email
         })

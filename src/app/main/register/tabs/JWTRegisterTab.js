@@ -58,7 +58,7 @@ class JWTRegisterTab extends Component {
                     <TextFieldFormsy
                         className="mb-16"
                         type="text"
-                        name="userName"
+                        name="user_name"
                         label="Display name"
                         validations={{
                             minLength: 4

@@ -12,6 +12,7 @@ import EmojiPicker from 'emoji-picker-react';
 import 'emoji-picker-react/dist/universal/style.scss';
 import JSEMOJI from 'emoji-js';
 import api from 'app/ApiConfig.js';
+import './style.scss';
 
 let jsemoji = new JSEMOJI();
 // set the style to emojione (default - apple)
