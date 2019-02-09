@@ -24,7 +24,6 @@ import PhotosTab from './PhotosTab.js';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
 import Grid from '@material-ui/core/Grid';
-import Geocode from 'react-geocode';
 import SearchBar from './components/SearchBar';
 import 'date-fns';
 
@@ -127,9 +126,10 @@ class Event extends Component {
     }
 
     updateFormState = () => {
-        this.setState({form: this.props.event.data, location: {
+        this.setState({location: {
             lat: this.props.event.data.lat,
-            lng: this.props.event.data.lng}})
+            lng: this.props.event.data.lng},
+            form: this.props.event.data})
     };
 
     updateEventState = () => {
@@ -226,15 +226,18 @@ class Event extends Component {
         this.setState({form: _.set({...this.state.form}, 'datetime_to', date)});
     };
     
-    handleChangeMarker = (location) => {
-        console.log(location);
-        this.setState({form: _.set({...this.state.form}, 'lng', location.lng, 'lat', location.lat), location: location});
+    handleChangeMarker = (location, address) => {
+        var {form} = this.state;
+        form.lat = location.lat;
+        form.lng = location.lng;
+        form.address = address;
+        this.setState({form: _.set({...form}), location: location});
     }
 
     render()
     {
         const {classes, saveEvent, addEvent} = this.props;
-        const {tabValue, form, basedata, address, location} = this.state;
+        const {tabValue, form, basedata, location} = this.state;
         const params = this.props.match.params;
         const {eventId} = params;
 
@@ -760,8 +763,15 @@ class Event extends Component {
                                 </div>
                             )}
                             {tabValue === 3 && (
-                                <div className="w-full">
-                                    <SearchBar onChangeMarker={this.handleChangeMarker}/>
+                                <div className="w-full flex">
+                                    <div className="min-w-400 flex flex-col justify-left">
+                                        <h2>Location</h2>
+                                        <br/>
+                                        <span className="text-18">{form.address}</span>
+                                        <span className="text-14 mt-12">Show my exact location</span>
+                                        <span className="text-14 mt-12">-  Your event will be posted in</span>
+                                        <SearchBar onChangeMarker={this.handleChangeMarker} address={form.address}/>
+                                    </div>
                                     <div className="w-full h-512">
                                         <GoogleMap
                                             bootstrapURLKeys={{

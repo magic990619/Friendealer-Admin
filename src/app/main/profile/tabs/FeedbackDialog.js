@@ -44,7 +44,6 @@ export default class FormDialog extends React.Component {
 
   componentDidMount()
   {
-      console.log(this.props.row);
     this.setState( { row: this.props.row } );
   }
 
@@ -62,7 +61,6 @@ export default class FormDialog extends React.Component {
 
   handleChange = name => event => {
       var cursor = this.state.row;
-      console.log(event.target);
       cursor[name] = event.target.value;
       this.setState({row: cursor});
   }
@@ -125,13 +123,11 @@ export default class FormDialog extends React.Component {
     let file = e.target.files[0];
     const formData = new FormData();
     formData.append('file',file)
-    console.log(file);
     const config = {
         headers: {
             'content-type': 'multipart/form-data'
         }
     }
-    console.log('photo' + num);
     return api.post("/upload", formData, config)
         .then(res => {
             var photo = this.state.row.photo;
@@ -237,7 +233,7 @@ export default class FormDialog extends React.Component {
                     <StarRatingComponent className="text-32"
                         name={person === false ? "rating_quality" : "rating_clarity"}
                         starCount={5}
-                        value={person === false ? this.state.row.rating_quality : this.state.row.rating_clarity}
+                        value={person === false ? parseInt(this.state.row.rating_quality) : parseInt(this.state.row.rating_clarity)}
                         onStarClick={this.onStarClick.bind(this)}
                     />
                 </div>
@@ -246,7 +242,7 @@ export default class FormDialog extends React.Component {
                     <StarRatingComponent className="text-32"
                         name="rating_communication" 
                         starCount={5}
-                        value={this.state.row.rating_communication}
+                        value={parseInt(this.state.row.rating_communication)}
                         onStarClick={this.onStarClick.bind(this)}
                     />
                 </div>
@@ -255,7 +251,7 @@ export default class FormDialog extends React.Component {
                     <StarRatingComponent className="text-32"
                         name={person === false ? "rating_expertise" : "rating_payment"}
                         starCount={5}
-                        value={person === false ? this.state.row.rating_expertise : this.state.row.rating_payment}
+                        value={person === false ? parseInt(this.state.row.rating_expertise) : parseInt(this.state.row.rating_payment)}
                         onStarClick={this.onStarClick.bind(this)}
                     />
                 </div>
@@ -264,7 +260,7 @@ export default class FormDialog extends React.Component {
                     <StarRatingComponent className="text-32"
                         name="rating_professionalism" 
                         starCount={5}
-                        value={this.state.row.rating_professionalism}
+                        value={parseInt(this.state.row.rating_professionalism)}
                         onStarClick={this.onStarClick.bind(this)}
                     />
                 </div>
@@ -273,7 +269,7 @@ export default class FormDialog extends React.Component {
                     <StarRatingComponent className="text-32"
                         name={person === false ? "rating_hire_again" : "rating_work_again"}
                         starCount={5}
-                        value={person === false ? this.state.row.rating_hire_again : this.state.row.rating_work_again}
+                        value={person === false ? parseInt(this.state.row.rating_hire_again) : parseInt(this.state.row.rating_work_again)}
                         onStarClick={this.onStarClick.bind(this)}
                     />
                 </div>

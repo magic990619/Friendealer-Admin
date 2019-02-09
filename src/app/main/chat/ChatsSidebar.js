@@ -88,8 +88,8 @@ class ChatsSidebar extends Component {
 
     render()
     {
-        const {classes, contacts, user, selectedContactId, openUserSidebar, getContacts, selectedEventId, setArchived} = this.props;
-        const {statusSwitchEl, chatsMoreMenuEl, searchText} = this.state;
+        const {classes, contacts, user, selectedContactId, selectedEventId, setArchived} = this.props;
+        const {statusSwitchEl, searchText} = this.state;
 
 
         const contactsArr = this.getFilteredArray([...contacts], searchText);

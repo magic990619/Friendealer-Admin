@@ -17,25 +17,26 @@ export const RESET_PASSWORD = '[USERS APP] RESET PASSWORD';
 
 export function getUsers(routeParams)
 {
-    var apiPath = '';
-    console.log(routeParams.id);
-    switch (routeParams.id) {
-    case "active":
-        apiPath = '/auth/getActiveAccountData';
-        break;
-    case "inactive":
-        apiPath = '/auth/getInactiveAccountData';
-        break;
-    case "closed":
-        apiPath = '/auth/getClosedAccountData';
-        break;
-    case "restricted":
-        apiPath = '/auth/getRestrictedAccountData';
-        break;
-    default:
-        apiPath = '/auth/getAllAccountData';
+    var apiPath = '/auth/getAllAccountData';
+    var account_status = "All";
+    switch(routeParams.id) {
+        case 'active':
+            account_status = "Active";
+            break;
+        case 'inactive':
+            account_status = "Inactive";
+            break;
+        case "closed":
+            account_status = "Closed";
+            break;
+        case "restricted":
+            account_status = "Restricted";
+            break;
+        default:
+            break;
     }
-    return (dispatch) => api.get(apiPath, {}).then((response) => {
+
+    return (dispatch) => api.post(apiPath, {account_status}).then((response) => {
         dispatch({
             type   : GET_USERS,
             payload: response.data.doc,
@@ -134,8 +135,6 @@ export function updateUser(user)
         const request = api.post('/auth/updateAccountData', {
             user
         });
-
-        console.log(user);
 
         return request.then((response) =>
             Promise.all([

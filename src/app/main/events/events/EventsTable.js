@@ -113,7 +113,6 @@ class EventsTable extends Component {
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     removeEmployerProfile = (form) => {
-        console.log(form);
         api.post('/profile/removePostedEvent', {
             employer_email: form.employer_email,
             event_id: form._id,
@@ -123,8 +122,6 @@ class EventsTable extends Component {
     render()
     {
         const {order, orderBy, selected, rowsPerPage, page, data} = this.state;
-
-        console.log(data);
 
         return (
             <div className="w-full flex flex-col">

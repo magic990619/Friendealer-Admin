@@ -208,6 +208,8 @@ class PlacesAutocomplete extends React.Component {
       case 'Escape':
         this.clearSuggestions();
         break;
+      default:
+        break;
     }
     /* eslint-enable indent */
   };

@@ -71,7 +71,7 @@ class PhotoAddDialog extends React.Component {
           <Button className="normal-case" variant="contained" color="primary" aria-label="Send Message" onClick={(ev) => {
             ev.stopPropagation();
             this.handleClickOpen();
-          }}>Add Photo</Button>
+          }}>Select Images</Button>
         </div>
         <Dialog
           open={this.state.open}

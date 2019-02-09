@@ -125,7 +125,6 @@ class PhotosVideosTab extends Component {
     handleAdd = (photo) => {
         var photos = this.state.photos;
         photos.push(photo);
-        console.log(photo);
         this.setState({photos: photos});
         api.post('/photo/addPhoto', {
             photo
@@ -143,7 +142,6 @@ class PhotosVideosTab extends Component {
         const formData = new FormData();
         var edit = this.state.edit_photo;
         formData.append('file',file)
-        console.log(file);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -151,7 +149,6 @@ class PhotosVideosTab extends Component {
         }
         return api.post("/upload", formData, config)
             .then(res => {
-                console.log(res.data.file);
                 edit['photo_url'] = "http://localhost:8888/uploads/" + res.data.file.filename;
                 this.setState({
                 edit_photo: edit,
@@ -212,8 +209,6 @@ class PhotosVideosTab extends Component {
         const {edit_photo} = this.state;
         const photosVideos =  (this.state.photos === null || this.state.photos.user_id === '') ? null : this.state.photos;
         const comments = edit_photo.comment;
-
-        console.log(photosVideos);
 
         return (
             <div className="md:flex max-w-2xl">

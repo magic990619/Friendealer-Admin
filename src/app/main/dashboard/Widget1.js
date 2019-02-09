@@ -60,8 +60,6 @@ class Widget1 extends Component {
             return null;
         });
 
-        console.log(dataWithColors);
-
         return (
                 <div className={classes.root + "flex flex-col items-center w-full h-320"}>
                     <div className="container relative p-16 sm:p-24 flex flex-row justify-between items-center">

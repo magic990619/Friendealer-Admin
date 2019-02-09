@@ -30,7 +30,7 @@ class SearchBar extends React.Component {
     geocodeByAddress(selected)
       .then(res => getLatLng(res[0]))
       .then(({ lat, lng }) => {
-        onChangeMarker({lat, lng});
+        onChangeMarker({lat, lng}, selected);
         this.setState({
           latitude: lat,
           longitude: lng,
@@ -62,9 +62,6 @@ class SearchBar extends React.Component {
     const {
       address,
       errorMessage,
-      latitude,
-      longitude,
-      isGeocoding,
     } = this.state;
 
     return (
@@ -82,7 +79,7 @@ class SearchBar extends React.Component {
                 <div className="Demo__search-input-container">
                   <input
                     {...getInputProps({
-                      placeholder: 'Search Places...',
+                      placeholder: this.props.address,
                       className: 'Demo__search-input',
                     })}
                   />

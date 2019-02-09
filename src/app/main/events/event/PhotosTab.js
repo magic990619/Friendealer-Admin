@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {GridList, GridListTile, GridListTileBar, Icon, IconButton, Typography, ListSubheader, Button, withStyles} from '@material-ui/core';
+import {GridList, GridListTile, Icon, IconButton, Typography, Button, withStyles} from '@material-ui/core';
 import {FuseScrollbars, FuseAnimate, FuseAnimateGroup} from '@fuse';
 import api from 'app/ApiConfig';
 import TextField from '@material-ui/core/TextField';
@@ -155,7 +155,7 @@ class PhotosTab extends Component {
         console.log(acceptedFiles);
         let file = acceptedFiles[0];
         const formData = new FormData();
-        var edit = this.state.edit_photo;
+
         formData.append('file',file)
         const config = {
             headers: {
@@ -216,10 +216,15 @@ class PhotosTab extends Component {
                         }}
                     >
                         <div className="flex items-center pl-0 mb-24">
-                            <Typography className="mr-16" variant="h6">Portfolio</Typography>
+                            <Typography className="mr-16" variant="h6">Photos</Typography>
                             {photosVideos && photosVideos.length < count &&
                             <PhotoAddDialog onSave={this.handleAdd} event_id={this.props.event_id}/>
                             }
+                        </div>
+                        <div className="items-left text-left mt-12">
+                            <span className="text-18 font-bold">Add photos to attract interest to your event</span><br />
+                            <span className="text-11 mt-8">Include pictures with different angles and details. You can upload a maximum number of photos with your membership, that are at least 300px wide or tall(we recommend at least 1000px)</span><br />
+                            <span className="text-11">Drag and drop to add the order of your images</span>
                         </div>
                         <div className="mb-48">
                             <GridList className="" spacing={12} cols={0}>
@@ -231,7 +236,7 @@ class PhotosTab extends Component {
                                     }}
                                     key={period._id}
                                 >
-                                    <img className={classes.grid_img} src={period.photo_url} alt={period.title} onClick={(ev) => {
+                                    <img className={classes.grid_img + " cursor-pointer"} src={period.photo_url} alt={period.title} onClick={(ev) => {
                                         ev.stopPropagation();
                                         this.handleClickOpen(period);
                                     }}/>
@@ -347,11 +352,11 @@ class PhotosTab extends Component {
                                                 <input {...getInputProps()} />
                                                 {
                                                     isDragActive ?
-                                                    <div className="w-full h-full bg-white">
+                                                    <div className="w-full h-full bg-white cursor-pointer">
                                                         <i className="mt-40 fa fa-plus text-blue text-40 align-middle"></i>
                                                         <p className="text-14 mt-12">Drop here...</p>
                                                     </div> :
-                                                    <div>
+                                                    <div className="cursor-pointer">
                                                         <i className="mt-40 fa fa-plus text-grey text-40 align-middle"></i>
                                                         <div className="absolute pin-b flex justify-center w-full border-t-2 h-52">
                                                         </div>

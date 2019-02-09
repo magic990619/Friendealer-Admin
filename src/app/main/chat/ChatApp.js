@@ -15,6 +15,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import socket from "app/SocketConfig.js";
+import StatusIcon from "./StatusIcon";
 
 const drawerWidth = 400;
 const headerHeight = 200;
@@ -140,13 +141,12 @@ class ChatApp extends React.Component {
 
         const eventArray = this.getFilteredArray(events, searchText);
 
-        {
-            eventArray && eventArray.map((cursor) => {
-                if (cursor._id === selectedEventId) {
-                    selectedEvent = cursor;
-                }
-            })
-        }
+        eventArray && eventArray.map((cursor) => {
+            if (cursor._id === selectedEventId) {
+                selectedEvent = cursor;
+            }
+            return null;
+        })
 
 
         socket.on("receive:message", data => {
@@ -309,23 +309,23 @@ class ChatApp extends React.Component {
                                     </div>
                                 ) : (
                                     <React.Fragment>
-                                        <AppBar className="w-full" position="static" elevation={1}>
-                                            <Toolbar className="px-16">
-                                                <IconButton
-                                                    color="inherit"
-                                                    aria-label="Open drawer"
-                                                    onClick={openMobileChatsSidebar}
-                                                    className="flex md:hidden"
-                                                >
-                                                    <Icon>chat</Icon>
-                                                </IconButton>
-                                                {selectedContact &&
-                                                <div className="flex w-full">
+                                        <Toolbar className="px-16 border-b-2">
+                                            <IconButton
+                                                color="inherit"
+                                                aria-label="Open drawer"
+                                                onClick={openMobileChatsSidebar}
+                                                className="flex md:hidden"
+                                            >
+                                                <Icon>chat</Icon>
+                                            </IconButton>
+                                            {selectedContact &&
+                                            <div className="flex w-full">
+                                                <div className="border-r-1 lg:min-w-512 flex">
                                                     <div>
-                                                        <div className="flex items-center cursor-pointer" onClick={openContactSidebar}>
+                                                        <div className="flex items-center cursor-pointer mt-12" onClick={openContactSidebar}>
                                                             <div className="relative ml-8 mr-12">
                                                                 <div className="absolute pin-r pin-b -m-4 z-10">
-                                                                    {/* <StatusIcon status={selectedContact.status}/> */}
+                                                                    <StatusIcon status={selectedContact.status}/>
                                                                 </div>
 
                                                                 <Avatar src={selectedContact.avatar} alt={selectedContact.name}>
@@ -334,17 +334,24 @@ class ChatApp extends React.Component {
                                                             </div>
                                                             <Typography color="inherit" className="text-20 font-600">{selectedContact.name}</Typography>
                                                         </div>
-                                                    </div>
-                                                    {selectedEvent && 
-                                                        <div className="absolute flex flex-col float-right items-right pin-r mr-20">
-                                                            <span className="text-18 text-right">{"Event: " + selectedEvent.name}</span>
-                                                            <span className="text-14 text-right">{selectedEvent.cost_min + " - " + selectedEvent.cost_max + " " + selectedEvent.currency_type}</span>
+                                                        <div className="my-12">
+                                                            <span className="text-14 font-normal">Event:</span>
+                                                            <span className="text-14 font-bold text-blue-light ml-8">{selectedEvent.name}</span>
                                                         </div>
-                                                    }
+                                                    </div>
+                                                    <div className="flex items-center m-auto">
+                                                        <span className="text-20 font-bold">{selectedEvent.cost_min + " - " + selectedEvent.cost_max + " " + selectedEvent.currency_type}</span>
+                                                    </div>
+                                                </div >
+                                                <div className="flex items-center m-auto">
+                                                    <Button className="ml-12" color="secondary" variant="contained">BACK TO USERS</Button>
+                                                    <IconButton className="text-20 ml-12">
+                                                        <Icon>settings</Icon>
+                                                    </IconButton>
                                                 </div>
-                                                }
-                                            </Toolbar>
-                                        </AppBar>
+                                            </div>
+                                            }
+                                        </Toolbar>
 
                                         <div className={classes.content}>
                                             <Chat className="flex flex-1 z-10"/>

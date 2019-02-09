@@ -167,7 +167,6 @@ class FriendTab extends Component {
         const formData = new FormData();
         var edit = this.state.edit_group;
         formData.append('file',file)
-        console.log(file);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -175,7 +174,6 @@ class FriendTab extends Component {
         }
         return api.post("/upload", formData, config)
             .then(res => {
-                console.log(res.data.file);
                 edit['image'] = "http://localhost:8888/uploads/" + res.data.file.filename;
                 this.setState({
                 edit_group: edit,
@@ -187,7 +185,6 @@ class FriendTab extends Component {
     }
 
     handleSelect = (select_group) => {
-        console.log(select_group);
         this.setState({select_group: select_group});
     }
 
@@ -197,8 +194,6 @@ class FriendTab extends Component {
         // console.log(this.state.profileData);
         var friends = this.state.profileData.user_id === '' ? null : this.state.profileData.friends;
         var friend_groups = this.state.profileData.user_id === '' ? null : this.state.profileData.friend_groups;
-
-        console.log(friends);
 
         return (
             <div className="md:flex max-w-full">
@@ -212,7 +207,7 @@ class FriendTab extends Component {
                                 count: 0,
                             }, true);
                         }}
-                    > Add </Button>
+                    > Add Friend Group </Button>
                     <FuseAnimateGroup
                         enter={{
                             animation: "transition.slideUpBigIn"

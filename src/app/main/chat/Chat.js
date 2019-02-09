@@ -29,8 +29,8 @@ const styles = theme => ({
     messageRow: {
         '&.contact'                       : {
             '& .bubble'       : {
-                backgroundColor        : theme.palette.primary.main,
-                color                  : theme.palette.primary.contrastText,
+                backgroundColor        : theme.palette.secondary.main,
+                color                  : theme.palette.secondary.contrastText,
                 borderTopLeftRadius    : 5,
                 borderBottomLeftRadius : 5,
                 borderTopRightRadius   : 20,
@@ -182,7 +182,7 @@ class Chat extends Component {
         // console.log(String.fromCodePoint(parseInt(emoji.unified, 16)));
         // console.log(emoji);
         let emojiPic = jsemoji.replace_colons(`:${emoji.name}`);
-        let emojiText = jsemoji.replace_colons(`&#x${emoji.unified}`);
+        // let emojiText = jsemoji.replace_colons(`&#x${emoji.unified}`);
         this.setState({messageText: this.state.messageText + emojiPic, emoji: false,
             text: this.state.text + String.fromCodePoint(parseInt(emoji.unified, 16))});
     }
@@ -269,7 +269,7 @@ class Chat extends Component {
                                                 {item.message_type === 'image' &&
                                                     <div className="leading-tight whitespace-pre-wrap flex flex-col justify-center">
                                                         <a href={item.message} download>
-                                                            <img src={item.message} />
+                                                            <img src={item.message} alt="message"/>
                                                             <p>{item.filename}</p>
                                                         </a>
                                                     </div>

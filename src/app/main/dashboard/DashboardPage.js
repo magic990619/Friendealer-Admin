@@ -31,7 +31,6 @@ class MembershipPage extends Component {
     componentDidMount() {
         api.post('/dashboard/getDashboardData', {})
             .then(res => {
-                console.log(res.data);
                 this.setState({data: res.data.doc});
             });
     }
@@ -40,8 +39,6 @@ class MembershipPage extends Component {
     {
         const { classes } = this.props;
         const { data } = this.state;
-
-        console.log(data);
 
         return (
             <FusePageSimple
