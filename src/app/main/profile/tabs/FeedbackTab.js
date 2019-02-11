@@ -72,7 +72,7 @@ const rows = [
     { id: 'feedback', numeric: false, disablePadding: false, label: 'Feedback' },
     { id: 'delivered_budget', numeric: false, disablePadding: false, label: 'Delivered on budget' },
     { id: 'delivered_time', numeric: false, disablePadding: false, label: 'Delivered on time' },
-    { id: 'overall_rating', numeric: true, disablePadding: false, label: 'Overall Rating' },
+    { id: 'overall_rating', numeric: true, disablePadding: true, label: 'Overall Rating' },
     { id: 'action', numeric: true, disablePadding: false, label: 'Action' },
 ];
 
@@ -355,8 +355,8 @@ class FeedbackTab extends Component {
                                             <CustomTableCell align="center">{row.feedback}</CustomTableCell>
                                             <CustomTableCell align="center">{row.delivered_budget}</CustomTableCell>
                                             <CustomTableCell align="center">{row.delivered_time}</CustomTableCell>
-                                            <CustomTableCell align="center">
-                                                <div className="flex">
+                                            <CustomTableCell align="center" width="220">
+                                                <div className="flex flex-row">
                                                     <div className="flex bg-blue mt-6 rounded-2 w-24 h-24 justify-center">
                                                         <p className="text-white p-4">{(person === false ? ((row.rating_communication + row.rating_expertise + row.rating_quality
                                                 + row.rating_professionalism + row.rating_hire_again) / 5) : ((row.rating_communication + row.rating_payment + row.rating_clarity
