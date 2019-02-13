@@ -252,7 +252,7 @@ class EventTab extends Component {
 
         return (
             <div className="flex flex-col flex-1 md:pr-32">
-                <div className="flex max-w-full m-20">
+                <div className="flex max-w-full m-20 flex-row justify-center text-center">
                     <div className="min-w-320">
                         <Badge color="primary" badgeContent={count_all} >
                             <Radio checked={selectedValue === "0"} onChange={this.handleChange} value="0" name="all_events"/>
