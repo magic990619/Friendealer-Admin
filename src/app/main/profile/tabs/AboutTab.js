@@ -328,7 +328,7 @@ this.state.profileData &&
                                     }
                                 >
                                     <option value="English">English</option>
-                                    <option value="Russian">Russian</option>
+                                    <option value="Spanish">Spanish</option>
                                     <option value="French">Franch</option>
                                     <option value="German">German</option>
                                 </Select>
@@ -354,7 +354,7 @@ this.state.profileData &&
                                 >
                                     <option value="default">Add Language</option>
                                     <option value="English">English</option>
-                                    <option value="Russian">Russian</option>
+                                    <option value="Spanish">Spanish</option>
                                     <option value="French">Franch</option>
                                     <option value="German">German</option>
                                 </Select>
