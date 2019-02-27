@@ -320,14 +320,14 @@ $opacity_category_name: .9 !default;
 
 // Padding
 $padding_main: 10px !default;
-$padding_emoji: 5px !default;
-$padding_emoji_list: 5px !default;
+$padding_emoji: 10px !default;
+$padding_emoji_list: 10px !default;
 $padding_category_name: $padding_emoji_list * 2 !default; // padding of the category name
 $padding_nav: $padding_main !default; // categories padding
 $padding_search_bar: $padding_main !default; // search bar padding
 
 // Width / Height
-$size_emoji: 20px !default; // size of each emoji (no padding)
+$size_emoji: 24px !default; // size of each emoji (no padding)
 $size_modifier: 10px !default; // width/height of the skintone chooser
 $height_category_name: 30px !default; // height of the category name container
 $height_diversity_picker: 30px !default; // height of the diversity picker
@@ -335,7 +335,7 @@ $height_footer: 5px !default; // picker footer height
 $height_nav_item: 45px !default; // height for the category icons
 $height_picker: 240px !default; // height for the whole picker
 $height_search_bar: 45px !default; // search bar height
-$width_nav_item: 20px !default; // category icon width
+$width_nav_item: 24px !default; // category icon width
 $width_picker: 280px !default; // width for the whole picker
 
 // Position
