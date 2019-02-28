@@ -262,15 +262,21 @@ class Chat extends Component {
                                                 }
                                                 {item.message_type === 'file' &&
                                                     <div className="leading-tight whitespace-pre-wrap">
-                                                        <a className="flex cursor-pointer" href={item.message} download><Icon>insert_drive_file</Icon><p className="mt-4">{item.filename}</p></a>
+                                                        <span className="flex cursor-pointer hover:underline" onClick={(ev)=>{
+                                                            ev.stopPropagation();
+                                                            window.open(item.message);
+                                                        }} download><Icon>insert_drive_file</Icon><p className="mt-4">{item.filename}</p></span>
                                                     </div>
                                                 }
                                                 {item.message_type === 'image' &&
-                                                    <div className="leading-tight whitespace-pre-wrap flex flex-col justify-center">
-                                                        <a href={item.message} download>
+                                                    <div className="leading-tight whitespace-pre-wrap flex flex-col justify-center cursor-pointer">
+                                                        <span onClick={(ev)=>{
+                                                            ev.stopPropagation();
+                                                            window.open(item.message);
+                                                        }} download>
                                                             <img src={item.message} alt="message"/>
                                                             <p>{item.filename}</p>
-                                                        </a>
+                                                        </span>
                                                     </div>
                                                 }
                                                 <Typography className="time absolute hidden w-full text-11 mt-8 -mb-24 pin-l pin-b whitespace-no-wrap"

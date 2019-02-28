@@ -16,7 +16,7 @@ export function getContacts(event_id, contactFilter)
         request.then((response) => {
             dispatch(setselectedEventId(event_id));
             dispatch(removeSelectedContactId());
-            dispatch(removeChat());
+            // dispatch(removeChat());
             return dispatch({
                 type   : GET_CONTACTS,
                 payload: response.data.doc

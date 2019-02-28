@@ -60,7 +60,7 @@ class Login extends Component {
                             <JWTLoginTab/>
 
                             <div className="flex flex-col items-center justify-center pt-32">
-                                <span className="font-medium">Don't have an account?</span>
+                                <span className="font-medium text-blue">Don't have an account?</span>
                                 <Link className="font-medium" to="/register">Create an account</Link>
                             </div>
 

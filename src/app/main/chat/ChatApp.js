@@ -135,7 +135,7 @@ class ChatApp extends React.Component {
     render()
     {
         const {searchText, page, rowsPerPage} = this.state;
-        const {classes, chat, getContacts, getUserData, selectedContactId, selectedEventId, contacts, events, mobileChatsSidebarOpen, openMobileChatsSidebar, closeMobileChatsSidebar, userSidebarOpen, closeUserSidebar, openContactSidebar} = this.props;
+        const {classes, chat, getContacts, getUserData, selectedContactId, selectedEventId, contacts, events, mobileChatsSidebarOpen, openMobileChatsSidebar, closeMobileChatsSidebar, userSidebarOpen, closeUserSidebar, openContactSidebar, getChat} = this.props;
         const selectedContact = contacts.find(_contact => (_contact.id === selectedContactId));
         var selectedEvent = null;
 
@@ -148,12 +148,10 @@ class ChatApp extends React.Component {
             return null;
         })
 
-
         socket.on("receive:message", data => {
-            console.log(data);
-            this.props.getUserData(data.event_id);
-            this.props.getContacts(data.event_id, "Inbox");
-            this.props.getChat(data.contactId);
+            if (data.event_id === selectedEventId && selectedContactId) {
+                getChat(selectedContactId);
+            }
         });
 
         return (

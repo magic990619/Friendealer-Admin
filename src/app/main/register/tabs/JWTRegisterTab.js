@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
 import Formsy from 'formsy-react';
 import {TextFieldFormsy} from '@fuse';
-import {Button, InputAdornment, Icon} from '@material-ui/core';
+import {Button, InputAdornment, Icon, withStyles} from '@material-ui/core';
 import {bindActionCreators} from 'redux';
 import {withRouter} from 'react-router-dom';
 import connect from 'react-redux/es/connect/connect';
 import * as authActions from 'app/auth/store/actions';
+
+const styles = theme => ({
+    login_button: {
+        background: 'linear-gradient(to bottom,#139ff0 0,#0087e0 100%)',
+        border: '1px solid #0087e0',
+        color: '#F7F7F7',
+        textShadow: '0 -1px transparent'
+    }
+})
 
 class JWTRegisterTab extends Component {
 
@@ -45,6 +54,7 @@ class JWTRegisterTab extends Component {
     render()
     {
         const {canSubmit} = this.state;
+        const {classes} = this.props;
 
         return (
             <div className="w-full">
@@ -125,7 +135,7 @@ class JWTRegisterTab extends Component {
                         type="submit"
                         variant="contained"
                         color="primary"
-                        className="w-full mx-auto mt-16 normal-case"
+                        className={classes.login_button + " w-full mx-auto mt-16 normal-case"}
                         aria-label="REGISTER"
                         disabled={!canSubmit}
                         value="legacy"
@@ -155,4 +165,4 @@ function mapStateToProps({auth})
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(JWTRegisterTab));
+export default withStyles(styles, {withTheme: true})(withRouter(connect(mapStateToProps, mapDispatchToProps)(JWTRegisterTab)));
