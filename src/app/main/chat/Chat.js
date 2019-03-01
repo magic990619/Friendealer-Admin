@@ -184,6 +184,7 @@ class Chat extends Component {
         // let emojiText = jsemoji.replace_colons(`&#x${emoji.unified}`);
         this.setState({messageText: this.state.messageText + emojiPic, emoji: false,
             text: this.state.text + String.fromCodePoint(parseInt(emoji.unified, 16))});
+        document.getElementById('message-input').focus();
     }
 
     handleselectedFile = e => {

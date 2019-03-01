@@ -5,7 +5,6 @@ import connect from 'react-redux/es/connect/connect';
 import {withRouter} from 'react-router-dom';
 import NavbarMobileToggleButton from 'app/fuse-layouts/shared-components/NavbarMobileToggleButton';
 import UserMenu from 'app/fuse-layouts/shared-components/UserMenu';
-import QuickPanelToggleButton from 'app/fuse-layouts/shared-components/quickPanel/QuickPanelToggleButton';
 
 const styles = theme => ({
     separator: {
@@ -43,14 +42,8 @@ const ToolbarLayout1 = ({classes, settings, toolbarTheme}) => {
 
                         <div className={classes.separator}/>
 
-                        <QuickPanelToggleButton/>
                     </div>
 
-                    {layoutConfig.navbar.display && layoutConfig.navbar.position === 'right' && (
-                        <Hidden lgUp>
-                            <NavbarMobileToggleButton/>
-                        </Hidden>
-                    )}
                 </Toolbar>
             </AppBar>
         </MuiThemeProvider>

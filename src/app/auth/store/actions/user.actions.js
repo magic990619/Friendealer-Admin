@@ -83,15 +83,15 @@ export function logoutUser()
 {
 
     return (dispatch, getState) => {
-        // const user = getState().auth.user;
-
-        // if ( user.role === 'guest' )
-        // {
-        //     console.log("role is guest");
-        //     return null;
-        // }
+        const user = getState().auth.user;
 
         jwtService.logout();
+
+        if ( user.role === 'guest' )
+        {
+            console.log("role is guest");
+            return null;
+        }
 
         dispatch(setInitialSettings());
 

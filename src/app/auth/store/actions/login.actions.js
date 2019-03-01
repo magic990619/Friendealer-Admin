@@ -13,15 +13,14 @@ export function submitLogin({email, password})
         jwtService.signInWithEmailAndPassword(email, password)
             .then((user) => {
                 socket.emit('login', user);
-                    dispatch(setUserData(user));
-                    history.push({
-                        pathname: '/'
-                    });
-                    return dispatch({
-                        type: LOGIN_SUCCESS
-                    });
-                }
-            )
+                dispatch(setUserData(user));
+                history.push({
+                    pathname: '/'
+                });
+                return dispatch({
+                    type: LOGIN_SUCCESS
+                });
+            })
             .catch(error => {
                 console.log(error);
                 return dispatch({

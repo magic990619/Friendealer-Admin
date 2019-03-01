@@ -21,7 +21,7 @@ class jwtService extends FuseUtils.EventEmitter {
                 {
                     console.log("Error in setInterceptors");
                     // if you ever get an unauthorized response, logout the user
-                    this.emit('onAutoLogout', 'Invalid access_token');
+                    this.emit('onAutoLogout', 'Incorrect username or password provided.');
                     this.setSession(null);
                 }
                 throw err;

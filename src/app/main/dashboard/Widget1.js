@@ -61,8 +61,8 @@ class Widget1 extends Component {
         });
 
         return (
-                <div className={classes.root + "flex flex-col items-center w-full h-320"}>
-                    <div className="container relative p-16 sm:p-24 flex flex-row justify-between items-center">
+                <div className={classes.root + "flex flex-col items-center w-full"}>
+                    <div className="container relative p-24 flex flex-row justify-between items-center">
 
                         <FuseAnimate delay={100}>
                             <div className="flex-col">
@@ -85,7 +85,7 @@ class Widget1 extends Component {
                             ))}
                         </div>
                     </div>
-                    <div className="container relative h-200 sm:h-256 pb-16">
+                    <div className="container relative pb-16">
                         <Bar height={40}
                             data={{
                                 labels  : ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
