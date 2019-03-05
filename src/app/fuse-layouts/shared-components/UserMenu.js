@@ -91,7 +91,7 @@ class UserMenu extends Component {
                                 </ListItemIcon>
                                 <ListItemText className="pl-0" primary="My Profile"/>
                             </MenuItem>
-                            <MenuItem component={Link} to="/apps/mail" onClick={this.userMenuClose}>
+                            <MenuItem component={Link} to="/chat" onClick={this.userMenuClose}>
                                 <ListItemIcon>
                                     <Icon>mail</Icon>
                                 </ListItemIcon>

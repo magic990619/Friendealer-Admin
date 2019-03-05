@@ -137,7 +137,6 @@ class JWTRegisterTab extends Component {
                         color="primary"
                         className={classes.login_button + " w-full mx-auto mt-16 normal-case"}
                         aria-label="REGISTER"
-                        disabled={!canSubmit}
                         value="legacy"
                     >
                         Register

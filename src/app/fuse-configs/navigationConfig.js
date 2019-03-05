@@ -35,6 +35,14 @@ const navigationConfig = [
                         'exact': true
                     },
                     {
+                        'id'   : 'landing-page',
+                        'title': 'Landing Page Setup',
+                        'type' : 'item',
+                        'icon' : 'first_page',
+                        'url'  : '/settings/landing',
+                        'exact': true
+                    },
+                    {
                         'id'   : 'categories',
                         'title': 'Event Categories',
                         'type' : 'item',

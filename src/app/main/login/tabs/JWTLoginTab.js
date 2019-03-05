@@ -106,7 +106,6 @@ class JWTLoginTab extends Component {
                         color="primary"
                         className={classes.login_button + " w-full mx-auto mt-16 normal-case"}
                         aria-label="LOG IN"
-                        disabled={!canSubmit}
                         value="legacy"
                     >
                         Login

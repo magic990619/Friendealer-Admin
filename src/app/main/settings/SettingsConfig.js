@@ -31,5 +31,11 @@ export const SettingsConfig = {
                 loader: () => import('./basedata/Basedata')
             })
         },
+        {
+            path     : '/settings/landing',
+            component: FuseLoadable({
+                loader: () => import('./landing/LandingPage')
+            })
+        },
     ]
 };
