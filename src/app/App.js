@@ -11,6 +11,7 @@ import {Auth} from './auth';
 import store from './store';
 import AppContext from './AppContext';
 import routes from './fuse-configs/routesConfig';
+import 'antd/dist/antd.css'; 
 
 const jss = create({
     ...jssPreset(),

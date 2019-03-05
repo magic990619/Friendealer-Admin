@@ -1,183 +1,99 @@
 import React, {Component} from 'react';
 import api from 'app/ApiConfig'
-import PropTypes from 'prop-types';
-import { withStyles, Typography, Icon, Input, Tooltip,} from '@material-ui/core';
-import { FuseUtils, FuseAnimate} from '@fuse';
-import Table from '@material-ui/core/Table';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { withStyles, Typography } from '@material-ui/core';
+import { FuseAnimate} from '@fuse';
 import Paper from '@material-ui/core/Paper';
-import CategoryDialog from './CategoryDialog'
 
-function desc(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-      return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-      return 1;
-    }
-    return 0;
-}
-
-function stableSort(array, cmp) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = cmp(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map(el => el[0]);
-}
-
-function getSorting(order, orderBy) {
-    return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-}
-
-const rows = [
-    { id: 'name', numeric: false, disablePadding: true, label: 'Category' },
-    { id: 'action', numeric: false, disablePadding: false, label: 'Action' },
-];
-
-class EnhancedTableHead extends React.Component {
-    createSortHandler = property => event => {
-        this.props.onRequestSort(event, property);
-    };
-
-    render() {
-        const { order, orderBy } = this.props;
-
-        return (
-        <TableHead>
-            <TableRow>
-            {rows.map(row => {
-                return (
-                <TableCell
-                    key={row.id}
-                    align="center"
-                    padding={row.disablePadding ? 'none' : 'default'}
-                    sortDirection={orderBy === row.id ? order : false}
-                >
-                    <Tooltip
-                    title="Sort"
-                    placement={row.numeric ? 'bottom-end' : 'bottom-start'}
-                    enterDelay={300}
-                    >
-                    <TableSortLabel
-                        active={orderBy === row.id}
-                        direction={order}
-                        onClick={this.createSortHandler(row.id)}
-                    >
-                        {row.label}
-                    </TableSortLabel>
-                    </Tooltip>
-                </TableCell>
-                );
-            }, this)}
-            </TableRow>
-        </TableHead>
-        );
-    }
-}
-
-EnhancedTableHead.propTypes = {
-    onRequestSort: PropTypes.func.isRequired,
-    order: PropTypes.string.isRequired,
-    orderBy: PropTypes.string.isRequired,
-};
+import { Transfer, Button } from 'antd';
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: '846px',
     marginTop: theme.spacing.unit * 3,
+    marginLeft: theme.spacing.unit * 3,
     overflowX: 'auto',
-  },
-  table: {
-    minWidth: 700,
+    textAlign: 'left',
   },
 });
 
 class CategoryTab extends Component {
 
     state = {
-        searchText: '',
-        rows : [],
-        order: 'asc',
-        orderBy: 'name',
+        mockData: [],
+        targetKeys: [],
     };
 
     componentDidMount() {
         api.post('/auth/getIndexPageData', {})
         .then(res => {
-            this.setState({rows: res.data.categories});
+            this.getMock(res.data.allCategories, res.data.categories);
         });
     }
 
-    setSearchText = event => {
-        this.setState({searchText: event.target.value});
+    getMock = (allCategories, selectedCategories) => {
+        var targetKeys = [];
+        var mockData = [];
+
+        allCategories.map((cur)=>{
+            cur.sub_categories && cur.sub_categories.map((cursor)=>{
+                var chosen = false;
+                selectedCategories.map((tmp)=>{
+                    if (tmp.name === cursor)
+                        chosen = true;
+                    return null;
+                })
+                const data = {
+                    key: cursor,
+                    title: cur.name,
+                    sub: cursor,
+                    chosen: chosen
+                }
+                if (data.chosen) {
+                    targetKeys.push(data.key);
+                }
+                mockData.push(data);
+                return null;
+            })
+            return null;
+        })
+        this.setState({ mockData, targetKeys });
     }
 
-    getFilteredArray = (entities, searchText) => {
-        const arr = Object.keys(entities).map((id) => entities[id]);
-        if ( searchText.length === 0 )
-        {
-            return arr;
-        }
-        return FuseUtils.filterArrayByString(arr, searchText);
-    };
+    renderFooter = () => (
+        <Button
+          size="small"
+          style={{ float: 'right', margin: 5 }}
+          onClick={()=>{
+            api.post('/auth/getIndexPageData', {})
+            .then(res => {
+                this.getMock(res.data.allCategories, res.data.categories);
+            });    
+          }}
+        >
+            reload
+        </Button>
+    )
 
-    handleRequestSort = (event, property) => {
-        const orderBy = property;
-        let order = 'desc';
-    
-        if (this.state.orderBy === property && this.state.order === 'desc') {
-          order = 'asc';
-        }
-    
-        this.setState({ order, orderBy });
-    };
-
-    handleSave = (category, type) => {
-        var rows = this.state.rows;
-        var res = [];
-        console.log(category);
-        if (type === 'edit') {
-            api.post('/auth/updateCategory', {category});
-            rows.forEach(function(cur, err) {
-                if (cur._id !== category._id)
-                    res.push(cur);
-                else res.push(category);
-            });
+    handleChange = (targetKeys, direction, moveKeys) => {
+        if (direction === 'right') {
+            moveKeys.map((cursor)=>{
+                api.post('/auth/addCategory', {category: {name: cursor}});
+                return null;
+            })
         }
         else {
-            api.post('/auth/addCategory', {category}).then(res => category._id = res.data.doc._id);
-            res = rows;
-            res.push(category);
+            moveKeys.map((cursor)=>{
+                api.post('/auth/removeCategoryByName', {name: cursor});
+                return null;
+            })
         }
-        console.log(res);
-        this.setState({rows: res});
-    }
-
-    handleRemove = (row) => {
-        var rows = this.state.rows;
-        var res = [];
-
-        api.post('/auth/removeCategoryById', {_id: row._id});
-
-        rows.forEach(function(cur, err) {
-            if (cur._id !== row._id)
-                res.push(cur);
-        });
-        this.setState({rows: res});
+        this.setState({ targetKeys });
     }
 
     render() {
         const { classes } = this.props;
-        const {order, orderBy} = this.state;
-        var data = this.getFilteredArray(this.state.rows, this.state.searchText);
-        data = stableSort(data, getSorting(order, orderBy));
+        const {mockData, targetKeys} = this.state;
+
         return (
             <div>
                 <div className="p-24 flex flex-1 flex-col items-center justify-center md:flex-row md:items-center">
@@ -186,54 +102,22 @@ class CategoryTab extends Component {
                             <Typography className="md:ml-24" variant="h4" color="inherit">Top Categories</Typography>
                         </FuseAnimate>
                     </div>
-                    <div className="flex flex-1 items-center justify-center pr-8 sm:px-12">
-                        <FuseAnimate animation="transition.slideLeftIn" delay={300}>
-                            <Paper className="flex p-4 items-center w-full max-w-512 px-8 py-4" elevation={1}>
-                                <Icon className="mr-8" color="action">search</Icon>
-                                <Input
-                                    placeholder="Search for anything"
-                                    className="flex flex-1"
-                                    disableUnderline
-                                    fullWidth
-                                    value={this.state.searchText}
-                                    inputProps={{
-                                        'aria-label': 'Search'
-                                    }}
-                                    onChange={this.setSearchText}
-                                />
-                            </Paper>
-                        </FuseAnimate>
-                    </div>
-                    <CategoryDialog type='add' onSave={this.handleSave} onRemove={this.handleRemove} row={{_id: '', name: '', nickname: ''}}/>
                 </div>
                 <Paper className={classes.root}>
-                    <Table className={classes.table}>
-                        <EnhancedTableHead
-                            order={order}
-                            orderBy={orderBy}
-                            onRequestSort={this.handleRequestSort}
-                            />
-                        <TableBody>
-                        {data.map(row => (
-                            <TableRow key={row._id}>
-                                <TableCell component="th" scope="row" align="center">
-                                    {row.name}
-                                </TableCell>
-                                <TableCell align="center">
-                                    <CategoryDialog type='edit' onSave={this.handleSave} onRemove={this.handleRemove} row={row}/>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                        {
-                            data.length === 0 && 
-                            <TableRow>
-                            <TableCell align="center">
-                            'No top categories.'
-                            </TableCell>
-                            </TableRow>
-                        }
-                        </TableBody>
-                    </Table>
+                    <Transfer
+                        dataSource={mockData}
+                        titles={['Categories', 'Top Categories']}
+                        showSearch
+                        listStyle={{
+                            textAlign: 'left',
+                            width: 400,
+                            height: 400,
+                        }}
+                        targetKeys={targetKeys}
+                        onChange={this.handleChange}
+                        render={item => `${item.title}-${item.sub}`}
+                        footer={this.renderFooter}
+                    />
                 </Paper>
             </div>
         );

@@ -53,7 +53,6 @@ class JWTLoginTab extends Component {
 
     render()
     {
-        const {canSubmit} = this.state;
         const {classes} = this.props;
 
         return (
