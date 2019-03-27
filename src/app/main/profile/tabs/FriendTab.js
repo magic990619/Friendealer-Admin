@@ -18,6 +18,7 @@ const newProfile = {
         friend_groups: [{
             name: '',
             image: '',
+            description: '',
             count: 0,
         }],
         friends: [ {
@@ -31,6 +32,7 @@ const newProfile = {
     edit_group: {
         name: '',
         image: '',
+        description: '',
         count: 0,
     },
     select_group: null,
@@ -184,6 +186,10 @@ class FriendTab extends Component {
         this.setState({edit_group: _.set({...this.state.edit_group}, 'name', event.target.value)});
     }
 
+    handleEditDescription = event => {
+        this.setState({edit_group: _.set({...this.state.edit_group}, 'description', event.target.value)});
+    }
+
     handleSelect = (select_group) => {
         this.setState({select_group: select_group});
     }
@@ -294,6 +300,15 @@ class FriendTab extends Component {
                                                             label="Name"
                                                             value={edit_group.name}
                                                             onChange={this.handleEditName}
+                                                            fullWidth
+                                                        />
+                                                        <TextField
+                                                            className="m-4"
+                                                            id="description"
+                                                            name="description"
+                                                            label="Description"
+                                                            value={edit_group.description}
+                                                            onChange={this.handleEditDescription}
                                                             fullWidth
                                                         />
                                                         Image: <input type='file' id='image' name='image' onChange={this.handleselectedFile} />

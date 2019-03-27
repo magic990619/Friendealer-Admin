@@ -17,7 +17,8 @@ export default class EventTypeDialog extends React.Component {
     row: {
         _id: '',
         name: '',
-        budget: '',
+        days: [],
+        budget: [],
     }
   };
 
@@ -40,8 +41,21 @@ export default class EventTypeDialog extends React.Component {
       this.setState({row: cursor});
   }
 
+  handleDayChange = (index, ev) => {
+    var {row} = this.state;
+    row.days[index] = ev.target.value;
+    this.setState({row});
+  }
+
+  handleBudgetChange = (index, ev) => {
+    var {row} = this.state;
+    row.budget[index] = ev.target.value;
+    this.setState({row});
+  }
+
   render() {
     const {onSave, onRemove} = this.props;
+    const {row} = this.state;
     return (
       <div>
         {this.state.type === 'edit' &&
@@ -86,26 +100,38 @@ export default class EventTypeDialog extends React.Component {
               id="name"
               name="name"
               label="Event Type"
-              value={this.state.row.name}
+              value={row.name}
               onChange={this.handleChange('name')}
               variant="outlined"
-              fullWidth
             />
-            <TextField
-              margin="dense"
-              id="budget"
-              name="budget"
-              label="Budget"
-              value={this.state.row.budget}
-              onChange={this.handleChange('budget')}
-              variant="outlined"
-              fullWidth
-            />
+            {row.days && row.days.map((cursor, index)=>(
+              <div className="flex">
+                <TextField
+                  margin="dense"
+                  type="number"
+                  value={cursor}
+                  onChange={ev => this.handleDayChange(index, ev)}
+                  variant="outlined"
+                />
+                <span className="text-20 font-bold w-full mt-12">days : </span>
+                <TextField
+                  margin="dense"
+                  type="number"
+                  value={row.budget[index]}
+                  onChange={ev => this.handleBudgetChange(index, ev)}
+                  variant="outlined"
+                />
+                <span className="text-20 font-bold w-full mt-12">USD</span>
+              </div>
+            ))
+
+            }
           </DialogContent>
           <DialogActions>
             <Button onClick={ev=>{
-                this.handleClose();
-                onSave(this.state.row, this.state.type);}
+              ev.stopPropagation();
+              this.handleClose();
+              onSave(this.state.row, this.state.type);}
             } color="secondary">
                 {this.state.type === 'edit' && 'Save'}
                 {this.state.type === 'add' && 'Add'}

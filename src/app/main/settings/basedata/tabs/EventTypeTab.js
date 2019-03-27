@@ -39,7 +39,6 @@ function getSorting(order, orderBy) {
 
 const rows = [
     { id: 'name', numeric: false, disablePadding: true, label: 'Event Type' },
-    { id: 'budget', numeric: true, disablePadding: false, label: 'Budget' },
     { id: 'action', numeric: false, disablePadding: false, label: 'Action' },
 ];
 
@@ -206,7 +205,7 @@ class EventTypeTab extends Component {
                             </Paper>
                         </FuseAnimate>
                     </div>
-                    <EventTypeDialog type='add' onSave={this.handleSave} onRemove={this.handleRemove} row={{_id: '', name: '', budget: ''}}/>
+                    <EventTypeDialog type='add' onSave={this.handleSave} onRemove={this.handleRemove} row={{_id: '', name: ''}}/>
                 </div>
                 <Paper className={classes.root}>
                     <Table className={classes.table}>
@@ -221,7 +220,6 @@ class EventTypeTab extends Component {
                                 <TableCell component="th" scope="row" align="center">
                                     {row.name}
                                 </TableCell>
-                                <TableCell align="center">{row.budget}</TableCell>
                                 <TableCell align="center">
                                     <EventTypeDialog type='edit' onSave={this.handleSave} onRemove={this.handleRemove} row={row}/>
                                 </TableCell>
