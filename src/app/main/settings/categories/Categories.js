@@ -25,6 +25,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import api from 'app/ApiConfig';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 const styles = theme => ({
     header    : {
@@ -99,7 +100,7 @@ class Categories extends Component {
         return api.post("/upload", formData, config)
             .then(res => {
                 console.log(res.data.file);
-                edit['icon'] = "http://localhost:8888/uploads/" + res.data.file.filename;
+                edit['icon'] = SERVER_URL + res.data.file.filename;
                 this.setState({
                 edit_category: edit,
             })});

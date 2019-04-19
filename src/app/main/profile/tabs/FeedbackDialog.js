@@ -17,6 +17,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import StarRatingComponent from 'react-star-rating-component';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 export default class FormDialog extends React.Component {
   state = {
@@ -133,7 +134,7 @@ export default class FormDialog extends React.Component {
             var photo = this.state.row.photo;
             var resT = [];
             photo.map((cur, i) => {
-                if (i === parseInt(num)) resT.push("http://localhost:8888/uploads/" + res.data.file.filename);
+                if (i === parseInt(num)) resT.push(SERVER_URL + res.data.file.filename);
                 else resT.push(cur);
                 return null;
             })

@@ -12,6 +12,7 @@ import EmojiPicker from 'emoji-picker-react';
 import JSEMOJI from 'emoji-js';
 import api from 'app/ApiConfig.js';
 import './style.scss';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 let jsemoji = new JSEMOJI();
 // set the style to emojione (default - apple)
@@ -199,7 +200,7 @@ class Chat extends Component {
         console.log(file);
         return api.post("/upload", formData, config)
             .then(res => {
-                var url = "http://localhost:8888/uploads/" + res.data.file.filename;
+                var url = SERVER_URL + res.data.file.filename;
                 var type = 'file';
                 if(file.type.includes('image') === true)
                     type = 'image';

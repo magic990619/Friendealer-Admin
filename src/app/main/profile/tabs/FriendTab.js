@@ -11,6 +11,7 @@ import api from 'app/ApiConfig';
 import TextField from '@material-ui/core/TextField';
 import history from 'history.js';
 import _ from '@lodash';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 const newProfile = {
     profileData: {
@@ -176,7 +177,7 @@ class FriendTab extends Component {
         }
         return api.post("/upload", formData, config)
             .then(res => {
-                edit['image'] = "http://localhost:8888/uploads/" + res.data.file.filename;
+                edit['image'] = SERVER_URL + res.data.file.filename;
                 this.setState({
                 edit_group: edit,
             })});

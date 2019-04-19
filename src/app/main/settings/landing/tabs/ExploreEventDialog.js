@@ -10,6 +10,7 @@ import {
     Icon, IconButton, Typography,
 } from '@material-ui/core';
 import api from 'app/ApiConfig';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 export default class ExploreEventDialog extends React.Component {
   state = {
@@ -54,7 +55,7 @@ export default class ExploreEventDialog extends React.Component {
     return api.post("/upload", formData, config)
         .then(res => {
           var cursor = this.state.row;
-          cursor.url = "http://localhost:8888/uploads/" + res.data.file.filename;
+          cursor.url = SERVER_URL + res.data.file.filename;
           this.setState({row: cursor});
         });
   }

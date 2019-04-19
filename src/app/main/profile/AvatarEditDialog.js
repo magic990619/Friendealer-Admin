@@ -9,6 +9,7 @@ import api from 'app/ApiConfig';
 import {
     Icon, IconButton,
 } from '@material-ui/core';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 export default class AvatarEditDialog extends React.Component {
   state = {
@@ -37,7 +38,7 @@ export default class AvatarEditDialog extends React.Component {
     }
     return api.post("/upload", formData, config)
         .then(res => this.setState({
-            photo_url: "http://localhost:8888/uploads/" + res.data.file.filename,
+            photo_url: SERVER_URL + res.data.file.filename,
             prev_url: prev_url
         }));
   }

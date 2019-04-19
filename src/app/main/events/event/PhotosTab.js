@@ -9,6 +9,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Dropzone from 'react-dropzone'
+import {SERVER_URL} from 'app/ServerUrl.js';
 // import moment from 'moment/moment';
 
 const styles = theme => ({
@@ -144,7 +145,7 @@ class PhotosTab extends Component {
         return api.post("/upload", formData, config)
             .then(res => {
                 console.log(res.data.file);
-                edit['photo_url'] = "http://localhost:8888/uploads/" + res.data.file.filename;
+                edit['photo_url'] = SERVER_URL + res.data.file.filename;
                 this.setState({
                 edit_photo: edit,
             })});
@@ -164,7 +165,7 @@ class PhotosTab extends Component {
         }
         return api.post("/upload", formData, config)
             .then(res => {
-                var photo_url = "http://localhost:8888/uploads/" + res.data.file.filename;
+                var photo_url = SERVER_URL + res.data.file.filename;
                 this.handleAdd({
                     event_id: event_id,
                     photo_url: photo_url,

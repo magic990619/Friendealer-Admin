@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import api from 'app/ApiConfig';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 class PhotoAddDialog extends React.Component {
   state = {
@@ -49,7 +50,7 @@ class PhotoAddDialog extends React.Component {
     }
     return api.post("/upload", formData, config)
         .then(res => this.setState({
-            photo_url: "http://localhost:8888/uploads/" + res.data.file.filename,
+            photo_url: SERVER_URL + res.data.file.filename,
             prev_url: prev_url
         }));
   }

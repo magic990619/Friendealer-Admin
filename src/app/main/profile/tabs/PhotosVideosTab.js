@@ -10,6 +10,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import moment from 'moment/moment';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 const styles = theme => ({
     form: {
@@ -149,7 +150,7 @@ class PhotosVideosTab extends Component {
         }
         return api.post("/upload", formData, config)
             .then(res => {
-                edit['photo_url'] = "http://localhost:8888/uploads/" + res.data.file.filename;
+                edit['photo_url'] = SERVER_URL + res.data.file.filename;
                 this.setState({
                 edit_photo: edit,
             })});
