@@ -409,7 +409,7 @@ class FriendTab extends Component {
                                         // <img key={friend.friend_id} className="w-64 m-4" src={friend.avatar} alt={friend.name} />
                                         <ListItem key={friend.friend_id}>
                                         {friend.friend_id !== '' &&
-                                            <Avatar src={friend.avatar} alt={friends.name}>{friends.name}</Avatar>
+                                            <Avatar src={SERVER_URL + friend.avatar} alt={friends.name}>{friends.name}</Avatar>
                                         }
                                             <ListItemText
                                                 primary={(

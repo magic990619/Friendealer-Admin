@@ -25,6 +25,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
 import Grid from '@material-ui/core/Grid';
 import SearchBar from './components/SearchBar';
+import {SERVER_URL} from 'app/ServerUrl.js';
 import 'date-fns';
 
 function Marker({text})
@@ -45,7 +46,7 @@ const CustomTableCell = withStyles(theme => ({
       fontSize: 14,
     },
 }))(TableCell);
-  
+
 const styles = theme => ({
     root: {
         width: '100%',
@@ -97,16 +98,16 @@ class Event extends Component {
         form    : null,
         basedata: null,
         address: '',
-        location: null,
+        location: {lat: 0, lng: 0},
     };
 
     componentDidMount()
     {
-        this.updateEventState();
         api.post('/base/getBasedata', {})
             .then(res => {
                 this.setState({basedata: res.data.doc});
-            });
+        });
+        this.updateEventState();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot)
@@ -114,14 +115,6 @@ class Event extends Component {
         if ( !_.isEqual(this.props.location, prevProps.location) )
         {
             this.updateEventState();
-        }
-
-        if (
-            (this.props.event.data && !this.state.form) ||
-            (this.props.event.data && this.state.form && this.props.event.data.id !== this.state.form.id)
-        )
-        {
-            this.updateFormState();
         }
     }
 
@@ -138,11 +131,11 @@ class Event extends Component {
 
         if ( eventId === 'new' )
         {
-            this.props.newEvent();
+            this.props.newEvent().then(()=>this.updateFormState());
         }
         else
         {
-            this.props.getEvent(this.props.match.params);
+            this.props.getEvent(this.props.match.params).then(()=>this.updateFormState());
         }
     };
 
@@ -192,7 +185,7 @@ class Event extends Component {
     {
         const {name} = this.state.form;
         return (
-            name.length > 0 &&
+            name && name.length > 0 &&
             !_.isEqual(this.props.event.data, this.state.form)
         );
     }
@@ -275,7 +268,7 @@ class Event extends Component {
                                             </Typography>
                                         </FuseAnimate>
                                         <FuseAnimate animation="transition.slideLeftIn" delay={300}>
-                                            <Typography variant="caption">Event Detail</Typography>
+                                            <Typography variant="caption" className="text-left">Event Detail</Typography>
                                         </FuseAnimate>
                                     </div>
                                 </div>
@@ -345,7 +338,6 @@ class Event extends Component {
                                     <div className="flex">
                                         <TextField
                                             className="mt-8 mb-16 mx-4"
-                                            error={form.name === ''}
                                             required
                                             label="Name"
                                             id="employer_name"
@@ -396,6 +388,7 @@ class Event extends Component {
                                         fullWidth
                                     />
 
+                                    {form.category && basedata.categories && 
                                     <FuseChipSelect
                                         className="mt-8 mb-24"
                                         value={
@@ -413,19 +406,20 @@ class Event extends Component {
                                             },
                                             variant        : 'outlined'
                                         }}
-                                        options={basedata && basedata.categories.map(item => ({
+                                        options={basedata.categories.map(item => ({
                                             value: item,
                                             label: item,
                                         }))}
                                         isMulti
-                                    />
+                                    />}
 
+                                    {form.type && basedata.eventType && 
                                     <FuseChipSelect
                                         className="mt-8 mb-16"
                                         value={
                                             form.type.map(item => ({
-                                                value: item,
-                                                label: item
+                                                value: item.event_type,
+                                                label: item.event_type
                                             }))
                                         }
                                         onChange={(value) => this.handleChipChange(value, 'type')}
@@ -437,12 +431,12 @@ class Event extends Component {
                                             },
                                             variant        : 'outlined'
                                         }}
-                                        options={basedata && basedata.eventType.map(item => ({
+                                        options={basedata.eventType.map(item => ({
                                             value: item.name,
                                             label: item.name,
                                         }))}
                                         isMulti
-                                    />
+                                    />}
 
                                     <TextField
                                         className="mt-8 mb-16"
@@ -458,7 +452,7 @@ class Event extends Component {
                                     <div className="flex">
                                         <div className="flex w-full m-4">
                                             <Typography variant="subtitle1" color="inherit" className="min-w-80 pt-20">
-                                                    Language
+                                                Language
                                             </Typography>
                                             <Select
                                                 className="mb-24"
@@ -497,7 +491,7 @@ class Event extends Component {
                                                 }
                                                 fullWidth
                                             >
-                                                {basedata && 
+                                                {basedata.eventState && 
                                                     basedata.eventState.map((cursor) => (
                                                         <option value={cursor.name} key={cursor._id}>{cursor.name}</option>
                                                     ))
@@ -682,10 +676,10 @@ class Event extends Component {
                                             </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                            {form.friend_join.map(row => (
+                                            {form.friend_join && form.friend_join.map(row => (
                                                 <TableRow className={classes.row} key={row._id}>
                                                 <CustomTableCell component="th" scope="row">
-                                                    <Avatar src={row.avatar} />
+                                                    <Avatar src={SERVER_URL + row.avatar} />
                                                 </CustomTableCell>
                                                 <CustomTableCell align="left">{row.name}</CustomTableCell>
                                                 <CustomTableCell align="center">{row.email}</CustomTableCell>
@@ -701,7 +695,7 @@ class Event extends Component {
                                                 </TableRow>
                                             ))}
                                             {
-                                                form.friend_join.length === 0 &&
+                                                form.friend_join && form.friend_join.length === 0 &&
                                                 <TableRow>
                                                     <CustomTableCell>
                                                     <Typography variant="subtitle1" color="inherit" className="min-w-80 pt-20">
@@ -729,10 +723,10 @@ class Event extends Component {
                                             </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                            {form.friend_offer.map(row => (
+                                            {form.friend_offer && form.friend_offer.map(row => (
                                                 <TableRow className={classes.row} key={row._id}>
                                                 <CustomTableCell component="th" scope="row">
-                                                    <Avatar src={row.avatar} />
+                                                    <Avatar src={SERVER_URL + row.avatar} />
                                                 </CustomTableCell>
                                                 <CustomTableCell align="left">{row.name}</CustomTableCell>
                                                 <CustomTableCell align="center">{row.email}</CustomTableCell>
@@ -748,7 +742,7 @@ class Event extends Component {
                                                 </TableRow>
                                             ))}
                                             {
-                                                form.friend_offer.length === 0 &&
+                                                form.friend_offer && form.friend_offer.length === 0 &&
                                                 <TableRow>
                                                     <CustomTableCell>
                                                 <Typography variant="subtitle1" color="inherit" className="min-w-80 pt-20">

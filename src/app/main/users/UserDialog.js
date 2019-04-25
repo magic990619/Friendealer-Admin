@@ -7,6 +7,7 @@ import _ from '@lodash';
 import Select from '@material-ui/core/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import api from 'app/ApiConfig';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 const newUserState = {
     _id      : '',
@@ -105,7 +106,7 @@ class UserDialog extends Component {
                         <Avatar
                             className="w-96 h-96"
                             alt="user avatar"
-                            src={this.state.avatar && this.state.avatar !== '' ? this.state.avatar : "assets/images/avatars/profile.jpg"}
+                            src={this.state.avatar && this.state.avatar !== '' ? (SERVER_URL + this.state.avatar) : "assets/images/avatars/profile.jpg"}
                         />
                         {userDialog.type === 'edit' && (
                             <Typography variant="h6" color="inherit" className="pt-8">

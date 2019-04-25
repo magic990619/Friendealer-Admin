@@ -77,7 +77,7 @@ class jwtService extends FuseUtils.EventEmitter {
                     'password' : password
             }).then(response => {
                 console.log(response);
-                if ( response.data.decodedToken )
+                if ( response.data.decodedToken && response.data.decodedToken.role === 'admin' )
                 {
                     this.setSession(response.data.access_token);
                     resolve(response.data.decodedToken);

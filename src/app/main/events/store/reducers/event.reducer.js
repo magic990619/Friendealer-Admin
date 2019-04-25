@@ -1,7 +1,7 @@
 import * as Actions from '../actions';
 
 const initialState = {
-    data: null
+    data: []
 };
 
 const eventReducer = function (state = initialState, action) {

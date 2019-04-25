@@ -189,6 +189,7 @@ class PhotosTab extends Component {
             photos.forEach(function(cursor, err) {
                 if (flag === true) {
                     res = cursor;
+                    flag = false;
                 }
                 if (cursor._id === edit_photo._id)
                     flag = true;
@@ -237,7 +238,7 @@ class PhotosTab extends Component {
                                     }}
                                     key={period._id}
                                 >
-                                    <img className={classes.grid_img + " cursor-pointer"} src={period.photo_url} alt={period.title} onClick={(ev) => {
+                                    <img className={classes.grid_img + " cursor-pointer"} src={SERVER_URL + period.photo_url} alt={period.title} onClick={(ev) => {
                                         ev.stopPropagation();
                                         this.handleClickOpen(period);
                                     }}/>
@@ -255,7 +256,7 @@ class PhotosTab extends Component {
                                                     return (
                                                         <FuseAnimate animation="transition.slideLeftIn" delay={300} key={edit_photo.photo_url}>
                                                         <div className={classes.imageshow + ' bg-black block'}>
-                                                            <img src={edit_photo.photo_url} alt={period.title} className={classes.image}/>
+                                                            <img src={SERVER_URL + edit_photo.photo_url} alt={period.title} className={classes.image}/>
                                                             <span className="hover cursor-pointer absolute p-16 font-bold text-18 text-grey-lighter select-none pin-l opacity-75" onClick={(ev)=>{
                                                                 ev.stopPropagation();
                                                                 this.nextImage(1);
@@ -272,7 +273,7 @@ class PhotosTab extends Component {
                                                     return (
                                                         <FuseAnimate animation="transition.slideLeftIn" delay={300} key={cursor.photo_url}>
                                                         <div className={classes.imageshow + ' bg-black hidden'}>
-                                                            <img src={cursor.photo_url} alt={period.title} className={classes.image}/>
+                                                            <img src={SERVER_URL + cursor.photo_url} alt={period.title} className={classes.image}/>
                                                         </div>
                                                         </FuseAnimate>
                                                     );

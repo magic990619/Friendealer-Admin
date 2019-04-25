@@ -243,7 +243,7 @@ class Chat extends Component {
                                             )}
                                         >
                                             {this.shouldShowContactAvatar(item, i) && (
-                                                <Avatar className="avatar absolute pin-l m-0 -ml-32" src={contact.avatar} />
+                                                <Avatar className="avatar absolute pin-l m-0 -ml-32" src={SERVER_URL + contact.avatar} />
                                             )}
                                             {this.shouldShowContactAvatar(item, i) && (
                                             <div className="absolute pin-l z-10">
@@ -251,7 +251,7 @@ class Chat extends Component {
                                             </div>                                            
                                             )}
                                             {this.shouldShowUserAvatar(item, i) && (
-                                                <Avatar className="avatar absolute pin-r m-0 -mr-32" src={user.avatar} />
+                                                <Avatar className="avatar absolute pin-r m-0 -mr-32" src={SERVER_URL + user.avatar} />
                                             )}
                                             {this.shouldShowUserAvatar(item, i) && (
                                                 <div className="absolute pin-r z-10">

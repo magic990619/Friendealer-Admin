@@ -2,6 +2,7 @@ import React from 'react';
 import {AppBar, Avatar, Typography, withStyles} from '@material-ui/core';
 import connect from 'react-redux/es/connect/connect';
 import classNames from 'classnames';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 const styles = theme => ({
     root  : {
@@ -44,7 +45,7 @@ const UserNavbarHeader = ({user, classes}) => {
             <Avatar
                 className={classNames(classes.avatar, "avatar")}
                 alt="user photo"
-                src={user.avatar && user.avatar !== '' ? user.avatar : "assets/images/avatars/profile.jpg"}
+                src={user.avatar && user.avatar !== '' ? (SERVER_URL + user.avatar) : "assets/images/avatars/profile.jpg"}
             />
         </AppBar>
     );

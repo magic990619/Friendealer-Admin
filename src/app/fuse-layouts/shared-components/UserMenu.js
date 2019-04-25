@@ -5,6 +5,7 @@ import * as authActions from 'app/auth/store/actions';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router-dom';
 import socket from 'app/SocketConfig.js';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 class UserMenu extends Component {
 
@@ -30,7 +31,7 @@ class UserMenu extends Component {
                 <Button className="h-64" onClick={this.userMenuClick}>
                     {user.avatar ?
                         (
-                            <Avatar className="" alt="user photo" src={user.avatar}/>
+                            <Avatar className="" alt="user photo" src={SERVER_URL + user.avatar}/>
                         )
                         :
                         (

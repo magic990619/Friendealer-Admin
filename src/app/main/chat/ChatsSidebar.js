@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import moment from "moment";
 import * as Actions from "./store/actions";
 import StatusIcon from "./StatusIcon";
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 const statusArr = [
     {
@@ -110,7 +111,7 @@ class ChatsSidebar extends Component {
                         {contact.unread !== undefined && contact.unread !== 0 && (
                                 <div className={classNames(classes.unreadBadge, "flex items-center justify-center w-20 h-20 rounded-full text-12 text-center -mb-4 -ml-4 z-999 absolute")}>{contact.unread}</div>
                             )}
-                        <Avatar src={contact.avatar} alt={contact.name}>
+                        <Avatar src={SERVER_URL + contact.avatar} alt={contact.name}>
                             {!contact.avatar || contact.avatar === '' ? contact.name[0] : ''}
                         </Avatar>
                     </div>
@@ -162,7 +163,7 @@ class ChatsSidebar extends Component {
                                 {/* <IconButton className="relative w-40 h-40 p-0" onClick={openUserSidebar}> */}
                                 <IconButton className="relative w-40 h-40 p-0">
 
-                                    <Avatar src={user.avatar} alt={user.name} className="w-40 h-40">
+                                    <Avatar src={SERVER_URL + user.avatar} alt={user.name} className="w-40 h-40">
                                         {(!user.avatar || user.avatar === '') ? user.name[0] : ''}
                                     </Avatar>
 

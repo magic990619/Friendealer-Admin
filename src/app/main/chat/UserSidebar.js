@@ -6,6 +6,7 @@ import connect from 'react-redux/es/connect/connect';
 import _ from '@lodash';
 import * as Actions from './store/actions';
 import StatusIcon from './StatusIcon';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 const statusArr = [
     {
@@ -72,7 +73,7 @@ class UserSidebar extends Component {
                         </IconButton>
                     </Toolbar>
                     <Toolbar className="flex flex-col justify-center items-center p-24">
-                        <Avatar src={user.avatar} alt={user.name} className="w-96 h-96">
+                        <Avatar src={SERVER_URL + user.avatar} alt={user.name} className="w-96 h-96">
                             {(!user.avatar || user.avatar === '') ? user.name[0] : ''}
                         </Avatar>
                         <Typography color="inherit" className="mt-16" variant="h6">{user.name}</Typography>

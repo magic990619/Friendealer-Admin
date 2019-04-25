@@ -8,6 +8,7 @@ import ReactTable from "react-table";
 import * as Actions from './store/actions';
 import api from 'app/ApiConfig'
 import StarRatingComponent from 'react-star-rating-component';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 class UsersList extends Component {
 
@@ -141,7 +142,7 @@ class UsersList extends Component {
                                 <Avatar
                                     className=""
                                     alt="user photo"
-                                    src={row.value && row.value !== '' ? row.value : "assets/images/avatars/profile.jpg"}
+                                    src={row.value && row.value !== '' ? (SERVER_URL + row.value) : "assets/images/avatars/profile.jpg"}
                                 />
                             ),
                             className: "justify-center",

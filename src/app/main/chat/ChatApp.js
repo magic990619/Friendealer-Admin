@@ -16,6 +16,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import socket from "app/SocketConfig.js";
 import StatusIcon from "./StatusIcon";
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 const drawerWidth = 400;
 const headerHeight = 200;
@@ -326,7 +327,7 @@ class ChatApp extends React.Component {
                                                                     <StatusIcon status={selectedContact.status}/>
                                                                 </div>
 
-                                                                <Avatar src={selectedContact.avatar} alt={selectedContact.name}>
+                                                                <Avatar src={SERVER_URL + selectedContact.avatar} alt={selectedContact.name}>
                                                                     {!selectedContact.avatar || selectedContact.avatar === '' ? selectedContact.name[0] : ''}
                                                                 </Avatar>
                                                             </div>

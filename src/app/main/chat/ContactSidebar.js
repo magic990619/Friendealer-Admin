@@ -4,6 +4,7 @@ import {FuseScrollbars} from '@fuse';
 import {bindActionCreators} from 'redux';
 import connect from 'react-redux/es/connect/connect';
 import * as Actions from './store/actions';
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 const ContactSidebar = ({contacts, closeContactSidebar, selectedContactId}) => {
     const contact = contacts.find(_contact => (_contact.id === selectedContactId));
@@ -20,7 +21,7 @@ const ContactSidebar = ({contacts, closeContactSidebar, selectedContactId}) => {
                 </Toolbar>
 
                 <Toolbar className="flex flex-col justify-center items-center p-24">
-                    <Avatar src={contact.avatar} alt={contact.name} className="w-96 h-96">
+                    <Avatar src={SERVER_URL + contact.avatar} alt={contact.name} className="w-96 h-96">
                         {!contact.avatar || contact.avatar === '' ? contact.name[0] : ''}
                     </Avatar>
                     <Typography color="inherit" className="mt-16" variant="h6">{contact.name}</Typography>

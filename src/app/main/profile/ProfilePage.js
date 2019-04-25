@@ -9,6 +9,7 @@ import PhotosVideosTab from './tabs/PhotosVideosTab';
 import AboutTab from './tabs/AboutTab';
 import _ from '@lodash';
 import AvatarEditDialog from './AvatarEditDialog'
+import {SERVER_URL} from 'app/ServerUrl.js';
 
 const styles = theme => ({
     layoutHeader : {
@@ -90,7 +91,7 @@ class ProfilePage extends Component {
                                     <Avatar
                                         className="w-96 h-96"
                                         alt="user photo"
-                                        src={this.state.accountData.avatar && this.state.accountData.avatar !== '' ? this.state.accountData.avatar : "assets/images/avatars/profile.jpg"}
+                                        src={this.state.accountData.avatar && this.state.accountData.avatar !== '' ? (SERVER_URL + this.state.accountData.avatar) : "assets/images/avatars/profile.jpg"}
                                     />
                                 </FuseAnimate>
                                 <div className="align-bottom">
