@@ -96,7 +96,7 @@ class Event extends Component {
     state = {
         tabValue: 0,
         form    : null,
-        basedata: null,
+        basedata: [],
         address: '',
         location: {lat: 0, lng: 0},
     };
