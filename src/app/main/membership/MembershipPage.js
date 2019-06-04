@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import api from 'app/ApiConfig'
 import PropTypes from 'prop-types';
-import {withStyles, Button, Typography, Icon, Tooltip } from '@material-ui/core';
+import {withStyles, Button, Typography, Icon, Tooltip, MuiThemeProvider } from '@material-ui/core';
 import {FusePageSimple, FuseAnimate} from '@fuse';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,6 +10,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import {connect} from 'react-redux';
 import MembershipDialog from './MembershipDialog';
 
 function desc(a, b, orderBy) {
@@ -167,7 +168,7 @@ class MembershipPage extends Component {
 
     render()
     {
-        const { classes } = this.props;
+        const { classes, mainTheme } = this.props;
         const {order, orderBy} = this.state;
         var data = stableSort(this.state.rows, getSorting(order, orderBy));
 
@@ -179,29 +180,31 @@ class MembershipPage extends Component {
                 }}
                 header={
                     <div className="p-24 flex flex-1 flex-col items-center justify-center md:flex-row md:items-center">
-                        <div className="flex flex-1 flex-col items-center justify-center md:flex-row md:items-center md:justify-start">
-                            <div className="flex items-center">
-                                <FuseAnimate animation="transition.expandIn" delay={300}>
-                                    <Icon className="text-32 mr-12">card_membership</Icon>
-                                </FuseAnimate>
-                                <FuseAnimate animation="transition.slideLeftIn" delay={300}>
-                                    <Typography variant="h6" className="hidden sm:flex">Membership</Typography>
-                                </FuseAnimate>
+                        <MuiThemeProvider theme={mainTheme}>
+                            <div className="flex flex-1 flex-col items-center justify-center md:flex-row md:items-center md:justify-start">
+                                <div className="flex items-center">
+                                    <FuseAnimate animation="transition.expandIn" delay={300}>
+                                        <Icon className="text-32 mr-12">card_membership</Icon>
+                                    </FuseAnimate>
+                                    <FuseAnimate animation="transition.slideLeftIn" delay={300}>
+                                        <Typography variant="h6" className="hidden sm:flex text-white">Membership</Typography>
+                                    </FuseAnimate>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="flex items-center justify-end">
-                            <MembershipDialog type='add' onSave={this.handleSave} onRemove={this.handleRemove} row={{
-                                name: '',
-                                yearly_rate: '',
-                                monthly_rate: '',
-                                photos_per_acts: '',
-                                free_list_cnt: '',
-                                insertion_list_fee: '',
-                                fee_paid_acts: '',
-                            }}/>
-                            <Button className="normal-case" variant="contained" color="primary" aria-label="Send Message">Send Message</Button>
-                        </div>
+                            <div className="flex items-center justify-end">
+                                <MembershipDialog type='add' onSave={this.handleSave} onRemove={this.handleRemove} row={{
+                                    name: '',
+                                    yearly_rate: '',
+                                    monthly_rate: '',
+                                    photos_per_acts: '',
+                                    free_list_cnt: '',
+                                    insertion_list_fee: '',
+                                    fee_paid_acts: '',
+                                }}/>
+                                <Button className="normal-case" variant="contained" color="primary" aria-label="Send Message">Send Message</Button>
+                            </div>
+                        </MuiThemeProvider>
                     </div>
                 }
                 content={
@@ -248,4 +251,11 @@ class MembershipPage extends Component {
     };
 }
 
-export default withStyles(styles, {withTheme: true})(MembershipPage);
+function mapStateToProps({fuse})
+{
+    return {
+        mainTheme : fuse.settings.mainTheme
+    }
+}
+
+export default connect(mapStateToProps)(withStyles(styles, {withTheme: true})(MembershipPage));

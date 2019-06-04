@@ -19,7 +19,7 @@ const newUserState = {
     account_status: '',
     start_time: Date(),
     end_time: Date(),
-    avatar  : 'assets/images/avatars/profile.jpg',
+    avatar  : '',
     basedata: null,
 };
 

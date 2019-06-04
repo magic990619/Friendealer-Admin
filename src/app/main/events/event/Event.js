@@ -95,7 +95,30 @@ class Event extends Component {
 
     state = {
         tabValue: 0,
-        form    : null,
+        form    : {
+            employer_id     : 0,
+            employer_name   : '',
+            employer_email  : '',
+            name            : '',
+            description     : '',
+            category        : [],
+            type            : [],
+            event_state     : 'Progress',
+            website_url     : '',
+            cost_min        : 0,
+            cost_max        : 0,
+            gender          : 'MF',
+            age_min         : 0,
+            age_max         : 99,
+            language        : 'English',
+            currency_type   : 'USD',
+            quantity        : 0,
+            lat             : 0,
+            lng             : 0,
+            visitors        : 0,
+            friend_offer    : [],
+            friend_join     : [],
+        },
         basedata: [],
         address: '',
         location: {lat: 0, lng: 0},
@@ -131,7 +154,7 @@ class Event extends Component {
 
         if ( eventId === 'new' )
         {
-            this.props.newEvent().then(()=>this.updateFormState());
+            // this.props.newEvent().then(()=>this.updateFormState());
         }
         else
         {
