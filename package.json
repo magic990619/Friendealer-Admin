@@ -24,7 +24,7 @@
         "jss-extend": "6.2.0",
         "jwt-decode": "2.2.0",
         "keycode": "2.2.0",
-        "lodash": "4.17.11",
+        "lodash": "4.17.13",
         "material-ui-pickers": "2.1.1",
         "material-ui-popup-state": "1.0.2",
         "mobile-detect": "1.4.3",
